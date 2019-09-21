@@ -1,5 +1,7 @@
 random
 - name should come first in random to prevent any accidental changes
+- maybe generate the ore using the name as the random seed instead of the other way around
+- that way the same name will always generate the same ore
 
 ores
 - rarity
