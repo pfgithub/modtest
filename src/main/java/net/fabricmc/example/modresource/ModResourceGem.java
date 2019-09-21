@@ -76,7 +76,7 @@ public class ModResourceGem extends Item implements IRegisterable {
 			tooltip.add(
 				new TranslatableText(
 					"item.modid.gem.debug.english_name",
-					resource.englishName
+					resource.resourceEnglishName
 				)
 					.formatted(Formatting.DARK_GRAY)
 			);
@@ -92,18 +92,21 @@ public class ModResourceGem extends Item implements IRegisterable {
 			tooltip.add(
 				new TranslatableText(
 					"item.modid.gem.debug.fuel_time",
-					resource.fuelTime
+					resource.fuelSmeltingTime
 				)
 					.formatted(Formatting.DARK_GRAY)
 			);
 			tooltip.add(
-				new TranslatableText("item.modid.gem.debug.main_id", resource.id)
+				new TranslatableText(
+					"item.modid.gem.debug.main_id",
+					resource.resourceId
+				)
 					.formatted(Formatting.DARK_GRAY)
 			);
 			tooltip.add(
 				new TranslatableText(
 					"item.modid.gem.debug.main_translation_key",
-					resource.name
+					resource.resourceTranslationKey
 				)
 					.formatted(Formatting.DARK_GRAY)
 			);
@@ -114,7 +117,7 @@ public class ModResourceGem extends Item implements IRegisterable {
 			tooltip.add(
 				new TranslatableText(
 					"item.modid.gem.debug.gem_translation_key",
-					resource.gemName
+					resource.gemTranslationKey
 				)
 					.formatted(Formatting.DARK_GRAY)
 			);
@@ -125,7 +128,7 @@ public class ModResourceGem extends Item implements IRegisterable {
 			tooltip.add(
 				new TranslatableText(
 					"item.modid.gem.debug.ore_translation_key",
-					resource.oreName
+					resource.oreTranslationKey
 				)
 					.formatted(Formatting.DARK_GRAY)
 			);
@@ -168,16 +171,16 @@ public class ModResourceGem extends Item implements IRegisterable {
 	@Environment(EnvType.CLIENT)
 	@Override
 	public Text getName() {
-		if (resource.gemName == "") {
+		if (resource.gemTranslationKey == "") {
 			return new TranslatableText(
 				"item.modid.gem.onepart",
-				new TranslatableText(resource.name)
+				new TranslatableText(resource.resourceTranslationKey)
 			);
 		}
 		return new TranslatableText(
 			"item.modid.gem",
-			new TranslatableText(resource.name),
-			new TranslatableText(resource.gemName)
+			new TranslatableText(resource.resourceTranslationKey),
+			new TranslatableText(resource.gemTranslationKey)
 		);
 	}
 
@@ -215,7 +218,7 @@ public class ModResourceGem extends Item implements IRegisterable {
 	public void register() {
 		Registry.register(Registry.ITEM, new Identifier("modid", this.id), this);
 		if (resource.isFuel) {
-			FuelRegistry.INSTANCE.add(this, resource.fuelTime);
+			FuelRegistry.INSTANCE.add(this, resource.fuelSmeltingTime);
 		}
 	}
 

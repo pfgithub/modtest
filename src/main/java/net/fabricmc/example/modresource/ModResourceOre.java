@@ -63,8 +63,8 @@ public class ModResourceOre extends OreBlock implements IRegisterable {
 	public Text getName() {
 		return new TranslatableText(
 			"block.modid.oreblock",
-			new TranslatableText(resource.name),
-			new TranslatableText(resource.oreName)
+			new TranslatableText(resource.resourceTranslationKey),
+			new TranslatableText(resource.oreTranslationKey)
 		);
 	}
 

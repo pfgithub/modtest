@@ -68,21 +68,26 @@ public class ResourceDetails {
 	// library to hue shift and stack textures
 	//
 	public int color;
-	public String[] oreStyle;
-	public String oreName;
-	public String[] gemStyle;
-	public String gemName;
-	public String name;
-	public String id;
-	public boolean requiresSmelting;
-	public boolean dropsMany;
 	public float materialHardness;
 	public float materialResistance;
+
+	public String resourceId;
+	public String resourceTranslationKey;
+	public String resourceEnglishName;
+
 	public String oreId;
+	public String[] oreStyle;
+	public String oreTranslationKey;
+
 	public String gemId;
-	public String englishName;
+	public String[] gemStyle;
+	public String gemTranslationKey;
+
+	public boolean requiresSmelting;
+	public boolean dropsMany;
+
 	public boolean isFuel;
-	public int fuelTime;
+	public int fuelSmeltingTime;
 
 	public static ResourceDetails random(int seed) {
 		Random random = new Random(seed);
@@ -113,6 +118,8 @@ public class ResourceDetails {
 		boolean isFuel = random.nextInt(4) == 0;
 		int fuelTime = random.nextInt(64) * 100; // 200 smelts 1 item in a furnace or 2 items in a blast furnace
 
+		// TODO: isOvergrown - adds an overlay to ore and block that uses the grass color and all items that makes it look overgrown
+		// inspired by https://i.redd.it/6lalhnzbann31.png
 		return new ResourceDetails(
 			color,
 			oreStyle,
@@ -147,19 +154,19 @@ public class ResourceDetails {
 	) {
 		this.color = color;
 		this.oreStyle = oreStyle;
-		this.oreName = oreName == "" ? "" : "name.modid.ore." + oreName;
+		this.oreTranslationKey = oreName == "" ? "" : "name.modid.ore." + oreName;
 		this.gemStyle = gemStyle;
-		this.gemName = gemName == "" ? "" : "name.modid.gem." + gemName;
+		this.gemTranslationKey = gemName == "" ? "" : "name.modid.gem." + gemName;
 		this.requiresSmelting = requiresSmelting;
 		this.dropsMany = dropsMany;
 		this.materialHardness = materialHardness;
 		this.materialResistance = materialResistance;
-		this.name = "name.modid.resource." + id;
-		this.englishName = englishName;
-		this.id = id;
-		this.oreId = this.id + "_" + oreName;
-		this.gemId = this.id + (gemName == "" ? "" : "_" + gemName);
+		this.resourceTranslationKey = "name.modid.resource." + id;
+		this.resourceEnglishName = englishName;
+		this.resourceId = id;
+		this.oreId = this.resourceId + "_" + oreName;
+		this.gemId = this.resourceId + (gemName == "" ? "" : "_" + gemName);
 		this.isFuel = isFuel;
-		this.fuelTime = fuelTime;
+		this.fuelSmeltingTime = fuelTime;
 	}
 }
