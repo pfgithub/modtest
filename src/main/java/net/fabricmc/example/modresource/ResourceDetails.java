@@ -30,7 +30,6 @@ public class ResourceDetails {
 		{ "", "minecraft:item/diamond" }, // diamond
 		{ "chunk", "minecraft:item/coal" }, // chunk
 		{ "chunk", "minecraft:item/charcoal" }, // burnt_chunk
-		{ "ingot", "minecraft:item/iron_ingot" }, // ingot
 		{ "chip", "minecraft:item/flint" }, // sharp
 		{ "powder", "minecraft:item/gunpowder" }, // powder
 		{ "", "minecraft:item/wheat_seeds" }, // dots
@@ -53,6 +52,10 @@ public class ResourceDetails {
 		{ "", "minecraft:item/emerald" }, // crystal
 		{ "orb", "minecraft:item/snowball" }, // orb
 		{ "", "minecraft:item/spawn_egg_overlay" } // dots
+	};
+
+	static String[][] INGOT_STYLE = new String[][] {
+		{ "ingot", "minecraft:item/iron_ingot" } // ingot
 	};
 
 	// !!!!!
@@ -92,9 +95,18 @@ public class ResourceDetails {
 		boolean requiresSmelting = random.nextBoolean();
 		boolean dropsMany = requiresSmelting ? false : random.nextBoolean();
 		List<String> gemStyleFull = new ArrayList<>();
-		gemStyleFull.addAll(
-			Arrays.asList(GEM_STYLE[random.nextInt(GEM_STYLE.length)])
-		);
+
+		// hasNugget = isIngot
+		boolean isIngot = requiresSmelting && random.nextBoolean();
+		if (isIngot) {
+			gemStyleFull.addAll(
+				Arrays.asList(INGOT_STYLE[random.nextInt(INGOT_STYLE.length)])
+			);
+		} else {
+			gemStyleFull.addAll(
+				Arrays.asList(GEM_STYLE[random.nextInt(GEM_STYLE.length)])
+			);
+		}
 		String gemName = gemStyleFull.remove(0);
 		String[] gemStyle = gemStyleFull.toArray(new String[0]);
 
