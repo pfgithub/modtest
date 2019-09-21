@@ -9,7 +9,6 @@ import net.fabricmc.fabric.api.event.registry.RegistryEntryAddedCallback;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import pw.pfg.randomoresmod.modresource.ModResource;
@@ -18,32 +17,36 @@ import pw.pfg.randomoresmod.modresource.ResourceDetails;
 public class RandomOresMod implements ModInitializer {
 	// an instance of our new item
 	public static final List<IRegisterable> THINGS = new ArrayList<>();
-	public static final Item QUESTION_MARK_INGOT = new Item(new Item.Settings().group(ItemGroup.MATERIALS));
+	public static final Item QUESTION_MARK_INGOT = new Item(
+		new Item.Settings().group(ItemGroup.MATERIALS)
+	);
 
-	static {
-		for (int i = 0; i < 100; i++) {
-			RandomOresMod.THINGS.add(new ModResource(ResourceDetails.random(i)));
-		}
-	}
-
-	public static final ItemGroup OTHER_GROUP = FabricItemGroupBuilder.create(
+	public static final ItemGroup RESOURCES = FabricItemGroupBuilder.create(
 		new Identifier("randomoresmod", "resources")
 	)
 		.icon(() -> new ItemStack(QUESTION_MARK_INGOT))
 		.appendItems(
 			stacks -> {
-				stacks.add(new ItemStack(QUESTION_MARK_INGOT));
-				// RandomOresMod.THINGS.forEach(i -> i.registerCreativeTab(""));
+				THINGS.forEach(t -> t.registerItemGroup(stacks));
 			}
 		)
-		.build();
+	.build();
+
+	static {
+		for (int i = 0; i < 255; i++) {
+			RandomOresMod.THINGS.add(new ModResource(ResourceDetails.random(i)));
+		}
+	}
 
 	@Override
 	public void onInitialize() {
 		RandomOresMod.THINGS.forEach(i -> i.register());
 
-		Registry.register(Registry.ITEM, new Identifier("randomoresmod", "question_mark_ingot"), QUESTION_MARK_INGOT);
-
+		Registry.register(
+			Registry.ITEM,
+			new Identifier("randomoresmod", "question_mark_ingot"),
+			QUESTION_MARK_INGOT
+		);
 
 		Artifice.registerData(
 			"randomoresmod:main",

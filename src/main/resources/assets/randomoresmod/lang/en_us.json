@@ -1,5 +1,6 @@
 {
 	"block.randomoresmod.oreblock": "%s %s",
+	"item.randomoresmod.colorpreview": "%s %s",
 	"item.randomoresmod.gem": "%s %s",
 	"item.randomoresmod.question_mark_ingot": "Unknown Ingot",
 	"itemGroup.randomoresmod.resources": "Randomoresmod Resources",
@@ -28,7 +29,9 @@
 	"item.randomoresmod.gem.debug.ore_style": "Ore Style: %s",
 	"item.randomoresmod.gem.debug.gem_style": "Gem Style: %s",
 	"item.randomoresmod.gem.debug.smelting_time": "Smelting Time: %d ticks",
+
 	"name.randomoresmod.ore.ore": "Ore",
+
 	"name.randomoresmod.gem.shard": "Shard",
 	"name.randomoresmod.gem.bowl": "Bowl",
 	"name.randomoresmod.gem.powder": "Powder",
@@ -39,8 +42,9 @@
 	"name.randomoresmod.gem.strand": "Strand",
 	"name.randomoresmod.gem.pebble": "Pebble",
 	"name.randomoresmod.gem.orb": "Orb",
-	"name.randomoresmod.gem.glob": "Glob",
 	"name.randomoresmod.gem.sheet": "Sheet",
 	"name.randomoresmod.gem.dust": "Dust",
-	"name.randomoresmod.gem.crystal": "Crystal"
+	"name.randomoresmod.gem.crystal": "Crystal",
+
+	"name.randomoresmod.colorpreview.colorpreview": "Color Preview"
 }

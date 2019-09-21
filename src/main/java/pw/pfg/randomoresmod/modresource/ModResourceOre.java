@@ -1,5 +1,6 @@
 package pw.pfg.randomoresmod.modresource;
 
+import java.util.List;
 import com.swordglowsblue.artifice.api.ArtificeResourcePack.ClientResourcePackBuilder;
 import com.swordglowsblue.artifice.api.ArtificeResourcePack.ServerResourcePackBuilder;
 import com.swordglowsblue.artifice.api.builder.assets.TranslationBuilder;
@@ -12,7 +13,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Material;
 import net.minecraft.block.OreBlock;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemGroup;
+import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
@@ -25,6 +26,7 @@ import net.minecraft.world.gen.decorator.RangeDecoratorConfig;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.OreFeatureConfig;
 import pw.pfg.randomoresmod.IRegisterable;
+import pw.pfg.randomoresmod.RandomOresMod;
 
 public class ModResourceOre extends OreBlock implements IRegisterable {
 	ResourceDetails resource;
@@ -40,7 +42,15 @@ public class ModResourceOre extends OreBlock implements IRegisterable {
 		this.resource = resource;
 		this.id = resource.oreId;
 		this.blockItem =
-			new NamedBlockItem(this, new Item.Settings().group(ItemGroup.MATERIALS));
+			new NamedBlockItem(
+				this,
+				new Item.Settings().group(RandomOresMod.RESOURCES)
+			);
+	}
+
+	@Override
+	public void registerItemGroup(List<ItemStack> stacks) {
+		stacks.add(new ItemStack(this.blockItem));
 	}
 
 	// public void registerData(ServerResourcePackBuilder pack) {}
@@ -135,7 +145,8 @@ public class ModResourceOre extends OreBlock implements IRegisterable {
 	}
 
 	public BlockRenderLayer getRenderLayer() {
-		return BlockRenderLayer.CUTOUT_MIPPED;
+		return BlockRenderLayer.TRANSLUCENT;
+	// return BlockRenderLayer.CUTOUT_MIPPED;
 	}
 
 	@Override
@@ -156,8 +167,9 @@ public class ModResourceOre extends OreBlock implements IRegisterable {
 									new Identifier("minecraft:survives_explosion"),
 									cond -> {}
 								);
-							} else {
-								// https://github.com/artificemc/artifice/issues/12
+							}
+							// else {
+							// https://github.com/artificemc/artifice/issues/12
 							// pool.entry(
 							// 	entry -> {
 							// 		entry.type(new Identifier("minecraft", "alternative"));
@@ -169,7 +181,7 @@ public class ModResourceOre extends OreBlock implements IRegisterable {
 							// 		);
 							// 	}
 							// );
-							}
+							//}
 						}
 					);
 			}
@@ -201,7 +213,7 @@ public class ModResourceOre extends OreBlock implements IRegisterable {
 		// it should be possible for one ore to be the same color as grass
 		ColorProviderRegistry.BLOCK.register((block, world, pos, layer) -> layer == 0 ? resource.color : 0, this);
 		ColorProviderRegistry.ITEM.register(
-			(stack, layer) -> layer == 0 ? resource.color : 0,
+			(stack, layer) -> layer == 0 ? resource.color : 16777215,
 			this.blockItem
 		);
 	}

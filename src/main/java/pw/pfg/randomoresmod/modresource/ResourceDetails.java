@@ -30,54 +30,72 @@ public class ResourceDetails {
 	// 1.. is no color, last is color
 	static String[][] GEM_STYLE = new String[][] {
 		// this information should be loaded from a datapack or something
-		{ "", "minecraft:item/popped_chorus_fruit" }, // popcorn
-		{ "shard", "minecraft:item/prismarine_shard" }, // shard
-		{ "", "minecraft:block/azure_bluet" }, // broccoli
-		{ "", "minecraft:block/fire_coral" }, // tree
-		{ "bowl", "minecraft:item/bowl", "minecraft:item/mushroom_stew" }, // bowl
-		{ "", "minecraft:item/fermented_spider_eye" }, // tooth
-		{ "powder", "minecraft:item/blaze_powder" }, // burning_powder
-		{ "", "minecraft:item/rabbit_foot" }, // peanut
-		{ "cream", "minecraft:item/magma_cream", "minecraft:item/magma_cream" }, // mixed_cream (transparency can be used in items)
-		{ "", "minecraft:item/diamond" }, // diamond
-		{ "chunk", "minecraft:item/coal" }, // chunk
-		{ "chunk", "minecraft:item/charcoal" }, // burnt_chunk
-		{ "chip", "minecraft:item/flint" }, // sharp
-		{ "powder", "minecraft:item/gunpowder" }, // powder
-		{ "", "minecraft:item/wheat_seeds" }, // dots
-		{ "strand", "minecraft:item/string" }, // strand
-		{ "strand", "minecraft:item/feather" }, // thick_strand
-		{ "pebble", "minecraft:item/prismarine_crystals" }, // pebble_pile
-		{ "orb", "minecraft:item/slime_ball" }, // shiny_orb
-		{ "glob", "minecraft:item/clay_ball" }, // glob
-		{ "sheet", "minecraft:item/paper" }, // sheet
-		{ "dust", "minecraft:item/glowstone_dust" }, // shiny_dust
-		{ "", "minecraft:item/lapis_lazuli" }, // shaped_rock_1
-		{ "", "minecraft:item/yellow_dye" }, // shaped_rock_2
+		{ "", "randomoresmod:item/multipart_stone" },
+		{ "shard", "randomoresmod:item/shard" },
+		{ "", "randomoresmod:item/flower" },
+		{ "", "randomoresmod:item/tree" },
+		{
+			"bowl",
+			"randomoresmod:item/bowl_base",
+			"randomoresmod:item/bowl_overlay"
+		},
+		{ "", "randomoresmod:item/tooth_stone" },
+		{ "powder", "randomoresmod:item/burning_powder" },
+		{ "", "randomoresmod:item/peanut_stone" },
+		{
+			"cream",
+			"randomoresmod:item/cream_base",
+			"randomoresmod:item/cream_overlay"
+		}, // mixed_cream (transparency can be used in items)
+		{
+			"",
+			"randomoresmod:item/diamond_base",
+			"randomoresmod:item/diamond_overlay"
+		},
+		{ "chunk", "randomoresmod:item/chunk" },
+		{ "chunk", "randomoresmod:item/burnt_chunk" },
+		{ "chip", "randomoresmod:item/sharp_chip" },
+		{ "dust", "randomoresmod:item/dust" },
+		{ "", "randomoresmod:item/seeds" },
+		{ "strand", "randomoresmod:item/strand" },
+		{ "strand", "randomoresmod:item/thick_strand" },
+		{ "pebble", "randomoresmod:item/pebble_pile" },
+		{
+			"orb",
+			"randomoresmod:item/shiny_orb_base",
+			"randomoresmod:item/shiny_orb_overlay"
+		},
+		{ "cream", "randomoresmod:item/glob" },
+		{ "sheet", "randomoresmod:item/sheet" },
+		{
+			"powder",
+			"randomoresmod:item/shiny_powder_base",
+			"randomoresmod:item/shiny_powder_overlay"
+		},
+		{ "", "randomoresmod:item/decorative_stone" },
+		{ "", "randomoresmod:item/decorative_stone_2" },
 		{
 			"infused_stone",
-			"minecraft:item/fire_charge",
-			"minecraft:item/fire_charge"
-		}, // infued_stone
-		{ "crystal", "minecraft:item/quartz" }, // crystal_pile
-		{ "", "minecraft:item/phantom_membrane" }, // popcorn_2
-		{ "", "minecraft:item/emerald" }, // crystal
-		{ "orb", "minecraft:item/snowball" }, // orb
-		{ "", "minecraft:item/spawn_egg_overlay" } // dots
+			"randomoresmod:item/infused_stone_base",
+			"randomoresmod:item/infused_stone_overlay"
+		},
+		{ "crystal", "randomoresmod:item/crystal_pile" },
+		{ "", "randomoresmod:item/multipart_stone_2" },
+		{
+			"",
+			"randomoresmod:item/emerald_base",
+			"randomoresmod:item/emerald_overlay"
+		},
+		{ "orb", "randomoresmod:item/orb" },
+		{ "", "randomoresmod:item/pebbles" }
 	};
 
 	static String[][] INGOT_STYLE = new String[][] {
-		{ "ingot", "minecraft:item/iron_ingot" } // ingot
+		{ "ingot", "randomoresmod:item/ingot" }
 	};
 
 	// !!!!!
-	// Unfortunately, because tint is an overlay instead of a hue shift,
-	// white translates to solid tint color
-	// This means that shiny parts don't work
-	// because the white gets replaced with the
-	// tint color.
-	// This could possibly be solved by using an image manipulation
-	// library to hue shift and stack textures
+	// (fixed by using transparent)
 	//
 	public int color;
 	public float materialHardness;
