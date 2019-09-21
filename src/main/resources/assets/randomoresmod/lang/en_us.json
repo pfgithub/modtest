@@ -1,5 +1,6 @@
 {
 	"block.randomoresmod.oreblock": "%s %s",
+	"block.randomoresmod.storageblock": "Block of %s",
 	"item.randomoresmod.colorpreview": "%s %s",
 	"item.randomoresmod.gem": "%s %s",
 	"item.randomoresmod.question_mark_ingot": "Unknown Ingot",

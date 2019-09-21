@@ -27,6 +27,27 @@ public class ResourceDetails {
 		}
 	};
 
+	static String[][] STORAGE_BLOCK_STYLE = new String[][] {
+		// this information should be loaded from a datapack or something
+		{ "randomoresmod:block/storage_dusty_base", "randomoresmod:block/storage_dusty_overlay" },
+		{
+			"randomoresmod:block/storage_lined_base",
+			"randomoresmod:block/storage_lined_overlay"
+		},
+		{
+			"randomoresmod:block/storage_rectangular_base",
+			"randomoresmod:block/storage_rectangular_overlay"
+		},
+		{
+			"randomoresmod:block/storage_shiny_base",
+			"randomoresmod:block/storage_shiny_overlay"
+		},
+		{
+			"randomoresmod:block/storage_streaky_base",
+			"randomoresmod:block/storage_streaky_overlay"
+		}
+	};
+
 	// 1.. is no color, last is color
 	static String[][] GEM_STYLE = new String[][] {
 		// this information should be loaded from a datapack or something
@@ -113,6 +134,10 @@ public class ResourceDetails {
 	public String[] gemStyle;
 	public String gemTranslationKey;
 
+	public String storageBlockId;
+	public String[] storageBlockStyle;
+	public String storageBlockTranslationKey;
+
 	public boolean requiresSmelting;
 	public boolean dropsMany;
 
@@ -157,6 +182,9 @@ public class ResourceDetails {
 			: random.nextInt(180) + 20)
 			: 200; // anywhere from 1s to 100s, defaults to 10s
 
+		String[] storageBlockStyle = STORAGE_BLOCK_STYLE
+		[random.nextInt(STORAGE_BLOCK_STYLE.length)];
+
 		// TODO: isOvergrown - adds an overlay to ore and block that uses the grass color and all items that makes it look overgrown
 		// inspired by https://i.redd.it/6lalhnzbann31.png
 		return new ResourceDetails(
@@ -173,7 +201,8 @@ public class ResourceDetails {
 			id,
 			isFuel,
 			fuelTime,
-			smeltingTime
+			smeltingTime,
+			storageBlockStyle
 		);
 	}
 
@@ -191,7 +220,8 @@ public class ResourceDetails {
 		String id,
 		boolean isFuel,
 		int fuelTime,
-		int smeltingTime
+		int smeltingTime,
+		String[] storageBlockStyle
 	) {
 		this.color = color;
 		this.oreStyle = oreStyle;
@@ -212,5 +242,10 @@ public class ResourceDetails {
 		this.isFuel = isFuel;
 		this.fuelSmeltingTime = fuelTime;
 		this.smeltingTime = smeltingTime;
+
+		this.storageBlockId = this.resourceId + "_block";
+		this.storageBlockStyle = storageBlockStyle;
+		this.storageBlockTranslationKey =
+			"name.randomoresmod.storageblock.storageblock";
 	}
 }

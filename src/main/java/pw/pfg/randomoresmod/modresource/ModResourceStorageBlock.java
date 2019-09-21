@@ -11,9 +11,11 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockRenderLayer;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Material;
+import net.minecraft.block.MaterialColor;
 import net.minecraft.block.OreBlock;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
@@ -28,19 +30,22 @@ import net.minecraft.world.gen.feature.OreFeatureConfig;
 import pw.pfg.randomoresmod.IRegisterable;
 import pw.pfg.randomoresmod.RandomOresMod;
 
-public class ModResourceOre extends OreBlock implements IRegisterable {
+public class ModResourceStorageBlock extends Block implements IRegisterable {
 	ResourceDetails resource;
 	String id;
 	Item blockItem;
 
-	public ModResourceOre(ResourceDetails resource) {
-		// new OreBlock(Block.Settings.of(Material.STONE).strength(3.0F, 3.0F)))
+	public ModResourceStorageBlock(ResourceDetails resource) {
 		super(
-			Block.Settings.of(Material.STONE)
-				.strength(resource.materialHardness, resource.materialResistance)
+			Block.Settings.of(Material.METAL, MaterialColor.IRON)
+				.strength(
+					resource.materialHardness * 9,
+					resource.materialResistance * 9
+				)
 		);
 		this.resource = resource;
-		this.id = resource.oreId;
+		this.id = resource.storageBlockId;
+
 		this.blockItem =
 			new NamedBlockItem(
 				this,
@@ -65,17 +70,12 @@ public class ModResourceOre extends OreBlock implements IRegisterable {
 	@Override
 	public Text getName() {
 		return new TranslatableText(
-			"block.randomoresmod.oreblock",
+			"block.randomoresmod.storageblock",
 			new TranslatableText(resource.resourceTranslationKey),
-			new TranslatableText(resource.oreTranslationKey)
+			new TranslatableText(resource.storageBlockTranslationKey)
 		);
 	}
 
-	// public void registerAssets(ClientResourcePackBuilder pack) {
-	// 	// pack.addItemModel(id, f);
-	// // pack.addTranslations(new Identifier("randomoresmod", "en_US"), trans -> {});
-	// // todo: do a thing that adds a slab for every block as an easy example test
-	// }
 	@Override
 	public void register() {
 		Registry.register(
@@ -99,7 +99,7 @@ public class ModResourceOre extends OreBlock implements IRegisterable {
 				model.parent(new Identifier("minecraft", "block/block"));
 				model.texture("particle", new Identifier("minecraft", "block/stone"));
 				int layerNumber = 0;
-				for (String style : resource.oreStyle) {
+				for (String style : resource.storageBlockStyle) {
 					String varName = "layer" + (layerNumber++);
 					final int nextLayerNumber = layerNumber;
 					model.texture(varName, new Identifier(style));
@@ -111,7 +111,7 @@ public class ModResourceOre extends OreBlock implements IRegisterable {
 									dir,
 									s -> {
 										s.uv(0, 0, 16, 16).texture(varName).cullface(dir);
-										if (nextLayerNumber == resource.oreStyle.length) {
+										if (nextLayerNumber == resource.storageBlockStyle.length) {
 											s.tintindex(0);
 										}
 									}
@@ -157,52 +157,32 @@ public class ModResourceOre extends OreBlock implements IRegisterable {
 					.pool(
 						pool -> {
 							pool.rolls(1);
-							if (resource.requiresSmelting || true) {
-								pool.entry(
-									e -> e.name(new Identifier("randomoresmod", this.id))
-										.type(new Identifier("minecraft:item"))
-								);
-								pool.condition(
-									new Identifier("minecraft:survives_explosion"),
-									cond -> {}
-								);
-							}
-						// else {
-						// https://github.com/artificemc/artifice/issues/12
-						// pool.entry(
-						// 	entry -> {
-						// 		entry.type(new Identifier("minecraft", "alternative"));
-						// 		entry.child(
-						// 			child -> {
-						// 				child.type(new Identifier("minecraft", "item"));
-						// 				child.
-						// 			}
-						// 		);
-						// 	}
-						// );
-						//}
+							pool.entry(
+								e -> e.name(new Identifier("randomoresmod", this.id))
+									.type(new Identifier("minecraft:item"))
+							);
+							pool.condition(
+								new Identifier("minecraft:survives_explosion"),
+								cond -> {}
+							);
 						}
 					);
 			}
 		);
-		data.addSmeltingRecipe(
-			new Identifier("randomoresmod", resource.gemId + "_from_smelting"),
-			smelting -> {
-				smelting.type(new Identifier("minecraft", "smelting"))
-					.ingredientItem(new Identifier("randomoresmod", this.id))
-					.result(new Identifier("randomoresmod", resource.gemId))
-					.experience(0.7)
-					.cookingTime(resource.smeltingTime);
+		data.addShapedRecipe(
+			new Identifier("randomoresmod", resource.storageBlockId + "_from_gem"),
+			shapeless -> {
+				shapeless.group(new Identifier("randomoresmod", resource.gemId))
+					.pattern("###", "###", "###")
+					.ingredientItem('#', new Identifier("randomoresmod", resource.gemId))
+					.result(new Identifier("randomoresmod", this.id), 1);
 			}
 		);
-		data.addBlastingRecipe(
-			new Identifier("randomoresmod", resource.gemId + "_from_smelting"),
-			smelting -> {
-				smelting.type(new Identifier("minecraft", "blasting"))
-					.ingredientItem(new Identifier("randomoresmod", this.id))
-					.result(new Identifier("randomoresmod", resource.gemId))
-					.experience(0.7)
-					.cookingTime(resource.smeltingTime / 2);
+		data.addShapelessRecipe(
+			new Identifier("randomoresmod", resource.gemId + "_from_storage_block"),
+			shapeless -> {
+				shapeless.ingredientItem(new Identifier("randomoresmod", this.id))
+					.result(new Identifier("randomoresmod", resource.gemId), 9);
 			}
 		);
 	}
@@ -218,24 +198,5 @@ public class ModResourceOre extends OreBlock implements IRegisterable {
 	}
 
 	@Override
-	public void registerBiomeFeatures(Biome biome) {
-		if (
-			biome.getCategory() != Biome.Category.NETHER &&
-			biome.getCategory() != Biome.Category.THEEND
-		) {
-			biome.addFeature(
-				GenerationStep.Feature.UNDERGROUND_ORES,
-				Biome.configureFeature(
-					Feature.ORE,
-					new OreFeatureConfig(
-						OreFeatureConfig.Target.NATURAL_STONE,
-						this.getDefaultState(),
-						8 //Ore vein size
-					),
-					Decorator.COUNT_RANGE,
-					new RangeDecoratorConfig(8, 0, 0, 64) //Number of veins per chunk //Bottom Offset //Min y level //Max y level
-				)
-			);
-		}
-	}
+	public void registerBiomeFeatures(Biome biome) {}
 }

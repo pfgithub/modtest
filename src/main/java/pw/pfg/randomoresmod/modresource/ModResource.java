@@ -6,6 +6,7 @@ import com.swordglowsblue.artifice.api.ArtificeResourcePack.ClientResourcePackBu
 import com.swordglowsblue.artifice.api.ArtificeResourcePack.ServerResourcePackBuilder;
 import com.swordglowsblue.artifice.api.builder.assets.TranslationBuilder;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.world.biome.Biome;
 import pw.pfg.randomoresmod.IRegisterable;
 
@@ -17,9 +18,10 @@ public class ModResource implements IRegisterable {
 	public ModResource(ResourceDetails details) {
 		this.resource = details;
 
-		this.THINGS.add(new ModResourceOre(this.resource));
-		this.THINGS.add(new ModResourceGem(this.resource));
 		this.THINGS.add(new ModResourceColorPreview(this.resource));
+		this.THINGS.add(new ModResourceGem(this.resource));
+		this.THINGS.add(new ModResourceOre(this.resource));
+		this.THINGS.add(new ModResourceStorageBlock(this.resource));
 	}
 
 	@Override
@@ -69,5 +71,10 @@ public class ModResource implements IRegisterable {
 	@Override
 	public void registerItemGroup(List<ItemStack> stacks) {
 		this.THINGS.forEach(t -> t.registerItemGroup(stacks));
+		stacks.add(new ItemStack(Items.AIR));
+		stacks.add(new ItemStack(Items.AIR));
+		stacks.add(new ItemStack(Items.AIR));
+		stacks.add(new ItemStack(Items.AIR));
+		stacks.add(new ItemStack(Items.AIR));
 	}
 }
