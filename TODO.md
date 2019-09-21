@@ -62,3 +62,9 @@ mining level
 dungeon chests and rarity (see infinite minecraft)
 
 - dungeon, temples, stronghold, mineshaft, village, mansion, end city, end ship
+
+far future
+
+- add textures using artifice instead of using color overlays
+- this would allow better mod support and possibly a different color filter method
+  and fix the transparent mining bug
