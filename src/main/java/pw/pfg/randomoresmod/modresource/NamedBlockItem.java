@@ -1,4 +1,4 @@
-package net.fabricmc.example.modresource;
+package pw.pfg.randomoresmod.modresource;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.BlockItem;

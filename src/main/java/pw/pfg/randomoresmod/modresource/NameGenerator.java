@@ -1,4 +1,4 @@
-package net.fabricmc.example.modresource;
+package pw.pfg.randomoresmod.modresource;
 
 import java.util.List;
 import java.util.Random;

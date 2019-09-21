@@ -1,4 +1,4 @@
-package net.fabricmc.example.modresource;
+package pw.pfg.randomoresmod.modresource;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -7,7 +7,7 @@ import java.util.Random;
 import com.swordglowsblue.artifice.api.ArtificeResourcePack.ClientResourcePackBuilder;
 import com.swordglowsblue.artifice.api.ArtificeResourcePack.ServerResourcePackBuilder;
 import com.swordglowsblue.artifice.api.builder.assets.TranslationBuilder;
-import net.fabricmc.example.IRegisterable;
+import pw.pfg.randomoresmod.IRegisterable;
 import net.minecraft.world.biome.Biome;
 
 public class ModResource implements IRegisterable {

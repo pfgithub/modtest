@@ -1,4 +1,4 @@
-package net.fabricmc.example.modresource;
+package pw.pfg.randomoresmod.modresource;
 
 import com.swordglowsblue.artifice.api.Artifice;
 import com.swordglowsblue.artifice.api.ArtificeResourcePack.ClientResourcePackBuilder;
@@ -7,7 +7,7 @@ import com.swordglowsblue.artifice.api.ArtificeResourcePack.ServerResourcePackBu
 import com.swordglowsblue.artifice.api.builder.assets.TranslationBuilder;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.fabricmc.example.IRegisterable;
+import pw.pfg.randomoresmod.IRegisterable;
 import net.fabricmc.fabric.api.client.render.ColorProviderRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRenderLayer;
@@ -55,14 +55,14 @@ public class ModResourceOre extends OreBlock implements IRegisterable {
 
 	@Override
 	public String getTranslationKey() {
-		return "this.modid.should.never.happen";
+		return "this.randomoresmod.should.never.happen";
 	}
 
 	@Environment(EnvType.CLIENT)
 	@Override
 	public Text getName() {
 		return new TranslatableText(
-			"block.modid.oreblock",
+			"block.randomoresmod.oreblock",
 			new TranslatableText(resource.resourceTranslationKey),
 			new TranslatableText(resource.oreTranslationKey)
 		);
@@ -70,15 +70,15 @@ public class ModResourceOre extends OreBlock implements IRegisterable {
 
 	// public void registerAssets(ClientResourcePackBuilder pack) {
 	// 	// pack.addItemModel(id, f);
-	// // pack.addTranslations(new Identifier("modid", "en_US"), trans -> {});
+	// // pack.addTranslations(new Identifier("randomoresmod", "en_US"), trans -> {});
 	// // todo: do a thing that adds a slab for every block as an easy example test
 	// }
 	@Override
 	public void register() {
-		Registry.register(Registry.BLOCK, new Identifier("modid", this.id), this);
+		Registry.register(Registry.BLOCK, new Identifier("randomoresmod", this.id), this);
 		Registry.register(
 			Registry.ITEM,
-			new Identifier("modid", this.id),
+			new Identifier("randomoresmod", this.id),
 			this.blockItem
 		);
 	}
@@ -87,7 +87,7 @@ public class ModResourceOre extends OreBlock implements IRegisterable {
 	@Override
 	public void registerAssets(ClientResourcePackBuilder pack) {
 		pack.addBlockModel(
-			new Identifier("modid", this.id),
+			new Identifier("randomoresmod", this.id),
 			model -> {
 				model.parent(new Identifier("minecraft", "block/block"));
 				model.texture("particle", new Identifier("minecraft", "block/stone"));
@@ -116,19 +116,19 @@ public class ModResourceOre extends OreBlock implements IRegisterable {
 			}
 		);
 		pack.addBlockState(
-			new Identifier("modid", this.id),
+			new Identifier("randomoresmod", this.id),
 			f -> {
 				f.variant(
 					"",
 					v -> {
-						v.model(new Identifier("modid", "block/" + this.id));
+						v.model(new Identifier("randomoresmod", "block/" + this.id));
 					}
 				);
 			}
 		);
 		pack.addItemModel(
-			new Identifier("modid", this.id),
-			model -> model.parent(new Identifier("modid", "block/" + this.id))
+			new Identifier("randomoresmod", this.id),
+			model -> model.parent(new Identifier("randomoresmod", "block/" + this.id))
 		);
 	}
 
@@ -143,15 +143,15 @@ public class ModResourceOre extends OreBlock implements IRegisterable {
 	@Override
 	public void registerData(ServerResourcePackBuilder data) {
 		data.addLootTable(
-			new Identifier("modid", "blocks/" + this.id),
+			new Identifier("randomoresmod", "blocks/" + this.id),
 			ltp -> {
-				ltp.type(new Identifier("modid", "block/" + this.id))
+				ltp.type(new Identifier("randomoresmod", "block/" + this.id))
 					.pool(
 						pool -> {
 							pool.rolls(1);
 							if (resource.requiresSmelting || true) {
 								pool.entry(
-									e -> e.name(new Identifier("modid", this.id))
+									e -> e.name(new Identifier("randomoresmod", this.id))
 										.type(new Identifier("minecraft:item"))
 								);
 								pool.condition(
@@ -176,21 +176,21 @@ public class ModResourceOre extends OreBlock implements IRegisterable {
 			}
 		);
 		data.addSmeltingRecipe(
-			new Identifier("modid", resource.gemId + "_from_smelting"),
+			new Identifier("randomoresmod", resource.gemId + "_from_smelting"),
 			smelting -> {
 				smelting.type(new Identifier("minecraft", "smelting"))
-					.ingredientItem(new Identifier("modid", this.id))
-					.result(new Identifier("modid", resource.gemId))
+					.ingredientItem(new Identifier("randomoresmod", this.id))
+					.result(new Identifier("randomoresmod", resource.gemId))
 					.experience(0.7)
 					.cookingTime(200);
 			}
 		);
 		data.addBlastingRecipe(
-			new Identifier("modid", resource.gemId + "_from_smelting"),
+			new Identifier("randomoresmod", resource.gemId + "_from_smelting"),
 			smelting -> {
 				smelting.type(new Identifier("minecraft", "blasting"))
-					.ingredientItem(new Identifier("modid", this.id))
-					.result(new Identifier("modid", resource.gemId))
+					.ingredientItem(new Identifier("randomoresmod", this.id))
+					.result(new Identifier("randomoresmod", resource.gemId))
 					.experience(0.7)
 					.cookingTime(100);
 			}

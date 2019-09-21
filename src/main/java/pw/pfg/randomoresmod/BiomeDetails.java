@@ -1,4 +1,4 @@
-package net.fabricmc.example;
+package pw.pfg.randomoresmod;
 
 import java.util.Arrays;
 import java.util.List;
@@ -7,10 +7,10 @@ import java.util.Random;
 public class BiomeDetails {
 	static List<String> ORE_BASE = Arrays.asList("minecraft:block/stone");
 	static List<String> ORE_OVERLAY = Arrays.asList(
-		"modid:block/generic_overlay",
-		"modid:block/lapis_overlay",
-		"modid:block/emerald_overlay",
-		"modid:block/vein_overlay"
+		"randomoresmod:block/generic_overlay",
+		"randomoresmod:block/lapis_overlay",
+		"randomoresmod:block/emerald_overlay",
+		"randomoresmod:block/vein_overlay"
 	);
 	static List<String> RESOURCE_BASE = Arrays.asList(
 		"minecraft:item/iron_ingot",

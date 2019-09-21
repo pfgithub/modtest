@@ -1,4 +1,4 @@
-package net.fabricmc.example;
+package pw.pfg.randomoresmod;
 
 import com.swordglowsblue.artifice.api.Artifice;
 import net.fabricmc.api.ClientModInitializer;
@@ -34,13 +34,13 @@ public class ExampleClientModInitializer implements ClientModInitializer {
 		}
 
 		Artifice.registerAssets(
-			"modid:main",
+			"randomoresmod:main",
 			pack -> {
 				for (IRegisterable thing : ExampleMod.THINGS) {
 					thing.registerAssets(pack);
 				}
 				pack.addTranslations(
-					new Identifier("modid", "en_us"),
+					new Identifier("randomoresmod", "en_us"),
 					trans -> {
 						for (IRegisterable thing : ExampleMod.THINGS) {
 							thing.registerTranslations(trans);

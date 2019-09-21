@@ -1,6 +1,6 @@
 {
 	"schemaVersion": 1,
-	"id": "modid",
+	"id": "randomoresmod",
 	"version": "${version}",
 
 	"name": "Example Mod",
@@ -12,14 +12,14 @@
 	},
 
 	"license": "CC0-1.0",
-	"icon": "assets/modid/icon.png",
+	"icon": "assets/randomoresmod/icon.png",
 
 	"environment": "*",
 	"entrypoints": {
-		"main": ["net.fabricmc.example.ExampleMod"],
-		"client": ["net.fabricmc.example.ExampleClientModInitializer"]
+		"main": ["pw.pfg.randomoresmod.ExampleMod"],
+		"client": ["pw.pfg.randomoresmod.ExampleClientModInitializer"]
 	},
-	"mixins": ["modid.mixins.json"],
+	"mixins": ["randomoresmod.mixins.json"],
 
 	"depends": {
 		"fabricloader": ">=0.4.0",

@@ -1,4 +1,4 @@
-package net.fabricmc.example.modresource;
+package pw.pfg.randomoresmod.modresource;
 
 import java.util.Arrays;
 import java.util.List;
@@ -9,7 +9,7 @@ import com.swordglowsblue.artifice.api.ArtificeResourcePack.ServerResourcePackBu
 import com.swordglowsblue.artifice.api.builder.assets.TranslationBuilder;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.fabricmc.example.IRegisterable;
+import pw.pfg.randomoresmod.IRegisterable;
 import net.fabricmc.fabric.api.client.render.ColorProviderRegistry;
 import net.fabricmc.fabric.api.registry.FuelRegistry;
 import net.minecraft.block.Block;
@@ -52,110 +52,110 @@ public class ModResourceGem extends Item implements IRegisterable {
 	) {
 		if (tooltipContext.isAdvanced()) {
 			tooltip.add(
-				new TranslatableText("item.modid.gem.debug.color", resource.color)
+				new TranslatableText("item.randomoresmod.gem.debug.color", resource.color)
 					.formatted(Formatting.DARK_GRAY)
 			);
 			tooltip.add(
 				new TranslatableText(
-					"item.modid.gem.debug.smelting",
+					"item.randomoresmod.gem.debug.smelting",
 					resource.requiresSmelting
-						? new TranslatableText("item.modid.gem.debug.smelting.requires")
-						: new TranslatableText("item.modid.gem.debug.smelting.automatic")
+						? new TranslatableText("item.randomoresmod.gem.debug.smelting.requires")
+						: new TranslatableText("item.randomoresmod.gem.debug.smelting.automatic")
 				)
 					.formatted(Formatting.DARK_GRAY)
 			);
 			tooltip.add(
 				new TranslatableText(
-					"item.modid.gem.debug.drops",
+					"item.randomoresmod.gem.debug.drops",
 					resource.dropsMany
-						? new TranslatableText("item.modid.gem.debug.drops.one")
-						: new TranslatableText("item.modid.gem.debug.drops.many")
+						? new TranslatableText("item.randomoresmod.gem.debug.drops.one")
+						: new TranslatableText("item.randomoresmod.gem.debug.drops.many")
 				)
 					.formatted(Formatting.DARK_GRAY)
 			);
 			tooltip.add(
 				new TranslatableText(
-					"item.modid.gem.debug.english_name",
+					"item.randomoresmod.gem.debug.english_name",
 					resource.resourceEnglishName
 				)
 					.formatted(Formatting.DARK_GRAY)
 			);
 			tooltip.add(
 				new TranslatableText(
-					"item.modid.gem.debug.is_fuel",
+					"item.randomoresmod.gem.debug.is_fuel",
 					resource.isFuel
-						? new TranslatableText("item.modid.gem.debug.is_fuel.is")
-						: new TranslatableText("item.modid.gem.debug.is_fuel.is_not")
+						? new TranslatableText("item.randomoresmod.gem.debug.is_fuel.is")
+						: new TranslatableText("item.randomoresmod.gem.debug.is_fuel.is_not")
 				)
 					.formatted(Formatting.DARK_GRAY)
 			);
 			tooltip.add(
 				new TranslatableText(
-					"item.modid.gem.debug.fuel_time",
+					"item.randomoresmod.gem.debug.fuel_time",
 					resource.fuelSmeltingTime
 				)
 					.formatted(Formatting.DARK_GRAY)
 			);
 			tooltip.add(
 				new TranslatableText(
-					"item.modid.gem.debug.main_id",
+					"item.randomoresmod.gem.debug.main_id",
 					resource.resourceId
 				)
 					.formatted(Formatting.DARK_GRAY)
 			);
 			tooltip.add(
 				new TranslatableText(
-					"item.modid.gem.debug.main_translation_key",
+					"item.randomoresmod.gem.debug.main_translation_key",
 					resource.resourceTranslationKey
 				)
 					.formatted(Formatting.DARK_GRAY)
 			);
 			tooltip.add(
-				new TranslatableText("item.modid.gem.debug.gem_item_id", resource.gemId)
+				new TranslatableText("item.randomoresmod.gem.debug.gem_item_id", resource.gemId)
 					.formatted(Formatting.DARK_GRAY)
 			);
 			tooltip.add(
 				new TranslatableText(
-					"item.modid.gem.debug.gem_translation_key",
+					"item.randomoresmod.gem.debug.gem_translation_key",
 					resource.gemTranslationKey
 				)
 					.formatted(Formatting.DARK_GRAY)
 			);
 			tooltip.add(
-				new TranslatableText("item.modid.gem.debug.ore_item_id", resource.oreId)
+				new TranslatableText("item.randomoresmod.gem.debug.ore_item_id", resource.oreId)
 					.formatted(Formatting.DARK_GRAY)
 			);
 			tooltip.add(
 				new TranslatableText(
-					"item.modid.gem.debug.ore_translation_key",
+					"item.randomoresmod.gem.debug.ore_translation_key",
 					resource.oreTranslationKey
 				)
 					.formatted(Formatting.DARK_GRAY)
 			);
 			tooltip.add(
 				new TranslatableText(
-					"item.modid.gem.debug.hardness",
+					"item.randomoresmod.gem.debug.hardness",
 					resource.materialHardness
 				)
 					.formatted(Formatting.DARK_GRAY)
 			);
 			tooltip.add(
 				new TranslatableText(
-					"item.modid.gem.debug.resistance",
+					"item.randomoresmod.gem.debug.resistance",
 					resource.materialResistance
 				)
 					.formatted(Formatting.DARK_GRAY)
 			);
 			tooltip.add(
 				new TranslatableText(
-					"item.modid.gem.debug.ore_style",
+					"item.randomoresmod.gem.debug.ore_style",
 					Arrays.toString(resource.oreStyle)
 				)
 					.formatted(Formatting.DARK_GRAY)
 			);
 			tooltip.add(
 				new TranslatableText(
-					"item.modid.gem.debug.gem_style",
+					"item.randomoresmod.gem.debug.gem_style",
 					Arrays.toString(resource.gemStyle)
 				)
 					.formatted(Formatting.DARK_GRAY)
@@ -165,7 +165,7 @@ public class ModResourceGem extends Item implements IRegisterable {
 
 	@Override
 	public String getTranslationKey() {
-		return "this.modid.should.never.happen";
+		return "this.randomoresmod.should.never.happen";
 	}
 
 	@Environment(EnvType.CLIENT)
@@ -173,12 +173,12 @@ public class ModResourceGem extends Item implements IRegisterable {
 	public Text getName() {
 		if (resource.gemTranslationKey == "") {
 			return new TranslatableText(
-				"item.modid.gem.onepart",
+				"item.randomoresmod.gem.onepart",
 				new TranslatableText(resource.resourceTranslationKey)
 			);
 		}
 		return new TranslatableText(
-			"item.modid.gem",
+			"item.randomoresmod.gem",
 			new TranslatableText(resource.resourceTranslationKey),
 			new TranslatableText(resource.gemTranslationKey)
 		);
@@ -202,7 +202,7 @@ public class ModResourceGem extends Item implements IRegisterable {
 	@Override
 	public void registerAssets(ClientResourcePackBuilder pack) {
 		pack.addItemModel(
-			new Identifier("modid", this.id),
+			new Identifier("randomoresmod", this.id),
 			model -> {
 				model.parent(new Identifier("minecraft", "item/generated"));
 				int i = 0;
@@ -216,7 +216,7 @@ public class ModResourceGem extends Item implements IRegisterable {
 
 	@Override
 	public void register() {
-		Registry.register(Registry.ITEM, new Identifier("modid", this.id), this);
+		Registry.register(Registry.ITEM, new Identifier("randomoresmod", this.id), this);
 		if (resource.isFuel) {
 			FuelRegistry.INSTANCE.add(this, resource.fuelSmeltingTime);
 		}

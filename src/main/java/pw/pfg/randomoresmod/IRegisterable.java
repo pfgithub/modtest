@@ -1,4 +1,4 @@
-package net.fabricmc.example;
+package pw.pfg.randomoresmod;
 
 import com.swordglowsblue.artifice.api.ArtificeResourcePack.ClientResourcePackBuilder;
 import com.swordglowsblue.artifice.api.ArtificeResourcePack.ServerResourcePackBuilder;

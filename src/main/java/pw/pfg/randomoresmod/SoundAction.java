@@ -1,4 +1,4 @@
-package net.fabricmc.example;
+package pw.pfg.randomoresmod;
 
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.sound.SoundEvent;

@@ -1,4 +1,4 @@
-package net.fabricmc.example.modresource;
+package pw.pfg.randomoresmod.modresource;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -8,11 +8,11 @@ import java.util.Random;
 public class ResourceDetails {
 	static String[][] ORE_STYLE = new String[][] {
 		// this information should be loaded from a datapack or something
-		{ "modid:block/ore_base_dull", "modid:block/ore_overlay_dull" },
-		{ "modid:block/ore_base_shiny", "modid:block/ore_overlay_shiny" },
-		{ "modid:block/ore_base_vein", "modid:block/ore_overlay_vein" },
-		{ "modid:block/ore_base_gem", "modid:block/ore_overlay_gem" },
-		{ "modid:block/ore_base_chunky", "modid:block/ore_overlay_chunky" }
+		{ "randomoresmod:block/ore_base_dull", "randomoresmod:block/ore_overlay_dull" },
+		{ "randomoresmod:block/ore_base_shiny", "randomoresmod:block/ore_overlay_shiny" },
+		{ "randomoresmod:block/ore_base_vein", "randomoresmod:block/ore_overlay_vein" },
+		{ "randomoresmod:block/ore_base_gem", "randomoresmod:block/ore_overlay_gem" },
+		{ "randomoresmod:block/ore_base_chunky", "randomoresmod:block/ore_overlay_chunky" }
 	};
 
 	// 1.. is no color, last is color
@@ -154,14 +154,14 @@ public class ResourceDetails {
 	) {
 		this.color = color;
 		this.oreStyle = oreStyle;
-		this.oreTranslationKey = oreName == "" ? "" : "name.modid.ore." + oreName;
+		this.oreTranslationKey = oreName == "" ? "" : "name.randomoresmod.ore." + oreName;
 		this.gemStyle = gemStyle;
-		this.gemTranslationKey = gemName == "" ? "" : "name.modid.gem." + gemName;
+		this.gemTranslationKey = gemName == "" ? "" : "name.randomoresmod.gem." + gemName;
 		this.requiresSmelting = requiresSmelting;
 		this.dropsMany = dropsMany;
 		this.materialHardness = materialHardness;
 		this.materialResistance = materialResistance;
-		this.resourceTranslationKey = "name.modid.resource." + id;
+		this.resourceTranslationKey = "name.randomoresmod.resource." + id;
 		this.resourceEnglishName = englishName;
 		this.resourceId = id;
 		this.oreId = this.resourceId + "_" + oreName;

@@ -1,4 +1,4 @@
-package net.fabricmc.example;
+package pw.pfg.randomoresmod;
 
 import net.minecraft.util.UseAction;
 
