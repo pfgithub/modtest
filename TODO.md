@@ -32,8 +32,9 @@ related items
 
 special items (any of these)
 
-- torch
+- torch (must be fuel)
 - spike
+- anvil
 
 effects (items can have multiple, effects impact tool use, edibility, ...)
 

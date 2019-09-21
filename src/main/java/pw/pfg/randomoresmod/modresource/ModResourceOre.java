@@ -196,7 +196,7 @@ public class ModResourceOre extends OreBlock implements IRegisterable {
 			}
 		);
 		data.addBlastingRecipe(
-			new Identifier("randomoresmod", resource.gemId + "_from_smelting"),
+			new Identifier("randomoresmod", resource.gemId + "_from_blasting"),
 			smelting -> {
 				smelting.type(new Identifier("minecraft", "blasting"))
 					.ingredientItem(new Identifier("randomoresmod", this.id))
