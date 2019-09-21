@@ -135,9 +135,9 @@ public class ResourceDetails {
 	) {
 		this.color = color;
 		this.oreStyle = oreStyle;
-		this.oreName = "name.modid.ore." + oreName;
+		this.oreName = oreName == "" ? "" : "name.modid.ore." + oreName;
 		this.gemStyle = gemStyle;
-		this.gemName = "name.modid.gem." + gemName;
+		this.gemName = gemName == "" ? "" : "name.modid.gem." + gemName;
 		this.requiresSmelting = requiresSmelting;
 		this.dropsMany = dropsMany;
 		this.materialHardness = materialHardness;

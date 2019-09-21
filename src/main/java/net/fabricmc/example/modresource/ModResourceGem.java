@@ -23,6 +23,7 @@ import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.registry.Registry;
@@ -51,6 +52,7 @@ public class ModResourceGem extends Item implements IRegisterable {
 		if (tooltipContext.isAdvanced()) {
 			tooltip.add(
 				new TranslatableText("item.modid.gem.debug.color", resource.color)
+					.formatted(Formatting.DARK_GRAY)
 			);
 			tooltip.add(
 				new TranslatableText(
@@ -59,6 +61,7 @@ public class ModResourceGem extends Item implements IRegisterable {
 						? new TranslatableText("item.modid.gem.debug.smelting.requires")
 						: new TranslatableText("item.modid.gem.debug.smelting.automatic")
 				)
+					.formatted(Formatting.DARK_GRAY)
 			);
 			tooltip.add(
 				new TranslatableText(
@@ -67,12 +70,14 @@ public class ModResourceGem extends Item implements IRegisterable {
 						? new TranslatableText("item.modid.gem.debug.drops.one")
 						: new TranslatableText("item.modid.gem.debug.drops.many")
 				)
+					.formatted(Formatting.DARK_GRAY)
 			);
 			tooltip.add(
 				new TranslatableText(
 					"item.modid.gem.debug.english_name",
 					resource.englishName
 				)
+					.formatted(Formatting.DARK_GRAY)
 			);
 			tooltip.add(
 				new TranslatableText(
@@ -81,63 +86,75 @@ public class ModResourceGem extends Item implements IRegisterable {
 						? new TranslatableText("item.modid.gem.debug.is_fuel.is")
 						: new TranslatableText("item.modid.gem.debug.is_fuel.is_not")
 				)
+					.formatted(Formatting.DARK_GRAY)
 			);
 			tooltip.add(
 				new TranslatableText(
 					"item.modid.gem.debug.fuel_time",
 					resource.fuelTime
 				)
+					.formatted(Formatting.DARK_GRAY)
 			);
 			tooltip.add(
 				new TranslatableText("item.modid.gem.debug.main_id", resource.id)
+					.formatted(Formatting.DARK_GRAY)
 			);
 			tooltip.add(
 				new TranslatableText(
 					"item.modid.gem.debug.main_translation_key",
 					resource.name
 				)
+					.formatted(Formatting.DARK_GRAY)
 			);
 			tooltip.add(
 				new TranslatableText("item.modid.gem.debug.gem_item_id", resource.gemId)
+					.formatted(Formatting.DARK_GRAY)
 			);
 			tooltip.add(
 				new TranslatableText(
 					"item.modid.gem.debug.gem_translation_key",
 					resource.gemName
 				)
+					.formatted(Formatting.DARK_GRAY)
 			);
 			tooltip.add(
 				new TranslatableText("item.modid.gem.debug.ore_item_id", resource.oreId)
+					.formatted(Formatting.DARK_GRAY)
 			);
 			tooltip.add(
 				new TranslatableText(
 					"item.modid.gem.debug.ore_translation_key",
 					resource.oreName
 				)
+					.formatted(Formatting.DARK_GRAY)
 			);
 			tooltip.add(
 				new TranslatableText(
 					"item.modid.gem.debug.hardness",
 					resource.materialHardness
 				)
+					.formatted(Formatting.DARK_GRAY)
 			);
 			tooltip.add(
 				new TranslatableText(
 					"item.modid.gem.debug.resistance",
 					resource.materialResistance
 				)
+					.formatted(Formatting.DARK_GRAY)
 			);
 			tooltip.add(
 				new TranslatableText(
 					"item.modid.gem.debug.ore_style",
 					Arrays.toString(resource.oreStyle)
 				)
+					.formatted(Formatting.DARK_GRAY)
 			);
 			tooltip.add(
 				new TranslatableText(
 					"item.modid.gem.debug.gem_style",
 					Arrays.toString(resource.gemStyle)
 				)
+					.formatted(Formatting.DARK_GRAY)
 			);
 		}
 	}
@@ -150,11 +167,22 @@ public class ModResourceGem extends Item implements IRegisterable {
 	@Environment(EnvType.CLIENT)
 	@Override
 	public Text getName() {
+		if (resource.gemName == "") {
+			return new TranslatableText(
+				"item.modid.gem.onepart",
+				new TranslatableText(resource.name)
+			);
+		}
 		return new TranslatableText(
 			"item.modid.gem",
 			new TranslatableText(resource.name),
 			new TranslatableText(resource.gemName)
 		);
+	}
+
+	@Override
+	public Text getName(ItemStack itemStack) {
+		return this.getName();
 	}
 
 	@Override
