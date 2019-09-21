@@ -16,7 +16,6 @@ import pw.pfg.randomoresmod.modresource.NameGenerator;
 import pw.pfg.randomoresmod.modresource.ResourceDetails;
 
 public class RandomOresMod implements ModInitializer {
-	// an instance of our new item
 	public static final List<IRegisterable> THINGS = new ArrayList<>();
 	public static final Item QUESTION_MARK_INGOT = new Item(
 		new Item.Settings().group(ItemGroup.MATERIALS)
@@ -60,10 +59,14 @@ public class RandomOresMod implements ModInitializer {
 			}
 		);
 
-		//Loop over existing biomes
-		Registry.BIOME.forEach(biome -> RandomOresMod.THINGS.forEach(i -> i.registerBiomeFeatures(biome)));
-
-		//Listen for other biomes being registered
-		RegistryEntryAddedCallback.event(Registry.BIOME).register((i, identifier, biome) -> RandomOresMod.THINGS.forEach(t -> t.registerBiomeFeatures(biome)));
+		Registry.BIOME.forEach(
+			biome -> RandomOresMod.THINGS.forEach(i -> i.registerBiomeFeatures(biome))
+		);
+		RegistryEntryAddedCallback.event(Registry.BIOME)
+			.register(
+				(i, identifier, biome) -> RandomOresMod.THINGS.forEach(
+					t -> t.registerBiomeFeatures(biome)
+				)
+			);
 	}
 }
