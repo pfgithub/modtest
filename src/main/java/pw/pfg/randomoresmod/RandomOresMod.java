@@ -12,6 +12,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import pw.pfg.randomoresmod.modresource.ModResource;
+import pw.pfg.randomoresmod.modresource.NameGenerator;
 import pw.pfg.randomoresmod.modresource.ResourceDetails;
 
 public class RandomOresMod implements ModInitializer {
@@ -30,11 +31,13 @@ public class RandomOresMod implements ModInitializer {
 				THINGS.forEach(t -> t.registerItemGroup(stacks));
 			}
 		)
-	.build();
+		.build();
 
 	static {
 		for (int i = 0; i < 255; i++) {
-			RandomOresMod.THINGS.add(new ModResource(ResourceDetails.random(i)));
+			RandomOresMod.THINGS.add(
+				new ModResource(ResourceDetails.random(NameGenerator.generate(i)))
+			);
 		}
 	}
 

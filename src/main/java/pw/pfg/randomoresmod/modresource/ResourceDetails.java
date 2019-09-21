@@ -146,9 +146,9 @@ public class ResourceDetails {
 
 	public int smeltingTime;
 
-	public static ResourceDetails random(int seed) {
-		Random random = new Random(seed);
-		String id = NameGenerator.generate(random.nextInt());
+	public static ResourceDetails random(String id) {
+		Random random = new Random(id.hashCode());
+
 		String englishName = id.substring(0, 1).toUpperCase() + id.substring(1);
 		int color = random.nextInt(16777215); // note that color is less than a 32 bit int. additionally, it should be possible for colors to change slightly (hue/brightness) over time
 		String[] oreStyle = ORE_STYLE[random.nextInt(ORE_STYLE.length)];
