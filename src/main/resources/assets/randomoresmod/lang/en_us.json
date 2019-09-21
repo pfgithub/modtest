@@ -1,6 +1,9 @@
 {
 	"block.randomoresmod.oreblock": "%s %s",
 	"item.randomoresmod.gem": "%s %s",
+	"item.randomoresmod.question_mark_ingot": "Unknown Ingot",
+	"itemGroup.randomoresmod.resources": "Randomoresmod Resources",
+
 	"item.randomoresmod.gem.onepart": "%s %s",
 	"item.randomoresmod.gem.debug.color": "Color: %d dec",
 	"item.randomoresmod.gem.debug.smelting": "Smelting: %s",
