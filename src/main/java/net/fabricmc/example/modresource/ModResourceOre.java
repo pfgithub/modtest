@@ -11,6 +11,7 @@ import net.fabricmc.example.IRegisterable;
 import net.fabricmc.fabric.api.client.render.ColorProviderRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRenderLayer;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.Material;
 import net.minecraft.block.OreBlock;
 import net.minecraft.client.gui.screen.ingame.InventoryScreen;
@@ -129,6 +130,10 @@ public class ModResourceOre extends OreBlock implements IRegisterable {
 			new Identifier("modid", this.id),
 			model -> model.parent(new Identifier("modid", "block/" + this.id))
 		);
+	}
+
+	public boolean isOpaque(BlockState blockState_1) {
+		return true;
 	}
 
 	public BlockRenderLayer getRenderLayer() {
