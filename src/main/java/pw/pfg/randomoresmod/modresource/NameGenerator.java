@@ -81,19 +81,22 @@ public class NameGenerator {
 		"sp",
 		"b"
 	);
+	static List<String> PIum = Arrays.asList(
+		"ite",
+		"ium"
+	);
 
 	static HashMap<String, Boolean> generatedNames = new HashMap<>();
 
 	static String generate(int seed) {
 		Random random = new Random(seed);
-		String p1 = P1.get(random.nextInt(P1.size()));
-		String p2 = P2.get(random.nextInt(P2.size()));
-		String p3 = P3.get(random.nextInt(P3.size()));
-		String p4 = P4.get(random.nextInt(P4.size()));
-		String p5 = P5.get(random.nextInt(P5.size()));
-		boolean useP4 = random.nextBoolean();
-		boolean useP5 = random.nextBoolean();
-		String finalName = p1 + p2 + p3 + (useP4 ? p4 + (useP5 ? p5 : "") : "");
+		String ae = random.nextBoolean() ? P2.get(random.nextInt(P2.size())) : "";
+		String af = P1.get(random.nextInt(P1.size()));
+		String ag = P2.get(random.nextInt(P2.size()));
+		String ah = random.nextBoolean() ? P1.get(random.nextInt(P1.size())) : "";
+		String ai = ah != "" && random.nextBoolean() ? P2.get(random.nextInt(P2.size())) : "";
+		String aj = ai != "" && random.nextBoolean() ? PIum.get(random.nextInt(PIum.size())) : "";
+		String finalName = ae + af + ag + ah + ai + aj;
 		while (generatedNames.getOrDefault(finalName, new Boolean(false))) {
 			finalName += "_";
 		}
