@@ -24,6 +24,12 @@ import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.registry.Registry;
+import net.minecraft.world.biome.Biome;
+import net.minecraft.world.gen.GenerationStep;
+import net.minecraft.world.gen.decorator.Decorator;
+import net.minecraft.world.gen.decorator.RangeDecoratorConfig;
+import net.minecraft.world.gen.feature.Feature;
+import net.minecraft.world.gen.feature.OreFeatureConfig;
 
 public class ModResourceOre extends OreBlock implements IRegisterable {
 	ResourceDetails resource;
@@ -194,5 +200,27 @@ public class ModResourceOre extends OreBlock implements IRegisterable {
 			(stack, layer) -> layer == 0 ? resource.color : 0,
 			this.blockItem
 		);
+	}
+
+	@Override
+	public void registerBiomeFeatures(Biome biome) {
+		if (
+			biome.getCategory() != Biome.Category.NETHER &&
+			biome.getCategory() != Biome.Category.THEEND
+		) {
+			biome.addFeature(
+				GenerationStep.Feature.UNDERGROUND_ORES,
+				Biome.configureFeature(
+					Feature.ORE,
+					new OreFeatureConfig(
+						OreFeatureConfig.Target.NATURAL_STONE,
+						this.getDefaultState(),
+						8 //Ore vein size
+					),
+					Decorator.COUNT_RANGE,
+					new RangeDecoratorConfig(8, 0, 0, 64) //Number of veins per chunk //Bottom Offset //Min y level //Max y level
+				)
+			);
+		}
 	}
 }

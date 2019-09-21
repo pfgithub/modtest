@@ -9,6 +9,7 @@ import net.fabricmc.example.modresource.ModResourceOre;
 import net.fabricmc.example.modresource.ResourceDetails;
 import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
 import net.fabricmc.fabric.api.client.render.ColorProviderRegistry;
+import net.fabricmc.fabric.api.event.registry.RegistryEntryAddedCallback;
 import net.fabricmc.fabric.impl.client.render.ColorProviderRegistryImpl;
 import net.fabricmc.loader.game.MinecraftGameProvider;
 import net.minecraft.client.MinecraftClient;
@@ -59,5 +60,11 @@ public class ExampleMod implements ModInitializer {
 				}
 			}
 		);
+
+		//Loop over existing biomes
+		Registry.BIOME.forEach(biome -> ExampleMod.THINGS.forEach(i -> i.registerBiomeFeatures(biome)));
+
+		//Listen for other biomes being registered
+		RegistryEntryAddedCallback.event(Registry.BIOME).register((i, identifier, biome) -> ExampleMod.THINGS.forEach(t -> t.registerBiomeFeatures(biome)));
 	}
 }

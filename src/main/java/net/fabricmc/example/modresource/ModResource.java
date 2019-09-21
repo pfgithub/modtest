@@ -8,6 +8,7 @@ import com.swordglowsblue.artifice.api.ArtificeResourcePack.ClientResourcePackBu
 import com.swordglowsblue.artifice.api.ArtificeResourcePack.ServerResourcePackBuilder;
 import com.swordglowsblue.artifice.api.builder.assets.TranslationBuilder;
 import net.fabricmc.example.IRegisterable;
+import net.minecraft.world.biome.Biome;
 
 public class ModResource implements IRegisterable {
 	ResourceDetails resource;
@@ -55,6 +56,13 @@ public class ModResource implements IRegisterable {
 	public void registerClient() {
 		for (IRegisterable registerable : this.THINGS) {
 			registerable.registerClient();
+		}
+	}
+
+	@Override
+	public void registerBiomeFeatures(Biome biome) {
+		for (IRegisterable registerable : this.THINGS) {
+			registerable.registerBiomeFeatures(biome);
 		}
 	}
 }

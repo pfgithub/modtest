@@ -28,6 +28,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
+import net.minecraft.world.biome.Biome;
 
 public class ModResourceGem extends Item implements IRegisterable {
 	ResourceDetails resource;
@@ -226,4 +227,7 @@ public class ModResourceGem extends Item implements IRegisterable {
 			this
 		);
 	}
+
+	@Override
+	public void registerBiomeFeatures(Biome biome) {}
 }
