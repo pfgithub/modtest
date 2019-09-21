@@ -27,7 +27,7 @@ public class ExampleMod implements ModInitializer {
 	public static final List<IRegisterable> THINGS = new ArrayList<>();
 
 	static {
-		for (int i = 0; i < 50; i++) {
+		for (int i = 0; i < 100; i++) {
 			ExampleMod.THINGS.add(new ModResource(ResourceDetails.random(i)));
 		}
 	}

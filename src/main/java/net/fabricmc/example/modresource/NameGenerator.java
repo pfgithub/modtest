@@ -3,6 +3,7 @@ package net.fabricmc.example.modresource;
 import java.util.List;
 import java.util.Random;
 import java.util.Arrays;
+import java.util.HashMap;
 
 public class NameGenerator {
 	static List<String> P1 = Arrays.asList(
@@ -81,6 +82,8 @@ public class NameGenerator {
 		"b"
 	);
 
+	static HashMap<String, Boolean> generatedNames = new HashMap<>();
+
 	static String generate(int seed) {
 		Random random = new Random(seed);
 		String p1 = P1.get(random.nextInt(P1.size()));
@@ -90,6 +93,11 @@ public class NameGenerator {
 		String p5 = P5.get(random.nextInt(P5.size()));
 		boolean useP4 = random.nextBoolean();
 		boolean useP5 = random.nextBoolean();
-		return p1 + p2 + p3 + (useP4 ? p4 + (useP5 ? p5 : "") : "");
+		String finalName = p1 + p2 + p3 + (useP4 ? p4 + (useP5 ? p5 : "") : "");
+		while (generatedNames.getOrDefault(finalName, new Boolean(false))) {
+			finalName += "_";
+		}
+		generatedNames.put(finalName, new Boolean(true));
+		return finalName;
 	}
 }

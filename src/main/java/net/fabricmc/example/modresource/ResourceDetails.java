@@ -20,7 +20,7 @@ public class ResourceDetails {
 		// this information should be loaded from a datapack or something
 		{ "", "minecraft:item/popped_chorus_fruit" }, // popcorn
 		{ "shard", "minecraft:item/prismarine_shard" }, // shard
-		{ "", "minecraft:item/azure_bluet" }, // broccoli
+		{ "", "minecraft:block/azure_bluet" }, // broccoli
 		{ "", "minecraft:block/fire_coral" }, // tree
 		{ "bowl", "minecraft:item/bowl", "minecraft:item/mushroom_stew" }, // bowl
 		{ "", "minecraft:item/fermented_spider_eye" }, // tooth
