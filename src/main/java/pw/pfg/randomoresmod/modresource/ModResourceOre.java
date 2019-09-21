@@ -159,6 +159,7 @@ public class ModResourceOre extends OreBlock implements IRegisterable {
 									cond -> {}
 								);
 							} else {
+								// https://github.com/artificemc/artifice/issues/12
 								// pool.entry(
 							// 	entry -> {
 							// 		entry.type(new Identifier("minecraft", "alternative"));
