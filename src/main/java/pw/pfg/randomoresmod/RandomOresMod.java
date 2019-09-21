@@ -39,6 +39,28 @@ public class RandomOresMod implements ModInitializer {
 				new ModResource(ResourceDetails.random(NameGenerator.generate(i)))
 			);
 		}
+		RandomOresMod.THINGS.add(new ModResource(ResourceDetails.random("chest")));
+		RandomOresMod.THINGS.add(new ModResource(ResourceDetails.random("cow")));
+		RandomOresMod.THINGS.add(new ModResource(ResourceDetails.random("pig")));
+		RandomOresMod.THINGS.add(
+			new ModResource(ResourceDetails.random("creeper"))
+		);
+		RandomOresMod.THINGS.add(new ModResource(ResourceDetails.random("aw_man")));
+		RandomOresMod.THINGS.add(
+			new ModResource(ResourceDetails.random("enderman"))
+		);
+		RandomOresMod.THINGS.add(
+			new ModResource(ResourceDetails.random("sub_one_and_a_half"))
+		);
+		RandomOresMod.THINGS.add(new ModResource(ResourceDetails.random("human")));
+		RandomOresMod.THINGS.add(new ModResource(ResourceDetails.random("bot")));
+		RandomOresMod.THINGS.add(
+			new ModResource(ResourceDetails.random("derpidude"))
+		);
+		RandomOresMod.THINGS.add(new ModResource(ResourceDetails.random("pfg")));
+		RandomOresMod.THINGS.add(
+			new ModResource(ResourceDetails.random("howdyman"))
+		);
 	}
 
 	@Override

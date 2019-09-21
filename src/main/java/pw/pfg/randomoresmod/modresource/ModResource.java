@@ -22,6 +22,9 @@ public class ModResource implements IRegisterable {
 		this.THINGS.add(new ModResourceGem(this.resource));
 		this.THINGS.add(new ModResourceOre(this.resource));
 		this.THINGS.add(new ModResourceStorageBlock(this.resource));
+		if (this.resource.hasNugget) {
+			this.THINGS.add(new ModResourceNugget(this.resource));
+		}
 	}
 
 	@Override
@@ -75,6 +78,8 @@ public class ModResource implements IRegisterable {
 		stacks.add(new ItemStack(Items.AIR));
 		stacks.add(new ItemStack(Items.AIR));
 		stacks.add(new ItemStack(Items.AIR));
-		stacks.add(new ItemStack(Items.AIR));
+		if (!this.resource.hasNugget) {
+			stacks.add(new ItemStack(Items.AIR));
+		}
 	}
 }

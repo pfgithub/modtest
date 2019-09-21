@@ -112,7 +112,24 @@ public class ResourceDetails {
 	};
 
 	static String[][] INGOT_STYLE = new String[][] {
-		{ "ingot", "randomoresmod:item/ingot" }
+		{ "ingot", "randomoresmod:item/ingot" },
+		{ "ingot", "randomoresmod:item/alternate_ingot" },
+		{ "ingot", "randomoresmod:item/broken_ingot" }
+	};
+
+	static String[][] NUGGET_STYLE = new String[][] {
+		{
+			"randomoresmod:item/nugget/horizontal_base",
+			"randomoresmod:item/nugget/horizontal_overlay"
+		},
+		{
+			"randomoresmod:item/nugget/teardrop_base",
+			"randomoresmod:item/nugget/teardrop_overlay"
+		},
+		{
+			"randomoresmod:item/nugget/vertical_base",
+			"randomoresmod:item/nugget/vertical_overlay"
+		}
 	};
 
 	// !!!!!
@@ -145,6 +162,10 @@ public class ResourceDetails {
 	public int fuelSmeltingTime;
 
 	public int smeltingTime;
+
+	public boolean hasNugget;
+	public String nuggetId;
+	public String[] nuggetStyle;
 
 	public static ResourceDetails random(String id) {
 		Random random = new Random(id.hashCode());
@@ -185,6 +206,12 @@ public class ResourceDetails {
 		String[] storageBlockStyle = STORAGE_BLOCK_STYLE
 		[random.nextInt(STORAGE_BLOCK_STYLE.length)];
 
+		boolean hasNugget = isIngot &&
+		(random.nextBoolean() || random.nextBoolean());
+
+		String[] nuggetStyle = NUGGET_STYLE[random.nextInt(NUGGET_STYLE.length)];
+
+		// SmeltingProduct smeltingProduces = 90%gem | 5%block | 5%nugget if hasNugget
 		// TODO: isOvergrown - adds an overlay to ore and block that uses the grass color and all items that makes it look overgrown
 		// inspired by https://i.redd.it/6lalhnzbann31.png
 		return new ResourceDetails(
@@ -202,7 +229,9 @@ public class ResourceDetails {
 			isFuel,
 			fuelTime,
 			smeltingTime,
-			storageBlockStyle
+			storageBlockStyle,
+			hasNugget,
+			nuggetStyle
 		);
 	}
 
@@ -221,7 +250,9 @@ public class ResourceDetails {
 		boolean isFuel,
 		int fuelTime,
 		int smeltingTime,
-		String[] storageBlockStyle
+		String[] storageBlockStyle,
+		boolean hasNugget,
+		String[] nuggetStyle
 	) {
 		this.color = color;
 		this.oreStyle = oreStyle;
@@ -247,5 +278,9 @@ public class ResourceDetails {
 		this.storageBlockStyle = storageBlockStyle;
 		this.storageBlockTranslationKey =
 			"name.randomoresmod.storageblock.storageblock";
+
+		this.hasNugget = hasNugget;
+		this.nuggetId = this.resourceId + "_nugget";
+		this.nuggetStyle = nuggetStyle;
 	}
 }
