@@ -5,6 +5,8 @@ import com.swordglowsblue.artifice.api.ArtificeResourcePack.ClientResourcePackBu
 import com.swordglowsblue.artifice.api.ArtificeResourcePack.ResourcePackBuilder;
 import com.swordglowsblue.artifice.api.ArtificeResourcePack.ServerResourcePackBuilder;
 import com.swordglowsblue.artifice.api.builder.assets.TranslationBuilder;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.fabricmc.example.IRegisterable;
 import net.fabricmc.fabric.api.client.render.ColorProviderRegistry;
 import net.minecraft.block.Block;
@@ -14,6 +16,8 @@ import net.minecraft.block.OreBlock;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
+import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.registry.Registry;
@@ -30,22 +34,27 @@ public class ModResourceOre extends OreBlock implements IRegisterable {
 				.strength(resource.materialHardness, resource.materialResistance)
 		);
 		this.resource = resource;
-		this.id = resource.id + "_ore";
+		this.id = resource.oreId;
 		this.blockItem =
-			new BlockItem(this, new Item.Settings().group(ItemGroup.MATERIALS));
+			new NamedBlockItem(this, new Item.Settings().group(ItemGroup.MATERIALS));
 	}
 
 	// public void registerData(ServerResourcePackBuilder pack) {}
 	@Override
-	public void registerTranslations(TranslationBuilder trans) {
-		trans.entry(
-			"block.modid." + this.id,
-			this.resource.name +
-				" Ore (" +
-				this.resource.materialHardness +
-				" - " +
-				this.resource.materialResistance +
-				")"
+	public void registerTranslations(TranslationBuilder trans) {}
+
+	@Override
+	public String getTranslationKey() {
+		return "this.modid.should.never.happen";
+	}
+
+	@Environment(EnvType.CLIENT)
+	@Override
+	public Text getName() {
+		return new TranslatableText(
+			"block.modid.oreblock",
+			new TranslatableText(resource.name),
+			new TranslatableText(resource.oreName)
 		);
 	}
 
@@ -67,75 +76,33 @@ public class ModResourceOre extends OreBlock implements IRegisterable {
 	// view (find . -name "iron_ore.json")
 	@Override
 	public void registerAssets(ClientResourcePackBuilder pack) {
-		// 		{   "parent": "block/block",
-		//     "textures": {
-		//         "particle": "block/dirt",
-		//         "bottom": "block/dirt",
-		//         "top": "block/grass_block_top",
-		//         "side": "block/grass_block_side",
-		//         "overlay": "block/grass_block_side_overlay"
-		//     },
-		//     "elements": [
-		//         {   "from": [ 0, 0, 0 ],
-		//             "to": [ 16, 16, 16 ],
-		//             "faces": {
-		//                 "down":  { "uv": [ 0, 0, 16, 16 ], "texture": "#bottom", "cullface": "down" },
-		//                 "up":    { "uv": [ 0, 0, 16, 16 ], "texture": "#top",    "cullface": "up", "tintindex": 0 },
-		//                 "north": { "uv": [ 0, 0, 16, 16 ], "texture": "#side",   "cullface": "north" },
-		//                 "south": { "uv": [ 0, 0, 16, 16 ], "texture": "#side",   "cullface": "south" },
-		//                 "west":  { "uv": [ 0, 0, 16, 16 ], "texture": "#side",   "cullface": "west" },
-		//                 "east":  { "uv": [ 0, 0, 16, 16 ], "texture": "#side",   "cullface": "east" }
-		//             }
-		//         },
-		//         {   "from": [ 0, 0, 0 ],
-		//             "to": [ 16, 16, 16 ],
-		//             "faces": {
-		//                 "north": { "uv": [ 0, 0, 16, 16 ], "texture": "#overlay", "tintindex": 0, "cullface": "north" },
-		//                 "south": { "uv": [ 0, 0, 16, 16 ], "texture": "#overlay", "tintindex": 0, "cullface": "south" },
-		//                 "west":  { "uv": [ 0, 0, 16, 16 ], "texture": "#overlay", "tintindex": 0, "cullface": "west" },
-		//                 "east":  { "uv": [ 0, 0, 16, 16 ], "texture": "#overlay", "tintindex": 0, "cullface": "east" }
-		//             }
-		//         }
-		//     ]
-		// }
 		pack.addBlockModel(
 			new Identifier("modid", this.id),
 			model -> {
-				model.parent(new Identifier("minecraft", "block/block"))
-					.texture("particle", new Identifier("minecraft", "block/stone"))
-					.texture(
-						"base",
-						new Identifier("modid", "block/ore_base_" + resource.oreStyle)
-					)
-					.texture(
-						"overlay",
-						new Identifier("modid", "block/ore_overlay_" + resource.oreStyle)
-					)
-					.element(
+				model.parent(new Identifier("minecraft", "block/block"));
+				model.texture("particle", new Identifier("minecraft", "block/stone"));
+				int layerNumber = 0;
+				for (String style : resource.oreStyle) {
+					String varName = "layer" + (layerNumber++);
+					final int nextLayerNumber = layerNumber;
+					model.texture(varName, new Identifier(style));
+					model.element(
 						elem -> {
 							elem.from(0, 0, 0).to(16, 16, 16);
 							for (Direction dir : Direction.values()) {
 								elem.face(
 									dir,
-									s -> s.uv(0, 0, 16, 16).texture("base").cullface(dir)
-								);
-							}
-						}
-					)
-					.element(
-						elem -> {
-							elem.from(0, 0, 0).to(16, 16, 16);
-							for (Direction dir : Direction.values()) {
-								elem.face(
-									dir,
-									s -> s.uv(0, 0, 16, 16)
-										.texture("overlay")
-										.cullface(dir)
-										.tintindex(0)
+									s -> {
+										s.uv(0, 0, 16, 16).texture(varName).cullface(dir);
+										if (nextLayerNumber == resource.oreStyle.length) {
+											s.tintindex(0);
+										}
+									}
 								);
 							}
 						}
 					);
+				}
 			}
 		);
 		pack.addBlockState(
@@ -166,16 +133,52 @@ public class ModResourceOre extends OreBlock implements IRegisterable {
 			ltp -> {
 				ltp.type(new Identifier("modid", "block/" + this.id))
 					.pool(
-						pool -> pool.rolls(1)
-							.entry(
-								e -> e.name(new Identifier("modid", this.id))
-									.type(new Identifier("minecraft:item"))
-							)
-							.condition(
-								new Identifier("minecraft:survives_explosion"),
-								cond -> {}
-							)
+						pool -> {
+							pool.rolls(1);
+							if (resource.requiresSmelting || true) {
+								pool.entry(
+									e -> e.name(new Identifier("modid", this.id))
+										.type(new Identifier("minecraft:item"))
+								);
+								pool.condition(
+									new Identifier("minecraft:survives_explosion"),
+									cond -> {}
+								);
+							} else {
+								// pool.entry(
+							// 	entry -> {
+							// 		entry.type(new Identifier("minecraft", "alternative"));
+							// 		entry.child(
+							// 			child -> {
+							// 				child.type(new Identifier("minecraft", "item"));
+							// 				child.
+							// 			}
+							// 		);
+							// 	}
+							// );
+							}
+						}
 					);
+			}
+		);
+		data.addSmeltingRecipe(
+			new Identifier("modid", resource.gemId + "_from_smelting"),
+			smelting -> {
+				smelting.type(new Identifier("minecraft", "smelting"))
+					.ingredientItem(new Identifier("modid", this.id))
+					.result(new Identifier("modid", resource.gemId))
+					.experience(0.7)
+					.cookingTime(200);
+			}
+		);
+		data.addBlastingRecipe(
+			new Identifier("modid", resource.gemId + "_from_smelting"),
+			smelting -> {
+				smelting.type(new Identifier("minecraft", "blasting"))
+					.ingredientItem(new Identifier("modid", this.id))
+					.result(new Identifier("modid", resource.gemId))
+					.experience(0.7)
+					.cookingTime(100);
 			}
 		);
 	}

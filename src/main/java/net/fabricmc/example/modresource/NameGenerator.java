@@ -88,6 +88,8 @@ public class NameGenerator {
 		String p3 = P3.get(random.nextInt(P3.size()));
 		String p4 = P4.get(random.nextInt(P4.size()));
 		String p5 = P5.get(random.nextInt(P5.size()));
-		return p1 + p2 + p3 + p4 + p5;
+		boolean useP4 = random.nextBoolean();
+		boolean useP5 = random.nextBoolean();
+		return p1 + p2 + p3 + (useP4 ? p4 + (useP5 ? p5 : "") : "");
 	}
 }

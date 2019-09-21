@@ -10,18 +10,21 @@ import com.swordglowsblue.artifice.api.builder.assets.TranslationBuilder;
 import net.fabricmc.example.IRegisterable;
 
 public class ModResource implements IRegisterable {
-	ResourceDetails details;
+	ResourceDetails resource;
 
 	final List<IRegisterable> THINGS = new ArrayList<>();
 
 	public ModResource(ResourceDetails details) {
-		this.details = details;
+		this.resource = details;
 
-		this.THINGS.add(new ModResourceOre(this.details));
+		this.THINGS.add(new ModResourceOre(this.resource));
+		this.THINGS.add(new ModResourceGem(this.resource));
 	}
 
 	@Override
 	public void registerTranslations(TranslationBuilder trans) {
+		trans.entry(resource.name, resource.englishName);
+
 		for (IRegisterable registerable : this.THINGS) {
 			registerable.registerTranslations(trans);
 		}
