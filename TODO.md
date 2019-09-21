@@ -49,6 +49,7 @@ right click
 - drink
 - throw
 - use
+- instant mine (silk?)
 - do nothing
 
 edible
