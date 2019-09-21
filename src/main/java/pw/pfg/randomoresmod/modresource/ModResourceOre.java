@@ -75,7 +75,11 @@ public class ModResourceOre extends OreBlock implements IRegisterable {
 	// }
 	@Override
 	public void register() {
-		Registry.register(Registry.BLOCK, new Identifier("randomoresmod", this.id), this);
+		Registry.register(
+			Registry.BLOCK,
+			new Identifier("randomoresmod", this.id),
+			this
+		);
 		Registry.register(
 			Registry.ITEM,
 			new Identifier("randomoresmod", this.id),
@@ -160,7 +164,7 @@ public class ModResourceOre extends OreBlock implements IRegisterable {
 								);
 							} else {
 								// https://github.com/artificemc/artifice/issues/12
-								// pool.entry(
+							// pool.entry(
 							// 	entry -> {
 							// 		entry.type(new Identifier("minecraft", "alternative"));
 							// 		entry.child(
@@ -183,7 +187,7 @@ public class ModResourceOre extends OreBlock implements IRegisterable {
 					.ingredientItem(new Identifier("randomoresmod", this.id))
 					.result(new Identifier("randomoresmod", resource.gemId))
 					.experience(0.7)
-					.cookingTime(200);
+					.cookingTime(resource.smeltingTime);
 			}
 		);
 		data.addBlastingRecipe(
@@ -193,7 +197,7 @@ public class ModResourceOre extends OreBlock implements IRegisterable {
 					.ingredientItem(new Identifier("randomoresmod", this.id))
 					.result(new Identifier("randomoresmod", resource.gemId))
 					.experience(0.7)
-					.cookingTime(100);
+					.cookingTime(resource.smeltingTime / 2);
 			}
 		);
 	}

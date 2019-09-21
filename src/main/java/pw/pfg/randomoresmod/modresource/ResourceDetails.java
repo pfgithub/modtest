@@ -9,10 +9,22 @@ public class ResourceDetails {
 	static String[][] ORE_STYLE = new String[][] {
 		// this information should be loaded from a datapack or something
 		{ "randomoresmod:block/ore_base_dull", "randomoresmod:block/ore_overlay_dull" },
-		{ "randomoresmod:block/ore_base_shiny", "randomoresmod:block/ore_overlay_shiny" },
-		{ "randomoresmod:block/ore_base_vein", "randomoresmod:block/ore_overlay_vein" },
-		{ "randomoresmod:block/ore_base_gem", "randomoresmod:block/ore_overlay_gem" },
-		{ "randomoresmod:block/ore_base_chunky", "randomoresmod:block/ore_overlay_chunky" }
+		{
+			"randomoresmod:block/ore_base_shiny",
+			"randomoresmod:block/ore_overlay_shiny"
+		},
+		{
+			"randomoresmod:block/ore_base_vein",
+			"randomoresmod:block/ore_overlay_vein"
+		},
+		{
+			"randomoresmod:block/ore_base_gem",
+			"randomoresmod:block/ore_overlay_gem"
+		},
+		{
+			"randomoresmod:block/ore_base_chunky",
+			"randomoresmod:block/ore_overlay_chunky"
+		}
 	};
 
 	// 1.. is no color, last is color
@@ -89,6 +101,8 @@ public class ResourceDetails {
 	public boolean isFuel;
 	public int fuelSmeltingTime;
 
+	public int smeltingTime;
+
 	public static ResourceDetails random(int seed) {
 		Random random = new Random(seed);
 		String id = NameGenerator.generate(random.nextInt());
@@ -118,6 +132,13 @@ public class ResourceDetails {
 		boolean isFuel = random.nextInt(4) == 0;
 		int fuelTime = random.nextInt(64) * 100; // 200 smelts 1 item in a furnace or 2 items in a blast furnace
 
+		boolean hasUnusualSmeltingTime = random.nextInt(4) == 0;
+		boolean unusualSmeltingTimeIsLong = random.nextInt(4) == 0; // maybe unusualsmeltingtime should be related to materialhardness
+		int smeltingTime = hasUnusualSmeltingTime
+			? (unusualSmeltingTimeIsLong ? random.nextInt(2200) + 200
+			: random.nextInt(180) + 20)
+			: 200; // anywhere from 1s to 100s, defaults to 10s
+
 		// TODO: isOvergrown - adds an overlay to ore and block that uses the grass color and all items that makes it look overgrown
 		// inspired by https://i.redd.it/6lalhnzbann31.png
 		return new ResourceDetails(
@@ -133,7 +154,8 @@ public class ResourceDetails {
 			englishName,
 			id,
 			isFuel,
-			fuelTime
+			fuelTime,
+			smeltingTime
 		);
 	}
 
@@ -150,13 +172,16 @@ public class ResourceDetails {
 		String englishName,
 		String id,
 		boolean isFuel,
-		int fuelTime
+		int fuelTime,
+		int smeltingTime
 	) {
 		this.color = color;
 		this.oreStyle = oreStyle;
-		this.oreTranslationKey = oreName == "" ? "" : "name.randomoresmod.ore." + oreName;
+		this.oreTranslationKey =
+			oreName == "" ? "" : "name.randomoresmod.ore." + oreName;
 		this.gemStyle = gemStyle;
-		this.gemTranslationKey = gemName == "" ? "" : "name.randomoresmod.gem." + gemName;
+		this.gemTranslationKey =
+			gemName == "" ? "" : "name.randomoresmod.gem." + gemName;
 		this.requiresSmelting = requiresSmelting;
 		this.dropsMany = dropsMany;
 		this.materialHardness = materialHardness;
@@ -168,5 +193,6 @@ public class ResourceDetails {
 		this.gemId = this.resourceId + (gemName == "" ? "" : "_" + gemName);
 		this.isFuel = isFuel;
 		this.fuelSmeltingTime = fuelTime;
+		this.smeltingTime = smeltingTime;
 	}
 }

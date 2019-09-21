@@ -24,6 +24,7 @@
 	"item.randomoresmod.gem.debug.resistance": "Material Resistance: %f",
 	"item.randomoresmod.gem.debug.ore_style": "Ore Style: %s",
 	"item.randomoresmod.gem.debug.gem_style": "Gem Style: %s",
+	"item.randomoresmod.gem.debug.smelting_time": "Smelting Time: %d ticks",
 	"name.randomoresmod.ore.ore": "Ore",
 	"name.randomoresmod.gem.shard": "Shard",
 	"name.randomoresmod.gem.bowl": "Bowl",
