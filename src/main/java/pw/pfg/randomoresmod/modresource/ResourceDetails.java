@@ -8,22 +8,22 @@ import java.util.Random;
 public class ResourceDetails {
 	static String[][] ORE_STYLE = new String[][] {
 		// this information should be loaded from a datapack or something
-		{ "randomoresmod:block/ore_base_dull", "randomoresmod:block/ore_overlay_dull" },
+		{ "randomoresmod:block/ore_dull_base", "randomoresmod:block/ore_dull_overlay" },
 		{
-			"randomoresmod:block/ore_base_shiny",
-			"randomoresmod:block/ore_overlay_shiny"
+			"randomoresmod:block/ore_shiny_base",
+			"randomoresmod:block/ore_shiny_overlay"
 		},
 		{
-			"randomoresmod:block/ore_base_vein",
-			"randomoresmod:block/ore_overlay_vein"
+			"randomoresmod:block/ore_vein_base",
+			"randomoresmod:block/ore_vein_overlay"
 		},
 		{
-			"randomoresmod:block/ore_base_gem",
-			"randomoresmod:block/ore_overlay_gem"
+			"randomoresmod:block/ore_gem_base",
+			"randomoresmod:block/ore_gem_overlay"
 		},
 		{
-			"randomoresmod:block/ore_base_chunky",
-			"randomoresmod:block/ore_overlay_chunky"
+			"randomoresmod:block/ore_chunky_base",
+			"randomoresmod:block/ore_chunky_overlay"
 		}
 	};
 
