@@ -7,6 +7,11 @@ ores
 - should negatively impact some stats (smelting time)
 - should not effect some stats (blast resistsnce)
 
+resource
+- shiny (based on rarity maybe)
+- rarity (vanilla thing, affects name color) (based on rarity)
+- change colors lightly (using getcolor for items and animations for ores)
+
 tools [pick, shovel, axe, hoe, sword, bow?, arrow?, armor]
 - stats: sharpness (for axe, arrow)
 - stats: mining speed (for pick, shovel, axe, hoe)
@@ -24,9 +29,15 @@ special items (any of these)
 effects (items can have multiple, effects impact tool use, edibility, ...)
 - status effect
 - teleportation effect
-- throwable
-- edible
+- sound effect
 - others...
+
+right click
+- eat
+- drink
+- throw
+- use
+- do nothing
 
 edible
 - saturation

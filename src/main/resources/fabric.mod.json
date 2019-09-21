@@ -1,7 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "randomoresmod",
-	"version": "${version}",
+	"version": "0.0.1",
 
 	"name": "Example Mod",
 	"description": "This is an example description! Tell everyone what your mod is about!",
@@ -16,8 +16,8 @@
 
 	"environment": "*",
 	"entrypoints": {
-		"main": ["pw.pfg.randomoresmod.ExampleMod"],
-		"client": ["pw.pfg.randomoresmod.ExampleClientModInitializer"]
+		"main": ["pw.pfg.randomoresmod.RandomOresMod"],
+		"client": ["pw.pfg.randomoresmod.RandomOresModClientInitializer"]
 	},
 	"mixins": ["randomoresmod.mixins.json"],
 

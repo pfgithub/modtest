@@ -8,7 +8,7 @@ import net.minecraft.client.color.block.BlockColorProvider;
 import net.minecraft.item.Items;
 import net.minecraft.util.Identifier;
 
-public class ExampleClientModInitializer implements ClientModInitializer {
+public class RandomOresModClientInitializer implements ClientModInitializer {
 
 	@Override
 	public void onInitializeClient() {
@@ -29,20 +29,20 @@ public class ExampleClientModInitializer implements ClientModInitializer {
 		// Make white dye glow red.
 		ColorProviderRegistry.ITEM.register((item, layer) -> (int) (64 * (Math.sin(System.currentTimeMillis() / 5e2) + 3)) << 16, Items.WHITE_DYE);
 
-		for (IRegisterable thing : ExampleMod.THINGS) {
+		for (IRegisterable thing : RandomOresMod.THINGS) {
 			thing.registerClient();
 		}
 
 		Artifice.registerAssets(
 			"randomoresmod:main",
 			pack -> {
-				for (IRegisterable thing : ExampleMod.THINGS) {
+				for (IRegisterable thing : RandomOresMod.THINGS) {
 					thing.registerAssets(pack);
 				}
 				pack.addTranslations(
 					new Identifier("randomoresmod", "en_us"),
 					trans -> {
-						for (IRegisterable thing : ExampleMod.THINGS) {
+						for (IRegisterable thing : RandomOresMod.THINGS) {
 							thing.registerTranslations(trans);
 						}
 					}

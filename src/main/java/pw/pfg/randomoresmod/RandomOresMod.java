@@ -4,32 +4,23 @@ import java.util.ArrayList;
 import java.util.List;
 import com.swordglowsblue.artifice.api.Artifice;
 import net.fabricmc.api.ModInitializer;
-import pw.pfg.randomoresmod.modresource.ModResource;
-import pw.pfg.randomoresmod.modresource.ModResourceOre;
-import pw.pfg.randomoresmod.modresource.ResourceDetails;
 import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
-import net.fabricmc.fabric.api.client.render.ColorProviderRegistry;
 import net.fabricmc.fabric.api.event.registry.RegistryEntryAddedCallback;
-import net.fabricmc.fabric.impl.client.render.ColorProviderRegistryImpl;
-import net.fabricmc.loader.game.MinecraftGameProvider;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.item.FoodComponent;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.UseAction;
 import net.minecraft.util.registry.Registry;
+import pw.pfg.randomoresmod.modresource.ModResource;
+import pw.pfg.randomoresmod.modresource.ResourceDetails;
 
-public class ExampleMod implements ModInitializer {
+public class RandomOresMod implements ModInitializer {
 	// an instance of our new item
 	public static final List<IRegisterable> THINGS = new ArrayList<>();
 
 	static {
 		for (int i = 0; i < 100; i++) {
-			ExampleMod.THINGS.add(new ModResource(ResourceDetails.random(i)));
+			RandomOresMod.THINGS.add(new ModResource(ResourceDetails.random(i)));
 		}
 	}
 
@@ -46,7 +37,7 @@ public class ExampleMod implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
-		for (IRegisterable thing : ExampleMod.THINGS) {
+		for (IRegisterable thing : RandomOresMod.THINGS) {
 			thing.register();
 		// Registry.register(Registry.ITEM, new Identifier("randomoresmod", item.id), item);
 		// ColorProviderRegistry.ITEM.register(item);
@@ -55,16 +46,16 @@ public class ExampleMod implements ModInitializer {
 		Artifice.registerData(
 			"randomoresmod:main",
 			data -> {
-				for (IRegisterable thing : ExampleMod.THINGS) {
+				for (IRegisterable thing : RandomOresMod.THINGS) {
 					thing.registerData(data);
 				}
 			}
 		);
 
 		//Loop over existing biomes
-		Registry.BIOME.forEach(biome -> ExampleMod.THINGS.forEach(i -> i.registerBiomeFeatures(biome)));
+		Registry.BIOME.forEach(biome -> RandomOresMod.THINGS.forEach(i -> i.registerBiomeFeatures(biome)));
 
 		//Listen for other biomes being registered
-		RegistryEntryAddedCallback.event(Registry.BIOME).register((i, identifier, biome) -> ExampleMod.THINGS.forEach(t -> t.registerBiomeFeatures(biome)));
+		RegistryEntryAddedCallback.event(Registry.BIOME).register((i, identifier, biome) -> RandomOresMod.THINGS.forEach(t -> t.registerBiomeFeatures(biome)));
 	}
 }
