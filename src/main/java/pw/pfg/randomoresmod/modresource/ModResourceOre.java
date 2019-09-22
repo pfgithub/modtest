@@ -238,7 +238,7 @@ public class ModResourceOre extends OreBlock implements IRegisterable {
 					new RangeDecoratorConfig(
 						resource.oresPerChunk,
 						0,
-						resource.oreMinSpawn,
+						resource.oreMinSpawn, // TODO: THIS DOES NOT WORK. A y=32 to y=42 ore was geenerated at y=6 with this
 						resource.oreMaxSpawn
 					) //Number of veins per chunk //Bottom Offset //Min y level //Max y level
 				)
