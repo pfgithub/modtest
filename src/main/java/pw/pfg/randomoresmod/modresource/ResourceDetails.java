@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
+import net.minecraft.util.Rarity;
 
 public class ResourceDetails {
 	static String[][] ORE_STYLE = new String[][] {
@@ -171,13 +172,72 @@ public class ResourceDetails {
 	public String nuggetId;
 	public String[] nuggetStyle;
 
+	public Rarity rarityMC;
+	public double rarity; // 0 to 4.99
+
+	public int oreMinSpawn;
+	public int oreMaxSpawn;
+	public int oresPerChunk;
+	public int oreVeinSize;
+
+	static double halfLife(
+		double current,
+		double initial,
+		double halfLife,
+		double change
+	) { // half life 3 formula
+		return initial * Math.pow(change, current / halfLife);
+	}
+
 	public static ResourceDetails random(String resourceNameId) {
 		// note that new features must be inserted at the bottom of a section
 		Random setupRandom = new Random(resourceNameId.hashCode());
+		Random featureRandom = new Random(setupRandom.nextInt());
+		Random abilityRandom = new Random(setupRandom.nextInt());
+		Random cosmeticRandom = new Random(setupRandom.nextInt());
+		Random essentialRandom = new Random(setupRandom.nextInt());
+		Random oreGenRandom = new Random(setupRandom.nextInt());
+
+		// essential
+		double rarity = essentialRandom.nextDouble() * 5d;
+
+		// ore gen
+		int oreSpawnArea = (int) Math.ceil(halfLife(rarity, 100d, 1d, 0.5d));
+		int oreMinCenterLimit = 0 + oreSpawnArea / 2; // 0
+		int oreMaxCenterLimit = 128 - oreSpawnArea / 2;
+
+		int oreCenter = (int) Math.ceil(
+			(halfLife(oreGenRandom.nextDouble() * 5d, 1d, 1d, 0.5d) * // distributed(1, 0.5, 0.25, 0.125, 0.0625, 0.03125)
+				(oreMaxCenterLimit - oreMinCenterLimit)) +
+				oreMinCenterLimit
+		); // higher chance for lower heights. matters more for smaller center ranges
+
+		// int oreCenter = oreGenRandom.nextInt(
+		// 	oreMaxCenterLimit - oreMinCenterLimit + 1
+		// ) +
+		// 	oreMinCenterLimit;
+		int oreMinSpawn = oreCenter - oreSpawnArea / 2;
+		int oreMaxSpawn = oreCenter + oreSpawnArea / 2;
+
+		// vanilla:
+		// coal: 20 (0..128)
+		// iron: 20 (0..64)
+		// gold: 2 (0..32)
+		// redstone: 8 (0..16)
+		// diamond: 1 (0..16)
+		// lapis: countdepthdecorator (count=1, baseline=16, spread=16)
+		int oresPerChunk = (int) Math.floor(halfLife(rarity, 16d, 1.25d, 0.5d)); // rarity1..5(16, 9, 5, 3, 1, 1)
+
+		// vanilla:
+		// coal: 17
+		// iron: 9
+		// gold: 9
+		// redstone: 8
+		// diamond: 8
+		// lapis: 7
+		int oreVeinSize = (int) Math.floor(halfLife(oreGenRandom.nextDouble() * 5d, 15d, 2.222223d, 0.5d)); // distributed random (15, 9, 8, 5, 4, 3)
 
 		// feature
-		Random featureRandom = new Random(setupRandom.nextInt());
-
 		boolean requiresSmelting = featureRandom.nextBoolean();
 		boolean dropsMany = requiresSmelting ? false : featureRandom.nextBoolean();
 		boolean isIngot = requiresSmelting && featureRandom.nextBoolean();
@@ -191,17 +251,12 @@ public class ResourceDetails {
 		int shortUnusualSmeltingTime = featureRandom.nextInt(190) + 10;
 
 		// ability
-		Random abilityRandom = new Random(setupRandom.nextInt());
-
-		boolean hasNugget = isIngot &&
-		(abilityRandom.nextBoolean() || abilityRandom.nextBoolean());
+		boolean hasNugget = isIngot && (abilityRandom.nextBoolean() || abilityRandom.nextBoolean());
 
 		boolean isFuel = abilityRandom.nextInt(4) == 0;
 		int fuelSmeltingTime = abilityRandom.nextInt(64) * 100; // 200 smelts 1 item in a furnace or 2 items in a blast furnace
 
 		// cosmetic
-		Random cosmeticRandom = new Random(setupRandom.nextInt());
-
 		int color = cosmeticRandom.nextInt(16777215);
 
 		String[] oreStyle = ORE_STYLE[cosmeticRandom.nextInt(ORE_STYLE.length)];
@@ -259,7 +314,12 @@ public class ResourceDetails {
 			smeltingTime,
 			storageBlockStyle,
 			hasNugget,
-			nuggetStyle
+			nuggetStyle,
+			rarity,
+			oreMinSpawn,
+			oreMaxSpawn,
+			oresPerChunk,
+			oreVeinSize
 		);
 	}
 
@@ -280,7 +340,12 @@ public class ResourceDetails {
 		int smeltingTime,
 		String[] storageBlockStyle,
 		boolean hasNugget,
-		String[] nuggetStyle
+		String[] nuggetStyle,
+		double rarity,
+		int oreMinSpawn,
+		int oreMaxSpawn,
+		int oresPerChunk,
+		int oreVeinSize
 	) {
 		this.color = color;
 		this.oreStyle = oreStyle;
@@ -311,5 +376,21 @@ public class ResourceDetails {
 		this.hasNugget = hasNugget;
 		this.nuggetId = this.resourceId + "_nugget";
 		this.nuggetStyle = nuggetStyle;
+
+		this.rarity = rarity;
+		this.oreMinSpawn = oreMinSpawn;
+		this.oreMaxSpawn = oreMaxSpawn;
+		this.oresPerChunk = oresPerChunk;
+		this.oreVeinSize = oreVeinSize;
+
+		if (rarity > 4d) {
+			this.rarityMC = Rarity.EPIC;
+		} else if (rarity > 3d) {
+			this.rarityMC = Rarity.RARE;
+		} else if (rarity > 2d) {
+			this.rarityMC = Rarity.UNCOMMON;
+		} else {
+			this.rarityMC = Rarity.COMMON;
+		}
 	}
 }

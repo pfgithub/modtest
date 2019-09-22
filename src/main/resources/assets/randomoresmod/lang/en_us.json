@@ -31,6 +31,8 @@
 	"item.randomoresmod.gem.debug.ore_style": "Ore Style: %s",
 	"item.randomoresmod.gem.debug.gem_style": "Gem Style: %s",
 	"item.randomoresmod.gem.debug.smelting_time": "Smelting Time: %d ticks",
+	"item.randomoresmod.gem.debug.rarity": "Rarity: %f / 5.0",
+	"item.randomoresmod.gem.debug.ore_spawn": "Ores Spawn: From y=%d to %d in veins of %d, %d per chunk",
 
 	"name.randomoresmod.ore.ore": "Ore",
 

@@ -24,7 +24,11 @@ public class ModResourceGem extends Item implements IRegisterable {
 	Item blockItem;
 
 	public ModResourceGem(ResourceDetails resource) {
-		super(new Item.Settings().group(RandomOresMod.RESOURCES));
+		super(
+			new Item.Settings()
+				.group(RandomOresMod.RESOURCES)
+				.rarity(resource.rarityMC)
+		);
 		this.resource = resource;
 		this.id = resource.gemId;
 	}

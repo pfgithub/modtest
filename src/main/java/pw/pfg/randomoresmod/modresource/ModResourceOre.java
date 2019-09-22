@@ -44,7 +44,9 @@ public class ModResourceOre extends OreBlock implements IRegisterable {
 		this.blockItem =
 			new NamedBlockItem(
 				this,
-				new Item.Settings().group(RandomOresMod.RESOURCES)
+				new Item.Settings()
+					.group(RandomOresMod.RESOURCES)
+					.rarity(resource.rarityMC)
 			);
 	}
 
@@ -230,10 +232,15 @@ public class ModResourceOre extends OreBlock implements IRegisterable {
 					new OreFeatureConfig(
 						OreFeatureConfig.Target.NATURAL_STONE,
 						this.getDefaultState(),
-						8 //Ore vein size
+						resource.oreVeinSize //Ore vein size
 					),
 					Decorator.COUNT_RANGE,
-					new RangeDecoratorConfig(8, 0, 0, 64) //Number of veins per chunk //Bottom Offset //Min y level //Max y level
+					new RangeDecoratorConfig(
+						resource.oresPerChunk,
+						0,
+						resource.oreMinSpawn,
+						resource.oreMaxSpawn
+					) //Number of veins per chunk //Bottom Offset //Min y level //Max y level
 				)
 			);
 		}

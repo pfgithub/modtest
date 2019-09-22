@@ -70,3 +70,11 @@ far future
 - add textures using artifice instead of using color overlays
 - this would allow better mod support and possibly a different color filter method
   and fix the transparent mining bug
+
+biomes
+
+trees:
+
+- height (min,max)
+- straightness (chance of moving horizontally)
+- weight (chance of bending)

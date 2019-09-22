@@ -2,11 +2,9 @@ package pw.pfg.randomoresmod.modresource;
 
 import java.util.Arrays;
 import java.util.List;
-
 import com.swordglowsblue.artifice.api.ArtificeResourcePack.ClientResourcePackBuilder;
 import com.swordglowsblue.artifice.api.ArtificeResourcePack.ServerResourcePackBuilder;
 import com.swordglowsblue.artifice.api.builder.assets.TranslationBuilder;
-
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.render.ColorProviderRegistry;
@@ -176,6 +174,23 @@ public class ModResourceColorPreview extends Item implements IRegisterable {
 				new TranslatableText(
 					"item.randomoresmod.gem.debug.smelting_time",
 					resource.smeltingTime
+				)
+					.formatted(Formatting.DARK_GRAY)
+			);
+			tooltip.add(
+				new TranslatableText(
+					"item.randomoresmod.gem.debug.rarity",
+					resource.rarity
+				)
+					.formatted(Formatting.DARK_GRAY)
+			);
+			tooltip.add(
+				new TranslatableText(
+					"item.randomoresmod.gem.debug.ore_spawn",
+					resource.oreMinSpawn,
+					resource.oreMaxSpawn,
+					resource.oreVeinSize,
+					resource.oresPerChunk
 				)
 					.formatted(Formatting.DARK_GRAY)
 			);
