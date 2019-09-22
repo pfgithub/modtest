@@ -45,6 +45,10 @@ public class ResourceDetails {
 		{
 			"randomoresmod:block/storage_streaky_base",
 			"randomoresmod:block/storage_streaky_overlay"
+		},
+		{
+			"randomoresmod:block/storage_decorative_base",
+			"randomoresmod:block/storage_decorative_overlay"
 		}
 	};
 
@@ -167,50 +171,71 @@ public class ResourceDetails {
 	public String nuggetId;
 	public String[] nuggetStyle;
 
-	public static ResourceDetails random(String id) {
-		Random random = new Random(id.hashCode());
+	public static ResourceDetails random(String resourceNameId) {
+		// note that new features must be inserted at the bottom of a section
+		Random setupRandom = new Random(resourceNameId.hashCode());
 
-		String englishName = id.substring(0, 1).toUpperCase() + id.substring(1);
-		int color = random.nextInt(16777215); // note that color is less than a 32 bit int. additionally, it should be possible for colors to change slightly (hue/brightness) over time
-		String[] oreStyle = ORE_STYLE[random.nextInt(ORE_STYLE.length)];
-		float materialHardness = random.nextFloat() * 10.0f;
-		float materialResistance = random.nextFloat() * 10.0f; // it should be possible for some materials to have a very high resistance
-		boolean requiresSmelting = random.nextBoolean();
-		boolean dropsMany = requiresSmelting ? false : random.nextBoolean();
-		List<String> gemStyleFull = new ArrayList<>();
+		// feature
+		Random featureRandom = new Random(setupRandom.nextInt());
 
-		// hasNugget = isIngot
-		boolean isIngot = requiresSmelting && random.nextBoolean();
-		if (isIngot) {
-			gemStyleFull.addAll(
-				Arrays.asList(INGOT_STYLE[random.nextInt(INGOT_STYLE.length)])
-			);
-		} else {
-			gemStyleFull.addAll(
-				Arrays.asList(GEM_STYLE[random.nextInt(GEM_STYLE.length)])
-			);
-		}
-		String gemName = gemStyleFull.remove(0);
-		String[] gemStyle = gemStyleFull.toArray(new String[0]);
+		boolean requiresSmelting = featureRandom.nextBoolean();
+		boolean dropsMany = requiresSmelting ? false : featureRandom.nextBoolean();
+		boolean isIngot = requiresSmelting && featureRandom.nextBoolean();
 
-		boolean isFuel = random.nextInt(4) == 0;
-		int fuelTime = random.nextInt(64) * 100; // 200 smelts 1 item in a furnace or 2 items in a blast furnace
+		float materialHardness = featureRandom.nextFloat() * 10.0f;
+		float materialResistance = featureRandom.nextFloat() * 10.0f; // it should be possible for some materials to have a very high resistance
 
-		boolean hasUnusualSmeltingTime = random.nextInt(4) == 0;
-		boolean unusualSmeltingTimeIsLong = random.nextInt(4) == 0; // maybe unusualsmeltingtime should be related to materialhardness
-		int smeltingTime = hasUnusualSmeltingTime
-			? (unusualSmeltingTimeIsLong ? random.nextInt(2200) + 200
-			: random.nextInt(180) + 20)
-			: 200; // anywhere from 1s to 100s, defaults to 10s
+		boolean hasUnusualSmeltingTime = featureRandom.nextInt(4) == 0; // 25% chance, another 25% for if it's extra long
+		boolean unusualSmeltingTimeIsLong = featureRandom.nextInt(4) == 0; // maybe unusualsmeltingtime should be related to materialhardness
+		int longUnusualSmeltingTime = featureRandom.nextInt(1800) + 200;
+		int shortUnusualSmeltingTime = featureRandom.nextInt(190) + 10;
 
-		String[] storageBlockStyle = STORAGE_BLOCK_STYLE
-		[random.nextInt(STORAGE_BLOCK_STYLE.length)];
+		// ability
+		Random abilityRandom = new Random(setupRandom.nextInt());
 
 		boolean hasNugget = isIngot &&
-		(random.nextBoolean() || random.nextBoolean());
+		(abilityRandom.nextBoolean() || abilityRandom.nextBoolean());
 
-		String[] nuggetStyle = NUGGET_STYLE[random.nextInt(NUGGET_STYLE.length)];
+		boolean isFuel = abilityRandom.nextInt(4) == 0;
+		int fuelSmeltingTime = abilityRandom.nextInt(64) * 100; // 200 smelts 1 item in a furnace or 2 items in a blast furnace
 
+		// cosmetic
+		Random cosmeticRandom = new Random(setupRandom.nextInt());
+
+		int color = cosmeticRandom.nextInt(16777215);
+
+		String[] oreStyle = ORE_STYLE[cosmeticRandom.nextInt(ORE_STYLE.length)];
+		String[] storageBlockStyle = STORAGE_BLOCK_STYLE
+		[cosmeticRandom.nextInt(STORAGE_BLOCK_STYLE.length)];
+		String[] nuggetStyle = NUGGET_STYLE
+		[cosmeticRandom.nextInt(NUGGET_STYLE.length)];
+
+		String[] ingotStyleIn = INGOT_STYLE
+		[cosmeticRandom.nextInt(INGOT_STYLE.length)];
+		String[] gemStyleIn = GEM_STYLE[cosmeticRandom.nextInt(GEM_STYLE.length)];
+
+		// computed
+		String resourceEnglishName = resourceNameId.substring(0, 1).toUpperCase() + resourceNameId.substring(1);
+
+		List<String> gemStyleFull = new ArrayList<>();
+		if (isIngot) {
+			gemStyleFull.addAll(Arrays.asList(ingotStyleIn));
+		} else {
+			gemStyleFull.addAll(Arrays.asList(gemStyleIn));
+		}
+
+		String gemTypeId = gemStyleFull.remove(0);
+		String[] gemStyle = gemStyleFull.toArray(new String[0]);
+
+		int smeltingTime = hasUnusualSmeltingTime
+			? (unusualSmeltingTimeIsLong ? longUnusualSmeltingTime // 10s to 100s
+			: shortUnusualSmeltingTime) // 0.5s to 10s
+			: 200; // default 10s
+
+		// ---
+		//
+		//
+		//
 		// minHeight
 		// maxHeight
 		// (it might be interesting to have something with a min height of 100)
@@ -220,17 +245,17 @@ public class ResourceDetails {
 		return new ResourceDetails(
 			color,
 			oreStyle,
-			"ore",
+			/*oreTypeId*/"ore",
 			gemStyle,
-			gemName,
+			gemTypeId,
 			requiresSmelting,
 			dropsMany,
 			materialHardness,
 			materialResistance,
-			englishName,
-			id,
+			resourceEnglishName,
+			resourceNameId,
 			isFuel,
-			fuelTime,
+			fuelSmeltingTime,
 			smeltingTime,
 			storageBlockStyle,
 			hasNugget,
@@ -241,17 +266,17 @@ public class ResourceDetails {
 	private ResourceDetails(
 		int color,
 		String[] oreStyle,
-		String oreName,
+		String oreTypeId,
 		String[] gemStyle,
-		String gemName,
+		String gemTypeId,
 		boolean requiresSmelting,
 		boolean dropsMany,
 		float materialHardness,
 		float materialResistance,
-		String englishName,
-		String id,
+		String resourceEnglishName,
+		String resourceNameId,
 		boolean isFuel,
-		int fuelTime,
+		int fuelSmeltingTime,
 		int smeltingTime,
 		String[] storageBlockStyle,
 		boolean hasNugget,
@@ -260,21 +285,22 @@ public class ResourceDetails {
 		this.color = color;
 		this.oreStyle = oreStyle;
 		this.oreTranslationKey =
-			oreName == "" ? "" : "name.randomoresmod.ore." + oreName;
+			oreTypeId == "" ? "" : "name.randomoresmod.ore." + oreTypeId;
 		this.gemStyle = gemStyle;
 		this.gemTranslationKey =
-			gemName == "" ? "" : "name.randomoresmod.gem." + gemName;
+			gemTypeId == "" ? "" : "name.randomoresmod.gem." + gemTypeId;
 		this.requiresSmelting = requiresSmelting;
 		this.dropsMany = dropsMany;
 		this.materialHardness = materialHardness;
 		this.materialResistance = materialResistance;
-		this.resourceTranslationKey = "name.randomoresmod.resource." + id;
-		this.resourceEnglishName = englishName;
-		this.resourceId = id;
-		this.oreId = this.resourceId + "_" + oreName;
-		this.gemId = this.resourceId + (gemName == "" ? "" : "_" + gemName);
+		this.resourceTranslationKey =
+			"name.randomoresmod.resource." + resourceNameId;
+		this.resourceEnglishName = resourceEnglishName;
+		this.resourceId = resourceNameId;
+		this.oreId = this.resourceId + "_" + oreTypeId;
+		this.gemId = this.resourceId + "_resource"; // + (gemTypeId == "" ? "" : "_" + gemTypeId); // (to prevent conflicts by changing gem types)
 		this.isFuel = isFuel;
-		this.fuelSmeltingTime = fuelTime;
+		this.fuelSmeltingTime = fuelSmeltingTime;
 		this.smeltingTime = smeltingTime;
 
 		this.storageBlockId = this.resourceId + "_block";
