@@ -24,9 +24,18 @@ public class ModResourceNugget extends Item implements IRegisterable {
 	Item blockItem;
 
 	public ModResourceNugget(ResourceDetails resource) {
-		super(new Item.Settings().group(RandomOresMod.RESOURCES));
+		super(
+			new Item.Settings()
+				.group(RandomOresMod.RESOURCES)
+				.rarity(resource.rarityMC)
+		);
 		this.resource = resource;
 		this.id = resource.nuggetId;
+	}
+
+	@Override
+	public boolean hasEnchantmentGlint(ItemStack itemStack_1) {
+		return resource.isShiny || super.hasEnchantmentGlint(itemStack_1);
 	}
 
 	@Override
@@ -45,7 +54,7 @@ public class ModResourceNugget extends Item implements IRegisterable {
 		return new TranslatableText(
 			"item.randomoresmod.nugget",
 			new TranslatableText(resource.resourceTranslationKey)
-			// new TranslatableText(resource.nuggetTranslationKey)
+		// new TranslatableText(resource.nuggetTranslationKey)
 		);
 	}
 
@@ -59,7 +68,7 @@ public class ModResourceNugget extends Item implements IRegisterable {
 
 	@Override
 	public void registerData(ServerResourcePackBuilder data) {
-        data.addShapedRecipe(
+		data.addShapedRecipe(
 			new Identifier("randomoresmod", resource.gemId + "_from_nugget"),
 			shaped -> {
 				shaped.group(new Identifier("randomoresmod", this.id))
@@ -71,11 +80,13 @@ public class ModResourceNugget extends Item implements IRegisterable {
 		data.addShapelessRecipe(
 			new Identifier("randomoresmod", this.id + "_from_gem"),
 			shapeless -> {
-				shapeless.ingredientItem(new Identifier("randomoresmod", resource.gemId))
+				shapeless.ingredientItem(
+					new Identifier("randomoresmod", resource.gemId)
+				)
 					.result(new Identifier("randomoresmod", this.id), 9);
 			}
 		);
-    }
+	}
 
 	@Override
 	public void registerAssets(ClientResourcePackBuilder pack) {
@@ -107,7 +118,8 @@ public class ModResourceNugget extends Item implements IRegisterable {
 	@Override
 	public void registerClient() {
 		ColorProviderRegistry.ITEM.register(
-			(stack, layer) -> layer == resource.nuggetStyle.length - 1 ? resource.color
+			(stack, layer) -> layer == resource.nuggetStyle.length - 1
+				? resource.color
 				: 16777215,
 			this
 		);

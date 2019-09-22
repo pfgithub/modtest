@@ -180,6 +180,8 @@ public class ResourceDetails {
 	public int oresPerChunk;
 	public int oreVeinSize;
 
+	public boolean isShiny;
+
 	static double halfLife(
 		double current,
 		double initial,
@@ -269,6 +271,8 @@ public class ResourceDetails {
 		[cosmeticRandom.nextInt(INGOT_STYLE.length)];
 		String[] gemStyleIn = GEM_STYLE[cosmeticRandom.nextInt(GEM_STYLE.length)];
 
+		boolean isShiny = rarity > 3f && cosmeticRandom.nextBoolean();
+
 		// computed
 		String resourceEnglishName = resourceNameId.substring(0, 1).toUpperCase() + resourceNameId.substring(1);
 
@@ -319,7 +323,8 @@ public class ResourceDetails {
 			oreMinSpawn,
 			oreMaxSpawn,
 			oresPerChunk,
-			oreVeinSize
+			oreVeinSize,
+			isShiny
 		);
 	}
 
@@ -345,7 +350,8 @@ public class ResourceDetails {
 		int oreMinSpawn,
 		int oreMaxSpawn,
 		int oresPerChunk,
-		int oreVeinSize
+		int oreVeinSize,
+		boolean isShiny
 	) {
 		this.color = color;
 		this.oreStyle = oreStyle;
@@ -392,5 +398,7 @@ public class ResourceDetails {
 		} else {
 			this.rarityMC = Rarity.COMMON;
 		}
+
+		this.isShiny = isShiny;
 	}
 }

@@ -23,7 +23,9 @@ import net.minecraft.world.biome.Biome;
 import pw.pfg.randomoresmod.IRegisterable;
 import pw.pfg.randomoresmod.RandomOresMod;
 
-public class ModResourceStorageBlock extends Block implements IRegisterable {
+public class ModResourceStorageBlock
+	extends Block
+	implements IRegisterable, IItemBlock<Block> {
 	ResourceDetails resource;
 	String id;
 	Item blockItem;
@@ -42,8 +44,20 @@ public class ModResourceStorageBlock extends Block implements IRegisterable {
 		this.blockItem =
 			new NamedBlockItem(
 				this,
-				new Item.Settings().group(RandomOresMod.RESOURCES)
+				new Item.Settings()
+					.group(RandomOresMod.RESOURCES)
+					.rarity(resource.rarityMC)
 			);
+	}
+
+	@Override
+	public Block self() {
+		return this;
+	}
+
+	@Override
+	public boolean hasEnchantmentGlint(ItemStack itemStack_1) {
+		return false;
 	}
 
 	@Override
@@ -112,6 +126,25 @@ public class ModResourceStorageBlock extends Block implements IRegisterable {
 							}
 						}
 					);
+					if (resource.isShiny) {
+						model.texture(
+							"glint",
+							new Identifier("randomoresmod:block/enchantment_glint")
+						);
+						model.element(
+							elem -> {
+								elem.from(0, 0, 0).to(16, 16, 16);
+								for (Direction dir : Direction.values()) {
+									elem.face(
+										dir,
+										s -> {
+											s.uv(0, 0, 16, 16).texture("glint").cullface(dir);
+										}
+									);
+								}
+							}
+						);
+					}
 				}
 			}
 		);

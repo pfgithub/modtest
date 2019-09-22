@@ -22,6 +22,9 @@ public class RandomOresMod implements ModInitializer {
 	public static final Item QUESTION_MARK_INGOT = new Item(
 		new Item.Settings().group(ItemGroup.MATERIALS)
 	);
+	public static final Item ENCHANTMENT_GLINT_TEST_TEXTURE = new EnchantedItem(
+		new Item.Settings().group(ItemGroup.MATERIALS)
+	);
 
 	public static final ItemGroup RESOURCES = FabricItemGroupBuilder.create(
 		new Identifier("randomoresmod", "resources")
@@ -53,6 +56,11 @@ public class RandomOresMod implements ModInitializer {
 			Registry.ITEM,
 			new Identifier("randomoresmod", "question_mark_ingot"),
 			QUESTION_MARK_INGOT
+		);
+		Registry.register(
+			Registry.ITEM,
+			new Identifier("randomoresmod", "enchantment_glint_test_texture"),
+			ENCHANTMENT_GLINT_TEST_TEXTURE
 		);
 
 		Artifice.registerData(

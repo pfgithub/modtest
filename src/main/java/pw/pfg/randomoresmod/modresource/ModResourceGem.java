@@ -34,6 +34,11 @@ public class ModResourceGem extends Item implements IRegisterable {
 	}
 
 	@Override
+	public boolean hasEnchantmentGlint(ItemStack itemStack_1) {
+		return resource.isShiny || super.hasEnchantmentGlint(itemStack_1);
+	}
+
+	@Override
 	public void registerItemGroup(List<ItemStack> stacks) {
 		stacks.add(new ItemStack(this));
 	}

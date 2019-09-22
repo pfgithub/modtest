@@ -27,7 +27,11 @@ public class ModResourceColorPreview extends Item implements IRegisterable {
 	Item blockItem;
 
 	public ModResourceColorPreview(ResourceDetails resource) {
-		super(new Item.Settings().group(RandomOresMod.RESOURCES));
+		super(
+			new Item.Settings()
+				.group(RandomOresMod.RESOURCES)
+				.rarity(resource.rarityMC)
+		);
 		this.resource = resource;
 		this.id = resource.resourceId + "_color_preview";
 	}

@@ -28,7 +28,9 @@ import net.minecraft.world.gen.feature.OreFeatureConfig;
 import pw.pfg.randomoresmod.IRegisterable;
 import pw.pfg.randomoresmod.RandomOresMod;
 
-public class ModResourceOre extends OreBlock implements IRegisterable {
+public class ModResourceOre
+	extends OreBlock
+	implements IRegisterable, IItemBlock<Block> {
 	ResourceDetails resource;
 	String id;
 	Item blockItem;
@@ -48,6 +50,16 @@ public class ModResourceOre extends OreBlock implements IRegisterable {
 					.group(RandomOresMod.RESOURCES)
 					.rarity(resource.rarityMC)
 			);
+	}
+
+	@Override
+	public Block self() {
+		return this;
+	}
+
+	@Override
+	public boolean hasEnchantmentGlint(ItemStack itemStack_1) {
+		return resource.isShiny;
 	}
 
 	@Override
