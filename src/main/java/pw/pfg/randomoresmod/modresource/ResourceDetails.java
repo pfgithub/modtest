@@ -211,6 +211,9 @@ public class ResourceDetails {
 
 		String[] nuggetStyle = NUGGET_STYLE[random.nextInt(NUGGET_STYLE.length)];
 
+		// minHeight
+		// maxHeight
+		// (it might be interesting to have something with a min height of 100)
 		// SmeltingProduct smeltingProduces = 90%gem | 5%block | 5%nugget if hasNugget
 		// TODO: isOvergrown - adds an overlay to ore and block that uses the grass color and all items that makes it look overgrown
 		// inspired by https://i.redd.it/6lalhnzbann31.png
