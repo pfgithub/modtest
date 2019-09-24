@@ -30,7 +30,7 @@ public class ModResourceGem extends Item implements IRegisterable {
 				.rarity(resource.rarityMC)
 		);
 		this.resource = resource;
-		this.id = resource.gemId;
+		this.id = resource.gem.id;
 	}
 
 	@Override
@@ -51,16 +51,9 @@ public class ModResourceGem extends Item implements IRegisterable {
 	@Environment(EnvType.CLIENT)
 	@Override
 	public Text getName() {
-		if (resource.gemTranslationKey == "") {
-			return new TranslatableText(
-				"item.randomoresmod.gem.onepart",
-				new TranslatableText(resource.resourceTranslationKey)
-			);
-		}
 		return new TranslatableText(
-			"item.randomoresmod.gem",
-			new TranslatableText(resource.resourceTranslationKey),
-			new TranslatableText(resource.gemTranslationKey)
+			resource.gem.style.languageKey,
+			new TranslatableText(resource.resourceTranslationKey)
 		);
 	}
 
@@ -82,8 +75,8 @@ public class ModResourceGem extends Item implements IRegisterable {
 			model -> {
 				model.parent(new Identifier("minecraft", "item/generated"));
 				int i = 0;
-				for (String style : resource.gemStyle) {
-					model.texture("layer" + i, new Identifier(style)); // max 4
+				for (TextureLayer texture : resource.gem.style.texture) {
+					model.texture("layer" + i, texture.texture); // max 4
 					i++;
 				}
 			}
@@ -105,7 +98,8 @@ public class ModResourceGem extends Item implements IRegisterable {
 	@Override
 	public void registerClient() {
 		ColorProviderRegistry.ITEM.register(
-			(stack, layer) -> layer == resource.gemStyle.length - 1 ? resource.color
+			(stack, layer) -> layer < resource.gem.style.texture.length
+				? resource.gem.style.texture[layer].tinted ? resource.color : 16777215
 				: 16777215,
 			this
 		);

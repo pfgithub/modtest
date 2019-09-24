@@ -42,7 +42,7 @@ public class ModResourceOre
 				.strength(resource.materialHardness, resource.materialResistance)
 		);
 		this.resource = resource;
-		this.id = resource.oreId;
+		this.id = resource.ore.id;
 		this.blockItem =
 			new NamedBlockItem(
 				this,
@@ -79,9 +79,8 @@ public class ModResourceOre
 	@Override
 	public Text getName() {
 		return new TranslatableText(
-			"block.randomoresmod.oreblock",
-			new TranslatableText(resource.resourceTranslationKey),
-			new TranslatableText(resource.oreTranslationKey)
+			resource.ore.style.languageKey,
+			new TranslatableText(resource.resourceTranslationKey)
 		);
 	}
 
@@ -113,10 +112,9 @@ public class ModResourceOre
 				model.parent(new Identifier("minecraft", "block/block"));
 				model.texture("particle", new Identifier("minecraft", "block/stone"));
 				int layerNumber = 0;
-				for (String style : resource.oreStyle) {
+				for (TextureLayer layer : resource.ore.style.texture) {
 					String varName = "layer" + (layerNumber++);
-					final int nextLayerNumber = layerNumber;
-					model.texture(varName, new Identifier(style));
+					model.texture(varName, layer.texture);
 					model.element(
 						elem -> {
 							elem.from(0, 0, 0).to(16, 16, 16);
@@ -125,7 +123,7 @@ public class ModResourceOre
 									dir,
 									s -> {
 										s.uv(0, 0, 16, 16).texture(varName).cullface(dir);
-										if (nextLayerNumber == resource.oreStyle.length) {
+										if (layer.tinted) {
 											s.tintindex(0);
 										}
 									}
@@ -200,21 +198,21 @@ public class ModResourceOre
 			}
 		);
 		data.addSmeltingRecipe(
-			new Identifier("randomoresmod", resource.gemId + "_from_smelting"),
+			new Identifier("randomoresmod", resource.gem.id + "_from_smelting"),
 			smelting -> {
 				smelting.type(new Identifier("minecraft", "smelting"))
 					.ingredientItem(new Identifier("randomoresmod", this.id))
-					.result(new Identifier("randomoresmod", resource.gemId))
+					.result(new Identifier("randomoresmod", resource.gem.id))
 					.experience(0.7)
 					.cookingTime(resource.smeltingTime);
 			}
 		);
 		data.addBlastingRecipe(
-			new Identifier("randomoresmod", resource.gemId + "_from_blasting"),
+			new Identifier("randomoresmod", resource.gem.id + "_from_blasting"),
 			smelting -> {
 				smelting.type(new Identifier("minecraft", "blasting"))
 					.ingredientItem(new Identifier("randomoresmod", this.id))
-					.result(new Identifier("randomoresmod", resource.gemId))
+					.result(new Identifier("randomoresmod", resource.gem.id))
 					.experience(0.7)
 					.cookingTime(resource.smeltingTime / 2);
 			}
@@ -226,7 +224,9 @@ public class ModResourceOre
 		// it should be possible for one ore to be the same color as grass
 		ColorProviderRegistry.BLOCK.register((block, world, pos, layer) -> layer == 0 ? resource.color : 0, this);
 		ColorProviderRegistry.ITEM.register(
-			(stack, layer) -> layer == 0 ? resource.color : 16777215,
+			(stack, layer) -> layer < resource.ore.style.texture.length
+				? resource.ore.style.texture[layer].tinted ? resource.color : 16777215
+				: 16777215,
 			this.blockItem
 		);
 	}

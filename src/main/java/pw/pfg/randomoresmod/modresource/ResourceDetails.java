@@ -3,143 +3,11 @@ package pw.pfg.randomoresmod.modresource;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 import net.minecraft.util.Rarity;
 
 public class ResourceDetails {
-	static String[][] ORE_STYLE = new String[][] {
-		// this information should be loaded from a datapack or something
-		{ "randomoresmod:block/ore_dull_base", "randomoresmod:block/ore_dull_overlay" },
-		{
-			"randomoresmod:block/ore_shiny_base",
-			"randomoresmod:block/ore_shiny_overlay"
-		},
-		{
-			"randomoresmod:block/ore_vein_base",
-			"randomoresmod:block/ore_vein_overlay"
-		},
-		{
-			"randomoresmod:block/ore_gem_base",
-			"randomoresmod:block/ore_gem_overlay"
-		},
-		{
-			"randomoresmod:block/ore_chunky_base",
-			"randomoresmod:block/ore_chunky_overlay"
-		}
-	};
-
-	static String[][] STORAGE_BLOCK_STYLE = new String[][] {
-		// this information should be loaded from a datapack or something
-		{ "randomoresmod:block/storage_dusty_base", "randomoresmod:block/storage_dusty_overlay" },
-		{
-			"randomoresmod:block/storage_lined_base",
-			"randomoresmod:block/storage_lined_overlay"
-		},
-		{
-			"randomoresmod:block/storage_rectangular_base",
-			"randomoresmod:block/storage_rectangular_overlay"
-		},
-		{
-			"randomoresmod:block/storage_shiny_base",
-			"randomoresmod:block/storage_shiny_overlay"
-		},
-		{
-			"randomoresmod:block/storage_streaky_base",
-			"randomoresmod:block/storage_streaky_overlay"
-		},
-		{
-			"randomoresmod:block/storage_decorative_base",
-			"randomoresmod:block/storage_decorative_overlay"
-		}
-	};
-
-	// 1.. is no color, last is color
-	static String[][] GEM_STYLE = new String[][] {
-		// this information should be loaded from a datapack or something
-		{ "", "randomoresmod:item/multipart_stone" },
-		{ "shard", "randomoresmod:item/shard" },
-		{ "", "randomoresmod:item/flower" },
-		{ "", "randomoresmod:item/tree" },
-		{
-			"bowl",
-			"randomoresmod:item/bowl_base",
-			"randomoresmod:item/bowl_overlay"
-		},
-		{ "", "randomoresmod:item/tooth_stone" },
-		{ "powder", "randomoresmod:item/burning_powder" },
-		{ "", "randomoresmod:item/peanut_stone" },
-		{
-			"cream",
-			"randomoresmod:item/cream_base",
-			"randomoresmod:item/cream_overlay"
-		}, // mixed_cream (transparency can be used in items)
-		{
-			"",
-			"randomoresmod:item/diamond_base",
-			"randomoresmod:item/diamond_overlay"
-		},
-		{ "chunk", "randomoresmod:item/chunk" },
-		{ "chunk", "randomoresmod:item/burnt_chunk" },
-		{ "chip", "randomoresmod:item/sharp_chip" },
-		{ "dust", "randomoresmod:item/dust" },
-		{ "", "randomoresmod:item/seeds" },
-		{ "strand", "randomoresmod:item/strand" },
-		{ "strand", "randomoresmod:item/thick_strand" },
-		{ "pebble", "randomoresmod:item/pebble_pile" },
-		{
-			"orb",
-			"randomoresmod:item/shiny_orb_base",
-			"randomoresmod:item/shiny_orb_overlay"
-		},
-		{ "cream", "randomoresmod:item/glob" },
-		{ "sheet", "randomoresmod:item/sheet" },
-		{
-			"powder",
-			"randomoresmod:item/shiny_powder_base",
-			"randomoresmod:item/shiny_powder_overlay"
-		},
-		{ "", "randomoresmod:item/decorative_stone" },
-		{ "", "randomoresmod:item/decorative_stone_2" },
-		{
-			"infused_stone",
-			"randomoresmod:item/infused_stone_base",
-			"randomoresmod:item/infused_stone_overlay"
-		},
-		{ "crystal", "randomoresmod:item/crystal_pile" },
-		{ "", "randomoresmod:item/multipart_stone_2" },
-		{
-			"",
-			"randomoresmod:item/emerald_base",
-			"randomoresmod:item/emerald_overlay"
-		},
-		{ "orb", "randomoresmod:item/orb" },
-		{ "", "randomoresmod:item/pebbles" }
-	};
-
-	static String[][] INGOT_STYLE = new String[][] {
-		{ "ingot", "randomoresmod:item/ingot" },
-		{ "ingot", "randomoresmod:item/alternate_ingot" },
-		{ "ingot", "randomoresmod:item/broken_ingot" }
-	};
-
-	static String[][] NUGGET_STYLE = new String[][] {
-		{
-			"randomoresmod:item/nugget/horizontal_base",
-			"randomoresmod:item/nugget/horizontal_overlay"
-		},
-		{
-			"randomoresmod:item/nugget/teardrop_base",
-			"randomoresmod:item/nugget/teardrop_overlay"
-		},
-		{
-			"randomoresmod:item/nugget/vertical_base",
-			"randomoresmod:item/nugget/vertical_overlay"
-		}
-	};
-
-	// !!!!!
-	// (fixed by using transparent)
-	//
 	public int color;
 	public float materialHardness;
 	public float materialResistance;
@@ -148,17 +16,10 @@ public class ResourceDetails {
 	public String resourceTranslationKey;
 	public String resourceEnglishName;
 
-	public String oreId;
-	public String[] oreStyle;
-	public String oreTranslationKey;
-
-	public String gemId;
-	public String[] gemStyle;
-	public String gemTranslationKey;
-
-	public String storageBlockId;
-	public String[] storageBlockStyle;
-	public String storageBlockTranslationKey;
+	public ResourceObject ore;
+	public ResourceObject gem;
+	public ResourceObject storageBlock;
+	public ResourceObject nugget; // NULLABLE!!!!!
 
 	public boolean requiresSmelting;
 	public boolean dropsMany;
@@ -167,10 +28,6 @@ public class ResourceDetails {
 	public int fuelSmeltingTime;
 
 	public int smeltingTime;
-
-	public boolean hasNugget;
-	public String nuggetId;
-	public String[] nuggetStyle;
 
 	public Rarity rarityMC;
 	public double rarity; // 0 to 4.99
@@ -182,6 +39,11 @@ public class ResourceDetails {
 
 	public boolean isShiny;
 
+	// public boolean torch;
+	// public boolean emissive;
+	// public boolean brightArmor; // night vision on helmet
+	// public int luminance; // 0..15
+	// public boolean blocksHoldFire
 	static double halfLife(
 		double current,
 		double initial,
@@ -261,35 +123,41 @@ public class ResourceDetails {
 		// cosmetic
 		int color = cosmeticRandom.nextInt(16777215);
 
-		String[] oreStyle = ORE_STYLE[cosmeticRandom.nextInt(ORE_STYLE.length)];
-		String[] storageBlockStyle = STORAGE_BLOCK_STYLE
-		[cosmeticRandom.nextInt(STORAGE_BLOCK_STYLE.length)];
-		String[] nuggetStyle = NUGGET_STYLE
-		[cosmeticRandom.nextInt(NUGGET_STYLE.length)];
-
-		String[] ingotStyleIn = INGOT_STYLE
-		[cosmeticRandom.nextInt(INGOT_STYLE.length)];
-		String[] gemStyleIn = GEM_STYLE[cosmeticRandom.nextInt(GEM_STYLE.length)];
-
 		boolean isShiny = rarity > 3f && cosmeticRandom.nextBoolean();
 
 		// computed
 		String resourceEnglishName = resourceNameId.substring(0, 1).toUpperCase() + resourceNameId.substring(1);
 
-		List<String> gemStyleFull = new ArrayList<>();
-		if (isIngot) {
-			gemStyleFull.addAll(Arrays.asList(ingotStyleIn));
-		} else {
-			gemStyleFull.addAll(Arrays.asList(gemStyleIn));
-		}
-
-		String gemTypeId = gemStyleFull.remove(0);
-		String[] gemStyle = gemStyleFull.toArray(new String[0]);
+		ResourceObject oreStyle = ResourceObjectOre.random(resourceNameId);
+		ResourceObject gemStyle = isIngot
+			? ResourceObjectIngot.random(resourceNameId)
+			: ResourceObjectGem.random(resourceNameId);
+		ResourceObject storageBlockStyle = ResourceObjectStorageBlock.random(
+			resourceNameId
+		);
+		ResourceObject nuggetStyle = hasNugget
+			? ResourceObjectNugget.random(resourceNameId)
+			: null;
 
 		int smeltingTime = hasUnusualSmeltingTime
 			? (unusualSmeltingTimeIsLong ? longUnusualSmeltingTime // 10s to 100s
 			: shortUnusualSmeltingTime) // 0.5s to 10s
 			: 200; // default 10s
+
+		Rarity rarityMC;
+
+		if (rarity > 4d) {
+			rarityMC = Rarity.EPIC;
+		} else if (rarity > 3d) {
+			rarityMC = Rarity.RARE;
+		} else if (rarity > 2d) {
+			rarityMC = Rarity.UNCOMMON;
+		} else {
+			rarityMC = Rarity.COMMON;
+		}
+
+		String resourceId = resourceNameId;
+		String resourceTranslationKey = "name.randomoresmod.resource." + resourceId;
 
 		// ---
 		//
@@ -303,22 +171,21 @@ public class ResourceDetails {
 		// inspired by https://i.redd.it/6lalhnzbann31.png
 		return new ResourceDetails(
 			color,
-			oreStyle,
-			/*oreTypeId*/"ore",
-			gemStyle,
-			gemTypeId,
-			requiresSmelting,
-			dropsMany,
 			materialHardness,
 			materialResistance,
+			resourceId,
+			resourceTranslationKey,
 			resourceEnglishName,
-			resourceNameId,
+			oreStyle,
+			gemStyle,
+			storageBlockStyle,
+			nuggetStyle,
+			requiresSmelting,
+			dropsMany,
 			isFuel,
 			fuelSmeltingTime,
 			smeltingTime,
-			storageBlockStyle,
-			hasNugget,
-			nuggetStyle,
+			rarityMC,
 			rarity,
 			oreMinSpawn,
 			oreMaxSpawn,
@@ -330,22 +197,21 @@ public class ResourceDetails {
 
 	private ResourceDetails(
 		int color,
-		String[] oreStyle,
-		String oreTypeId,
-		String[] gemStyle,
-		String gemTypeId,
-		boolean requiresSmelting,
-		boolean dropsMany,
 		float materialHardness,
 		float materialResistance,
+		String resourceId,
+		String resourceTranslationKey,
 		String resourceEnglishName,
-		String resourceNameId,
+		ResourceObject ore,
+		ResourceObject gem,
+		ResourceObject storageBlock,
+		ResourceObject nugget,
+		boolean requiresSmelting,
+		boolean dropsMany,
 		boolean isFuel,
 		int fuelSmeltingTime,
 		int smeltingTime,
-		String[] storageBlockStyle,
-		boolean hasNugget,
-		String[] nuggetStyle,
+		Rarity rarityMC,
 		double rarity,
 		int oreMinSpawn,
 		int oreMaxSpawn,
@@ -354,51 +220,31 @@ public class ResourceDetails {
 		boolean isShiny
 	) {
 		this.color = color;
-		this.oreStyle = oreStyle;
-		this.oreTranslationKey =
-			oreTypeId == "" ? "" : "name.randomoresmod.ore." + oreTypeId;
-		this.gemStyle = gemStyle;
-		this.gemTranslationKey =
-			gemTypeId == "" ? "" : "name.randomoresmod.gem." + gemTypeId;
-		this.requiresSmelting = requiresSmelting;
-		this.dropsMany = dropsMany;
 		this.materialHardness = materialHardness;
 		this.materialResistance = materialResistance;
-		this.resourceTranslationKey =
-			"name.randomoresmod.resource." + resourceNameId;
+		this.resourceId = resourceId;
+		this.resourceTranslationKey = resourceTranslationKey;
 		this.resourceEnglishName = resourceEnglishName;
-		this.resourceId = resourceNameId;
-		this.oreId = this.resourceId + "_" + oreTypeId;
-		this.gemId = this.resourceId + "_resource"; // + (gemTypeId == "" ? "" : "_" + gemTypeId); // (to prevent conflicts by changing gem types)
+		this.ore = ore;
+		this.gem = gem;
+		this.storageBlock = storageBlock;
+		this.nugget = nugget;
+		this.requiresSmelting = requiresSmelting;
+		this.dropsMany = dropsMany;
 		this.isFuel = isFuel;
 		this.fuelSmeltingTime = fuelSmeltingTime;
 		this.smeltingTime = smeltingTime;
-
-		this.storageBlockId = this.resourceId + "_block";
-		this.storageBlockStyle = storageBlockStyle;
-		this.storageBlockTranslationKey =
-			"name.randomoresmod.storageblock.storageblock";
-
-		this.hasNugget = hasNugget;
-		this.nuggetId = this.resourceId + "_nugget";
-		this.nuggetStyle = nuggetStyle;
-
+		this.rarityMC = rarityMC;
 		this.rarity = rarity;
 		this.oreMinSpawn = oreMinSpawn;
 		this.oreMaxSpawn = oreMaxSpawn;
 		this.oresPerChunk = oresPerChunk;
 		this.oreVeinSize = oreVeinSize;
-
-		if (rarity > 4d) {
-			this.rarityMC = Rarity.EPIC;
-		} else if (rarity > 3d) {
-			this.rarityMC = Rarity.RARE;
-		} else if (rarity > 2d) {
-			this.rarityMC = Rarity.UNCOMMON;
-		} else {
-			this.rarityMC = Rarity.COMMON;
-		}
-
 		this.isShiny = isShiny;
+	// list=`code here`.split("\n").map(l => l.trim()).filter(l => l).map(l => l.replace(/public (.+?);/, "$1").split(" "));
+	//
+	// console.log(list.map(l => l[1]).join(",\n"));
+	// console.log(list.map(l => l.join(" ")).join(",\n"));
+	// console.log(list.map(l => `this.${l[1]} = ${l[1]};`).join("\n"));
 	}
 }

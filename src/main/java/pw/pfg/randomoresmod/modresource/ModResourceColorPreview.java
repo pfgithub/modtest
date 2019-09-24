@@ -1,6 +1,5 @@
 package pw.pfg.randomoresmod.modresource;
 
-import java.util.Arrays;
 import java.util.List;
 import com.swordglowsblue.artifice.api.ArtificeResourcePack.ClientResourcePackBuilder;
 import com.swordglowsblue.artifice.api.ArtificeResourcePack.ServerResourcePackBuilder;
@@ -11,6 +10,7 @@ import net.fabricmc.fabric.api.client.render.ColorProviderRegistry;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
@@ -50,154 +50,10 @@ public class ModResourceColorPreview extends Item implements IRegisterable {
 		TooltipContext tooltipContext
 	) {
 		if (tooltipContext.isAdvanced()) {
-			tooltip.add(
-				new TranslatableText(
-					"item.randomoresmod.gem.debug.color",
-					resource.color
-				)
-					.formatted(Formatting.DARK_GRAY)
-			);
-			tooltip.add(
-				new TranslatableText(
-					"item.randomoresmod.gem.debug.smelting",
-					resource.requiresSmelting
-						? new TranslatableText(
-						"item.randomoresmod.gem.debug.smelting.requires"
-					)
-						: new TranslatableText(
-						"item.randomoresmod.gem.debug.smelting.automatic"
-					)
-				)
-					.formatted(Formatting.DARK_GRAY)
-			);
-			tooltip.add(
-				new TranslatableText(
-					"item.randomoresmod.gem.debug.drops",
-					resource.dropsMany
-						? new TranslatableText("item.randomoresmod.gem.debug.drops.one")
-						: new TranslatableText("item.randomoresmod.gem.debug.drops.many")
-				)
-					.formatted(Formatting.DARK_GRAY)
-			);
-			tooltip.add(
-				new TranslatableText(
-					"item.randomoresmod.gem.debug.english_name",
-					resource.resourceEnglishName
-				)
-					.formatted(Formatting.DARK_GRAY)
-			);
-			tooltip.add(
-				new TranslatableText(
-					"item.randomoresmod.gem.debug.is_fuel",
-					resource.isFuel
-						? new TranslatableText("item.randomoresmod.gem.debug.is_fuel.is")
-						: new TranslatableText(
-						"item.randomoresmod.gem.debug.is_fuel.is_not"
-					)
-				)
-					.formatted(Formatting.DARK_GRAY)
-			);
-			tooltip.add(
-				new TranslatableText(
-					"item.randomoresmod.gem.debug.fuel_time",
-					resource.fuelSmeltingTime
-				)
-					.formatted(Formatting.DARK_GRAY)
-			);
-			tooltip.add(
-				new TranslatableText(
-					"item.randomoresmod.gem.debug.main_id",
-					resource.resourceId
-				)
-					.formatted(Formatting.DARK_GRAY)
-			);
-			tooltip.add(
-				new TranslatableText(
-					"item.randomoresmod.gem.debug.main_translation_key",
-					resource.resourceTranslationKey
-				)
-					.formatted(Formatting.DARK_GRAY)
-			);
-			tooltip.add(
-				new TranslatableText(
-					"item.randomoresmod.gem.debug.gem_item_id",
-					resource.gemId
-				)
-					.formatted(Formatting.DARK_GRAY)
-			);
-			tooltip.add(
-				new TranslatableText(
-					"item.randomoresmod.gem.debug.gem_translation_key",
-					resource.gemTranslationKey
-				)
-					.formatted(Formatting.DARK_GRAY)
-			);
-			tooltip.add(
-				new TranslatableText(
-					"item.randomoresmod.gem.debug.ore_item_id",
-					resource.oreId
-				)
-					.formatted(Formatting.DARK_GRAY)
-			);
-			tooltip.add(
-				new TranslatableText(
-					"item.randomoresmod.gem.debug.ore_translation_key",
-					resource.oreTranslationKey
-				)
-					.formatted(Formatting.DARK_GRAY)
-			);
-			tooltip.add(
-				new TranslatableText(
-					"item.randomoresmod.gem.debug.hardness",
-					resource.materialHardness
-				)
-					.formatted(Formatting.DARK_GRAY)
-			);
-			tooltip.add(
-				new TranslatableText(
-					"item.randomoresmod.gem.debug.resistance",
-					resource.materialResistance
-				)
-					.formatted(Formatting.DARK_GRAY)
-			);
-			tooltip.add(
-				new TranslatableText(
-					"item.randomoresmod.gem.debug.ore_style",
-					Arrays.toString(resource.oreStyle)
-				)
-					.formatted(Formatting.DARK_GRAY)
-			);
-			tooltip.add(
-				new TranslatableText(
-					"item.randomoresmod.gem.debug.gem_style",
-					Arrays.toString(resource.gemStyle)
-				)
-					.formatted(Formatting.DARK_GRAY)
-			);
-			tooltip.add(
-				new TranslatableText(
-					"item.randomoresmod.gem.debug.smelting_time",
-					resource.smeltingTime
-				)
-					.formatted(Formatting.DARK_GRAY)
-			);
-			tooltip.add(
-				new TranslatableText(
-					"item.randomoresmod.gem.debug.rarity",
-					resource.rarity
-				)
-					.formatted(Formatting.DARK_GRAY)
-			);
-			tooltip.add(
-				new TranslatableText(
-					"item.randomoresmod.gem.debug.ore_spawn",
-					resource.oreMinSpawn,
-					resource.oreMaxSpawn,
-					resource.oreVeinSize,
-					resource.oresPerChunk
-				)
-					.formatted(Formatting.DARK_GRAY)
-			);
+			String resourceToString = resource.toString();
+			for (String v : resourceToString.split("\n")) {
+				tooltip.add(new LiteralText(v).formatted(Formatting.DARK_GRAY));
+			}
 		}
 	}
 
@@ -210,9 +66,8 @@ public class ModResourceColorPreview extends Item implements IRegisterable {
 	@Override
 	public Text getName() {
 		return new TranslatableText(
-			"item.randomoresmod.colorpreview",
-			new TranslatableText(resource.resourceTranslationKey),
-			new TranslatableText("name.randomoresmod.colorpreview.colorpreview")
+			"name.randomoresmod.colorpreview.colorpreview",
+			new TranslatableText(resource.resourceTranslationKey)
 		);
 	}
 
@@ -222,14 +77,10 @@ public class ModResourceColorPreview extends Item implements IRegisterable {
 	}
 
 	@Override
-	public void registerTranslations(TranslationBuilder trans) {
-		// TODO Auto-generated method stub
-	}
+	public void registerTranslations(TranslationBuilder trans) {}
 
 	@Override
-	public void registerData(ServerResourcePackBuilder data) {
-		// TODO Auto-generated method stub
-	}
+	public void registerData(ServerResourcePackBuilder data) {}
 
 	@Override
 	public void registerAssets(ClientResourcePackBuilder pack) {

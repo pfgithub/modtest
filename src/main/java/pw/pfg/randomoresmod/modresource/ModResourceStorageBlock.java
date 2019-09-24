@@ -39,7 +39,7 @@ public class ModResourceStorageBlock
 				)
 		);
 		this.resource = resource;
-		this.id = resource.storageBlockId;
+		this.id = resource.storageBlock.id;
 
 		this.blockItem =
 			new NamedBlockItem(
@@ -77,9 +77,8 @@ public class ModResourceStorageBlock
 	@Override
 	public Text getName() {
 		return new TranslatableText(
-			"block.randomoresmod.storageblock",
-			new TranslatableText(resource.resourceTranslationKey),
-			new TranslatableText(resource.storageBlockTranslationKey)
+			resource.storageBlock.style.languageKey,
+			new TranslatableText(resource.resourceTranslationKey)
 		);
 	}
 
@@ -106,10 +105,9 @@ public class ModResourceStorageBlock
 				model.parent(new Identifier("minecraft", "block/block"));
 				model.texture("particle", new Identifier("minecraft", "block/stone"));
 				int layerNumber = 0;
-				for (String style : resource.storageBlockStyle) {
+				for (TextureLayer layer : resource.storageBlock.style.texture) {
 					String varName = "layer" + (layerNumber++);
-					final int nextLayerNumber = layerNumber;
-					model.texture(varName, new Identifier(style));
+					model.texture(varName, layer.texture);
 					model.element(
 						elem -> {
 							elem.from(0, 0, 0).to(16, 16, 16);
@@ -118,7 +116,7 @@ public class ModResourceStorageBlock
 									dir,
 									s -> {
 										s.uv(0, 0, 16, 16).texture(varName).cullface(dir);
-										if (nextLayerNumber == resource.storageBlockStyle.length) {
+										if (layer.tinted) {
 											s.tintindex(0);
 										}
 									}
@@ -126,25 +124,25 @@ public class ModResourceStorageBlock
 							}
 						}
 					);
-					if (resource.isShiny) {
-						model.texture(
-							"glint",
-							new Identifier("randomoresmod:block/enchantment_glint")
-						);
-						model.element(
-							elem -> {
-								elem.from(0, 0, 0).to(16, 16, 16);
-								for (Direction dir : Direction.values()) {
-									elem.face(
-										dir,
-										s -> {
-											s.uv(0, 0, 16, 16).texture("glint").cullface(dir);
-										}
-									);
-								}
+				}
+				if (resource.isShiny) {
+					model.texture(
+						"glint",
+						new Identifier("randomoresmod:block/enchantment_glint")
+					);
+					model.element(
+						elem -> {
+							elem.from(0, 0, 0).to(16, 16, 16);
+							for (Direction dir : Direction.values()) {
+								elem.face(
+									dir,
+									s -> {
+										s.uv(0, 0, 16, 16).texture("glint").cullface(dir);
+									}
+								);
 							}
-						);
-					}
+						}
+					);
 				}
 			}
 		);
@@ -196,19 +194,19 @@ public class ModResourceStorageBlock
 			}
 		);
 		data.addShapedRecipe(
-			new Identifier("randomoresmod", resource.storageBlockId + "_from_gem"),
+			new Identifier("randomoresmod", resource.storageBlock.id + "_from_gem"),
 			shapeless -> {
-				shapeless.group(new Identifier("randomoresmod", resource.gemId))
+				shapeless.group(new Identifier("randomoresmod", resource.gem.id))
 					.pattern("###", "###", "###")
-					.ingredientItem('#', new Identifier("randomoresmod", resource.gemId))
+					.ingredientItem('#', new Identifier("randomoresmod", resource.gem.id))
 					.result(new Identifier("randomoresmod", this.id), 1);
 			}
 		);
 		data.addShapelessRecipe(
-			new Identifier("randomoresmod", resource.gemId + "_from_storage_block"),
+			new Identifier("randomoresmod", resource.gem.id + "_from_storage_block"),
 			shapeless -> {
 				shapeless.ingredientItem(new Identifier("randomoresmod", this.id))
-					.result(new Identifier("randomoresmod", resource.gemId), 9);
+					.result(new Identifier("randomoresmod", resource.gem.id), 9);
 			}
 		);
 	}
@@ -218,7 +216,10 @@ public class ModResourceStorageBlock
 		// it should be possible for one ore to be the same color as grass
 		ColorProviderRegistry.BLOCK.register((block, world, pos, layer) -> layer == 0 ? resource.color : 0, this);
 		ColorProviderRegistry.ITEM.register(
-			(stack, layer) -> layer == 0 ? resource.color : 16777215,
+			(stack, layer) -> layer < resource.storageBlock.style.texture.length
+				? resource.storageBlock.style.texture[layer].tinted ? resource.color
+				: 16777215
+				: 16777215,
 			this.blockItem
 		);
 	}

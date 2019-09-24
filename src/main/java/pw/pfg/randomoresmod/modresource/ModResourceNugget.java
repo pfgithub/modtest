@@ -30,7 +30,7 @@ public class ModResourceNugget extends Item implements IRegisterable {
 				.rarity(resource.rarityMC)
 		);
 		this.resource = resource;
-		this.id = resource.nuggetId;
+		this.id = resource.nugget.id;
 	}
 
 	@Override
@@ -52,9 +52,8 @@ public class ModResourceNugget extends Item implements IRegisterable {
 	@Override
 	public Text getName() {
 		return new TranslatableText(
-			"item.randomoresmod.nugget",
+			resource.nugget.style.languageKey,
 			new TranslatableText(resource.resourceTranslationKey)
-		// new TranslatableText(resource.nuggetTranslationKey)
 		);
 	}
 
@@ -69,19 +68,19 @@ public class ModResourceNugget extends Item implements IRegisterable {
 	@Override
 	public void registerData(ServerResourcePackBuilder data) {
 		data.addShapedRecipe(
-			new Identifier("randomoresmod", resource.gemId + "_from_nugget"),
+			new Identifier("randomoresmod", resource.gem.id + "_from_nugget"),
 			shaped -> {
 				shaped.group(new Identifier("randomoresmod", this.id))
 					.pattern("###", "###", "###")
 					.ingredientItem('#', new Identifier("randomoresmod", this.id))
-					.result(new Identifier("randomoresmod", resource.gemId), 1);
+					.result(new Identifier("randomoresmod", resource.gem.id), 1);
 			}
 		);
 		data.addShapelessRecipe(
 			new Identifier("randomoresmod", this.id + "_from_gem"),
 			shapeless -> {
 				shapeless.ingredientItem(
-					new Identifier("randomoresmod", resource.gemId)
+					new Identifier("randomoresmod", resource.gem.id)
 				)
 					.result(new Identifier("randomoresmod", this.id), 9);
 			}
@@ -95,8 +94,8 @@ public class ModResourceNugget extends Item implements IRegisterable {
 			model -> {
 				model.parent(new Identifier("minecraft", "item/generated"));
 				int i = 0;
-				for (String style : resource.nuggetStyle) {
-					model.texture("layer" + i, new Identifier(style)); // max 4
+				for (TextureLayer texture : resource.nugget.style.texture) {
+					model.texture("layer" + i, texture.texture); // max 4
 					i++;
 				}
 			}
@@ -118,8 +117,9 @@ public class ModResourceNugget extends Item implements IRegisterable {
 	@Override
 	public void registerClient() {
 		ColorProviderRegistry.ITEM.register(
-			(stack, layer) -> layer == resource.nuggetStyle.length - 1
-				? resource.color
+			(stack, layer) -> layer < resource.nugget.style.texture.length
+				? resource.nugget.style.texture[layer].tinted ? resource.color
+				: 16777215
 				: 16777215,
 			this
 		);
