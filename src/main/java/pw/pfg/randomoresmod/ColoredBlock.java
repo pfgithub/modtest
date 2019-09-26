@@ -3,6 +3,7 @@ package pw.pfg.randomoresmod;
 import java.util.List;
 import com.swordglowsblue.artifice.api.ArtificeResourcePack.ClientResourcePackBuilder;
 import com.swordglowsblue.artifice.api.ArtificeResourcePack.ServerResourcePackBuilder;
+import com.swordglowsblue.artifice.api.builder.assets.ModelBuilder;
 import com.swordglowsblue.artifice.api.builder.assets.TranslationBuilder;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -84,34 +85,38 @@ public class ColoredBlock
 		);
 	}
 
+	public void registerMainBlockModel(ModelBuilder model) {
+		model.parent(new Identifier("minecraft", "block/block"));
+		model.texture("particle", new Identifier("minecraft", "block/stone"));
+		int layerNumber = 0;
+		for (TextureLayer layer : resourceObject.style.texture) {
+			String varName = "layer" + (layerNumber++);
+			model.texture(varName, layer.texture);
+			model.element(
+				elem -> {
+					elem.from(0, 0, 0).to(16, 16, 16);
+					for (Direction dir : Direction.values()) {
+						elem.face(
+							dir,
+							s -> {
+								s.uv(0, 0, 16, 16).texture(varName).cullface(dir);
+								if (layer.tinted) {
+									s.tintindex(0);
+								}
+							}
+						);
+					}
+				}
+			);
+		}
+	}
+
 	@Override
 	public void registerAssets(ClientResourcePackBuilder pack) {
 		pack.addBlockModel(
 			new Identifier("randomoresmod", this.id),
 			model -> {
-				model.parent(new Identifier("minecraft", "block/block"));
-				model.texture("particle", new Identifier("minecraft", "block/stone"));
-				int layerNumber = 0;
-				for (TextureLayer layer : resourceObject.style.texture) {
-					String varName = "layer" + (layerNumber++);
-					model.texture(varName, layer.texture);
-					model.element(
-						elem -> {
-							elem.from(0, 0, 0).to(16, 16, 16);
-							for (Direction dir : Direction.values()) {
-								elem.face(
-									dir,
-									s -> {
-										s.uv(0, 0, 16, 16).texture(varName).cullface(dir);
-										if (layer.tinted) {
-											s.tintindex(0);
-										}
-									}
-								);
-							}
-						}
-					);
-				}
+				this.registerMainBlockModel(model);
 			}
 		);
 		pack.addBlockState(
