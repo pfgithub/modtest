@@ -78,3 +78,13 @@ trees:
 - height (min,max)
 - straightness (chance of moving horizontally)
 - weight (chance of bending)
+
+plants
+
+- plants that attach to the side of blocks (mushrooms)
+
+mushrooms
+
+- optional tall version (stem + top)
+- optional small placeable version
+- optional block side version (maybe allow multiplein the same block)
