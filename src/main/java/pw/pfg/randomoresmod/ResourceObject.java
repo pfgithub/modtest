@@ -1,6 +1,6 @@
-package pw.pfg.randomoresmod.modresource;
+package pw.pfg.randomoresmod;
 
-public abstract class ResourceObject {
+public class ResourceObject {
 	public String id;
 	public Style style; // max 4 for items, infinite for blocks
 

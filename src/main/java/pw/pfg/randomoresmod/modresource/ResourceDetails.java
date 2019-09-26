@@ -1,20 +1,13 @@
 package pw.pfg.randomoresmod.modresource;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
 import java.util.Random;
 import net.minecraft.util.Rarity;
+import pw.pfg.randomoresmod.ObjectDetails;
+import pw.pfg.randomoresmod.ResourceObject;
 
-public class ResourceDetails {
-	public int color;
+public class ResourceDetails extends ObjectDetails {
 	public float materialHardness;
 	public float materialResistance;
-
-	public String resourceId;
-	public String resourceTranslationKey;
-	public String resourceEnglishName;
 
 	public ResourceObject ore;
 	public ResourceObject gem;
@@ -99,7 +92,9 @@ public class ResourceDetails {
 		// redstone: 8
 		// diamond: 8
 		// lapis: 7
-		int oreVeinSize = (int) Math.floor(halfLife(oreGenRandom.nextDouble() * 5d, 15d, 2.222223d, 0.5d)); // distributed random (15, 9, 8, 5, 4, 3)
+		int oreVeinSize = (int) Math.floor(
+			halfLife(oreGenRandom.nextDouble() * 5d, 15d, 2.222223d, 0.5d)
+		); // distributed random (15, 9, 8, 5, 4, 3)
 
 		// feature
 		boolean requiresSmelting = featureRandom.nextBoolean();
@@ -115,7 +110,8 @@ public class ResourceDetails {
 		int shortUnusualSmeltingTime = featureRandom.nextInt(190) + 10;
 
 		// ability
-		boolean hasNugget = isIngot && (abilityRandom.nextBoolean() || abilityRandom.nextBoolean());
+		boolean hasNugget = isIngot &&
+		(abilityRandom.nextBoolean() || abilityRandom.nextBoolean());
 
 		boolean isFuel = abilityRandom.nextInt(4) == 0;
 		int fuelSmeltingTime = abilityRandom.nextInt(64) * 100; // 200 smelts 1 item in a furnace or 2 items in a blast furnace
@@ -126,7 +122,8 @@ public class ResourceDetails {
 		boolean isShiny = rarity > 3f && cosmeticRandom.nextBoolean();
 
 		// computed
-		String resourceEnglishName = resourceNameId.substring(0, 1).toUpperCase() + resourceNameId.substring(1);
+		String englishName = resourceNameId.substring(0, 1).toUpperCase() +
+			resourceNameId.substring(1);
 
 		ResourceObject oreStyle = ResourceObjectOre.random(resourceNameId);
 		ResourceObject gemStyle = isIngot
@@ -156,8 +153,8 @@ public class ResourceDetails {
 			rarityMC = Rarity.COMMON;
 		}
 
-		String resourceId = resourceNameId;
-		String resourceTranslationKey = "name.randomoresmod.resource." + resourceId;
+		String baseId = resourceNameId;
+		String translationKey = "name.randomoresmod.resource." + baseId;
 
 		// ---
 		//
@@ -171,11 +168,11 @@ public class ResourceDetails {
 		// inspired by https://i.redd.it/6lalhnzbann31.png
 		return new ResourceDetails(
 			color,
+			baseId,
+			translationKey,
+			englishName,
 			materialHardness,
 			materialResistance,
-			resourceId,
-			resourceTranslationKey,
-			resourceEnglishName,
 			oreStyle,
 			gemStyle,
 			storageBlockStyle,
@@ -197,11 +194,11 @@ public class ResourceDetails {
 
 	private ResourceDetails(
 		int color,
+		String baseId,
+		String translationKey,
+		String englishName,
 		float materialHardness,
 		float materialResistance,
-		String resourceId,
-		String resourceTranslationKey,
-		String resourceEnglishName,
 		ResourceObject ore,
 		ResourceObject gem,
 		ResourceObject storageBlock,
@@ -219,12 +216,9 @@ public class ResourceDetails {
 		int oreVeinSize,
 		boolean isShiny
 	) {
-		this.color = color;
+		super(color, baseId, translationKey, englishName);
 		this.materialHardness = materialHardness;
 		this.materialResistance = materialResistance;
-		this.resourceId = resourceId;
-		this.resourceTranslationKey = resourceTranslationKey;
-		this.resourceEnglishName = resourceEnglishName;
 		this.ore = ore;
 		this.gem = gem;
 		this.storageBlock = storageBlock;
@@ -246,5 +240,31 @@ public class ResourceDetails {
 	// console.log(list.map(l => l[1]).join(",\n"));
 	// console.log(list.map(l => l.join(" ")).join(",\n"));
 	// console.log(list.map(l => `this.${l[1]} = ${l[1]};`).join("\n"));
+	}
+
+	//prettier-ignore
+	@Override
+	public String toString() {
+		return "{" +
+			" \n super=" + super.toString() +
+			",\n materialHardness='" + materialHardness + "'" +
+			",\n materialResistance='" + materialResistance + "'" +
+			",\n ore='" + ore + "'" +
+			",\n gem='" + gem + "'" +
+			",\n storageBlock='" + storageBlock + "'" +
+			",\n nugget='" + nugget + "'" +
+			",\n requiresSmelting='" + requiresSmelting + "'" +
+			",\n dropsMany='" + dropsMany + "'" +
+			",\n isFuel='" + isFuel + "'" +
+			",\n fuelSmeltingTime='" + fuelSmeltingTime + "'" +
+			",\n smeltingTime='" + smeltingTime + "'" +
+			",\n rarityMC='" + rarityMC + "'" +
+			",\n rarity='" + rarity + "'" +
+			",\n oreMinSpawn='" + oreMinSpawn + "'" +
+			",\n oreMaxSpawn='" + oreMaxSpawn + "'" +
+			",\n oresPerChunk='" + oresPerChunk + "'" +
+			",\n oreVeinSize='" + oreVeinSize + "'" +
+			",\n isShiny='" + isShiny + "'" +
+			" \n}";
 	}
 }

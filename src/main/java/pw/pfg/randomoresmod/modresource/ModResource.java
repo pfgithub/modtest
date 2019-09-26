@@ -29,7 +29,7 @@ public class ModResource implements IRegisterable {
 
 	@Override
 	public void registerTranslations(TranslationBuilder trans) {
-		trans.entry(resource.resourceTranslationKey, resource.resourceEnglishName);
+		trans.entry(resource.translationKey, resource.englishName);
 
 		for (IRegisterable registerable : this.THINGS) {
 			registerable.registerTranslations(trans);

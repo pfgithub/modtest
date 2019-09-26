@@ -3,6 +3,8 @@ package pw.pfg.randomoresmod.modresource;
 import java.util.ArrayList;
 import java.util.List;
 
+import pw.pfg.randomoresmod.Style;
+
 interface Processor<T>{
     void call(T builder);
 }

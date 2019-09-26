@@ -60,5 +60,5 @@
 	"name.randomoresmod.storage_block.shiny": "Block of %s",
 	"name.randomoresmod.storage_block.streaky": "Block of %s",
 
-	"name.randomoresmod.colorpreview.colorpreview": "Color Preview"
+	"name.randomoresmod.debug.colorpreview": "%s Color Preview"
 }

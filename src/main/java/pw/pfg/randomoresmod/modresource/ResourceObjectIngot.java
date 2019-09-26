@@ -2,6 +2,9 @@ package pw.pfg.randomoresmod.modresource;
 
 import java.util.Random;
 
+import pw.pfg.randomoresmod.ResourceObject;
+import pw.pfg.randomoresmod.Style;
+
 public class ResourceObjectIngot extends ResourceObject {
 
 	public static Style[] STYLE = StyleSet.Builder()

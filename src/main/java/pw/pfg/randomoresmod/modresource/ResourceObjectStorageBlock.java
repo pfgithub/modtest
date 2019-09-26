@@ -1,6 +1,8 @@
 package pw.pfg.randomoresmod.modresource;
 
 import java.util.Random;
+import pw.pfg.randomoresmod.ResourceObject;
+import pw.pfg.randomoresmod.Style;
 
 public class ResourceObjectStorageBlock extends ResourceObject {
 	public static Style[] STYLE = StyleSet.Builder()
@@ -20,14 +22,10 @@ public class ResourceObjectStorageBlock extends ResourceObject {
 
 		Style style = STYLE[random.nextInt(STYLE.length)];
 
-		return new ResourceObjectStorageBlock(id, style, "");
+		return new ResourceObjectStorageBlock(id, style);
 	}
 
-	public ResourceObjectStorageBlock(
-		String id,
-		Style style,
-		String translationKey
-	) {
+	public ResourceObjectStorageBlock(String id, Style style) {
 		super(id, style);
 	}
 }
