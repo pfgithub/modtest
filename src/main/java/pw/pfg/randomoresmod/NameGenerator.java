@@ -3,6 +3,7 @@ package pw.pfg.randomoresmod;
 import java.util.List;
 import java.util.Random;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 class StringNameGenerator extends NameGenerator {
 	String string;
@@ -107,5 +108,15 @@ public abstract class NameGenerator {
 		return OrderedNameGenerator.from(values);
 	}
 
+	static HashMap<String, Boolean> generatedNames = new HashMap<>();
+
 	public abstract String generate(Random random);
+	public final String generateUnique(Random random){
+		String finalName = this.generate(random);
+		while (generatedNames.getOrDefault(finalName, new Boolean(false))) {
+			finalName += "_";
+        }
+		generatedNames.put(finalName, new Boolean(true));
+		return finalName;
+	}
 }

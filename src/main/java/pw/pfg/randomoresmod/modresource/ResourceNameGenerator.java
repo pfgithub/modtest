@@ -2,10 +2,9 @@ package pw.pfg.randomoresmod.modresource;
 
 import java.util.Random;
 import pw.pfg.randomoresmod.NameGenerator;
-import java.util.HashMap;
 
-public class ResourceNameGenerator {
-	static NameGenerator P1 = NameGenerator.list(
+public class ResourceNameGenerator extends NameGenerator {
+	static final NameGenerator P1 = list(
 		"e",
 		"a",
 		"u",
@@ -20,7 +19,7 @@ public class ResourceNameGenerator {
 		"ea",
 		"ao"
 	);
-	static NameGenerator P2 = NameGenerator.list(
+	static final NameGenerator P2 = list(
 		"l",
 		"c",
 		"t",
@@ -35,7 +34,7 @@ public class ResourceNameGenerator {
 		"br",
 		"b"
 	);
-	static NameGenerator P3 = NameGenerator.list(
+	static final NameGenerator P3 = list(
 		"l",
 		"c",
 		"cw",
@@ -50,7 +49,7 @@ public class ResourceNameGenerator {
 		"br",
 		"n"
 	);
-	static NameGenerator P4 = NameGenerator.list(
+	static final NameGenerator P4 = list(
 		"st",
 		"sk",
 		"sh",
@@ -65,7 +64,7 @@ public class ResourceNameGenerator {
 		"h",
 		"vr"
 	);
-	static NameGenerator P5 = NameGenerator.list(
+	static final NameGenerator P5 = list(
 		"w",
 		"r",
 		"t",
@@ -80,25 +79,19 @@ public class ResourceNameGenerator {
 		"sp",
 		"b"
 	);
-	static NameGenerator PIum = NameGenerator.list("ite", "ium");
+	static final NameGenerator PIum = list("ite", "ium");
 
-	static NameGenerator MAIN = NameGenerator.order(
-		NameGenerator.optional(P2),
+	static final NameGenerator MAIN = order(
+		optional(P2),
 		P1,
 		P2,
-		NameGenerator.optional(
-			NameGenerator.order(P2, NameGenerator.optional(PIum))
-		)
+		optional(order(P2, optional(PIum)))
 	);
 
-	static HashMap<String, Boolean> generatedNames = new HashMap<>();
+	public static final ResourceNameGenerator INSTANCE = new ResourceNameGenerator();
 
-	public static String generate(int seed) {
-		String finalName = MAIN.generate(new Random(seed));
-		while (generatedNames.getOrDefault(finalName, new Boolean(false))) {
-			finalName += "_";
-		}
-		generatedNames.put(finalName, new Boolean(true));
-		return finalName;
+	@Override
+	public String generate(Random random) {
+		return MAIN.generate(random);
 	}
 }

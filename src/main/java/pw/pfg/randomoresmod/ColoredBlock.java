@@ -170,6 +170,6 @@ public class ColoredBlock
 
 	@Override
 	public boolean hasEnchantmentGlint(ItemStack itemStack_1) {
-		return itemStack_1.hasEnchantmentGlint();
+		return false;
 	}
 }

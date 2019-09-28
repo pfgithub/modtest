@@ -2,7 +2,9 @@ package pw.pfg.randomoresmod;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import com.swordglowsblue.artifice.api.Artifice;
+import org.apache.commons.lang3.text.WordUtils;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
 import net.fabricmc.fabric.api.event.registry.RegistryEntryAddedCallback;
@@ -13,6 +15,9 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import pw.pfg.randomoresmod.modbiome.BiomeDetails;
 import pw.pfg.randomoresmod.modbiome.ModBiome;
+import pw.pfg.randomoresmod.modbiome.plant.TreeDetails;
+import pw.pfg.randomoresmod.modbiome.plant.TreeNameGenerator;
+import pw.pfg.randomoresmod.modbiome.plant.TreeRegisterer;
 import pw.pfg.randomoresmod.modresource.ModResource;
 import pw.pfg.randomoresmod.modresource.ResourceNameGenerator;
 import pw.pfg.randomoresmod.modresource.ResourceDetails;
@@ -44,7 +49,9 @@ public class RandomOresMod implements ModInitializer {
 		for (int i = 0; i < 255; i++) {
 			RandomOresMod.THINGS.add(
 				new ModResource(
-					ResourceDetails.random(ResourceNameGenerator.generate(i))
+					ResourceDetails.random(
+						ResourceNameGenerator.INSTANCE.generateUnique(new Random(i))
+					)
 				)
 			);
 		}
@@ -52,6 +59,14 @@ public class RandomOresMod implements ModInitializer {
 		for (String manualAdd : manualAdds) {
 			RandomOresMod.THINGS.add(
 				new ModResource(ResourceDetails.random(manualAdd))
+			);
+		}
+		for (int i = 0; i < 255; i++) {
+			String id = TreeNameGenerator.INSTANCE.generateUnique(new Random(i));
+			System.out.println("Registering plant with id " + id);
+			String englishName = WordUtils.capitalize(id.replace("_", " "));
+			RandomOresMod.THINGS.add(
+				new TreeRegisterer(TreeDetails.random(id, englishName))
 			);
 		}
 	}

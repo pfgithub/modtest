@@ -1,6 +1,7 @@
 package pw.pfg.randomoresmod.modbiome.plant;
 
 import com.swordglowsblue.artifice.api.ArtificeResourcePack.ServerResourcePackBuilder;
+
 import net.fabricmc.fabric.api.block.FabricBlockSettings;
 import net.minecraft.block.Material;
 import net.minecraft.block.MaterialColor;
@@ -10,19 +11,17 @@ import net.minecraft.util.Identifier;
 import pw.pfg.randomoresmod.ColoredBlock;
 import pw.pfg.randomoresmod.RandomOresMod;
 
-public class TreeLogBlock extends ColoredBlock {
+public class TreePlankBlock extends ColoredBlock {
 	TreeDetails resource;
 	Item blockItem;
 
-	public TreeLogBlock(TreeDetails resource) {
+	public TreePlankBlock(TreeDetails resource) {
 		super(
 			resource,
-			resource.log,
-			FabricBlockSettings.of(Material.WOOD, MaterialColor.SPRUCE)
-				.strength(2.0F, 2.0F)
-				.sounds(BlockSoundGroup.WOOD)
-				.build(),
-			new Item.Settings().group(RandomOresMod.RESOURCES)
+            resource.planks,
+			FabricBlockSettings.of(Material.WOOD, MaterialColor.WOOD).strength(2.0F, 3.0F).sounds(BlockSoundGroup.WOOD).build(),
+			new Item.Settings()
+				.group(RandomOresMod.RESOURCES)
 		);
 		this.resource = resource;
 	}
