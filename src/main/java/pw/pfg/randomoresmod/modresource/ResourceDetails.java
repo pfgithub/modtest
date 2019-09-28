@@ -117,7 +117,7 @@ public class ResourceDetails extends ObjectDetails {
 		int fuelSmeltingTime = abilityRandom.nextInt(64) * 100; // 200 smelts 1 item in a furnace or 2 items in a blast furnace
 
 		// cosmetic
-		int color = cosmeticRandom.nextInt(16777215);
+		int color = cosmeticRandom.nextInt(0xFFFFFF); // can't generate 0xFFFFFF. maybe change?
 
 		boolean isShiny = rarity > 3f && cosmeticRandom.nextBoolean();
 
