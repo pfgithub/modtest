@@ -1,12 +1,11 @@
 package pw.pfg.randomoresmod.modresource;
 
-import java.util.List;
 import java.util.Random;
-import java.util.Arrays;
+import pw.pfg.randomoresmod.NameGenerator;
 import java.util.HashMap;
 
-public class NameGenerator {
-	static List<String> P1 = Arrays.asList(
+public class ResourceNameGenerator {
+	static NameGenerator P1 = NameGenerator.list(
 		"e",
 		"a",
 		"u",
@@ -21,7 +20,7 @@ public class NameGenerator {
 		"ea",
 		"ao"
 	);
-	static List<String> P2 = Arrays.asList(
+	static NameGenerator P2 = NameGenerator.list(
 		"l",
 		"c",
 		"t",
@@ -36,7 +35,7 @@ public class NameGenerator {
 		"br",
 		"b"
 	);
-	static List<String> P3 = Arrays.asList(
+	static NameGenerator P3 = NameGenerator.list(
 		"l",
 		"c",
 		"cw",
@@ -51,7 +50,7 @@ public class NameGenerator {
 		"br",
 		"n"
 	);
-	static List<String> P4 = Arrays.asList(
+	static NameGenerator P4 = NameGenerator.list(
 		"st",
 		"sk",
 		"sh",
@@ -66,7 +65,7 @@ public class NameGenerator {
 		"h",
 		"vr"
 	);
-	static List<String> P5 = Arrays.asList(
+	static NameGenerator P5 = NameGenerator.list(
 		"w",
 		"r",
 		"t",
@@ -81,23 +80,21 @@ public class NameGenerator {
 		"sp",
 		"b"
 	);
-	static List<String> PIum = Arrays.asList("ite", "ium");
+	static NameGenerator PIum = NameGenerator.list("ite", "ium");
+
+	static NameGenerator MAIN = NameGenerator.order(
+		NameGenerator.optional(P2),
+		P1,
+		P2,
+		NameGenerator.optional(
+			NameGenerator.order(P2, NameGenerator.optional(PIum))
+		)
+	);
 
 	static HashMap<String, Boolean> generatedNames = new HashMap<>();
 
 	public static String generate(int seed) {
-		Random random = new Random(seed);
-		String ae = random.nextBoolean() ? P2.get(random.nextInt(P2.size())) : "";
-		String af = P1.get(random.nextInt(P1.size()));
-		String ag = P2.get(random.nextInt(P2.size()));
-		String ah = random.nextBoolean() ? P1.get(random.nextInt(P1.size())) : "";
-		String ai = ah != "" && random.nextBoolean()
-			? P2.get(random.nextInt(P2.size()))
-			: "";
-		String aj = ai != "" && random.nextBoolean()
-			? PIum.get(random.nextInt(PIum.size()))
-			: "";
-		String finalName = ae + af + ag + ah + ai + aj;
+		String finalName = MAIN.generate(new Random(seed));
 		while (generatedNames.getOrDefault(finalName, new Boolean(false))) {
 			finalName += "_";
 		}

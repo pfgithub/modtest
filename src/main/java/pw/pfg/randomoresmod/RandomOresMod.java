@@ -14,7 +14,7 @@ import net.minecraft.util.registry.Registry;
 import pw.pfg.randomoresmod.modbiome.BiomeDetails;
 import pw.pfg.randomoresmod.modbiome.ModBiome;
 import pw.pfg.randomoresmod.modresource.ModResource;
-import pw.pfg.randomoresmod.modresource.NameGenerator;
+import pw.pfg.randomoresmod.modresource.ResourceNameGenerator;
 import pw.pfg.randomoresmod.modresource.ResourceDetails;
 
 public class RandomOresMod implements ModInitializer {
@@ -43,7 +43,7 @@ public class RandomOresMod implements ModInitializer {
 		);
 		for (int i = 0; i < 255; i++) {
 			RandomOresMod.THINGS.add(
-				new ModResource(ResourceDetails.random(NameGenerator.generate(i)))
+				new ModResource(ResourceDetails.random(ResourceNameGenerator.generate(i)))
 			);
 		}
 	}
