@@ -1,8 +1,30 @@
-random
+## textures
 
-- [x] name should come first in random to prevent any accidental changes
-- [x] maybe generate the ore using the name as the random seed instead of the other way around
-- [x] that way the same name will always generate the same ore
+gem
+
+- update all gems to use base+overlay textures so things like ingot look right
+- update some older textures like diamond to better match the original
+- add some clear variants of textures (like shard now but with both filled and clear)
+
+ingot
+
+- make some more unique textures
+- make existing unique textures not look terrible
+
+storage block
+
+- make streaky (coal block themed) not look terrible
+- lighten borders of lined (iron) or make it not look as bad
+- add some of the pre-1.14 textures and some of the new resource pack public beta textures
+
+ores
+
+- add some custom ore textures (for example, smaller dots and thinner, longer streaks)
+- add some nether ores (and do the transparency correctly like netherrack has)
+- maybe?: andesite/granite/diorite ores?
+- maybe?: sand/gravel/dirt ores?
+
+## ores
 
 ores
 
@@ -30,11 +52,33 @@ related items
 - block of x (for storage, 3x3)
 - decorative block (for decoration, 2x2, not reverseable)
 
+decorative blocks
+
+- stairs,slabs
+- walls
+- smooth (+stairs,slabs,walls if exist)
+- cut (+stairs,slabs,walls if exist)
+- chiseled
+- pillar
+
 special items (any of these)
 
 - torch (must be fuel)
 - spike
 - anvil
+- hopper
+- redstone dust (maybe not...)
+- tripwire string/hook
+- cauldrons
+- chest
+- rails (powered?) (possibly increase max speed)
+- doors/trapdoors
+- weighted pressure plates
+- bars
+- ladders
+- specialized furnaces
+- fluids
+- pistons
 
 effects (items can have multiple, effects impact tool use, edibility, ...)
 
@@ -71,7 +115,7 @@ far future
 - this would allow better mod support and possibly a different color filter method
   and fix the transparent mining bug
 
-biomes
+## biomes
 
 trees:
 
