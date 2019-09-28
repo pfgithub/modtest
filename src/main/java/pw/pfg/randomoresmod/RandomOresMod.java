@@ -48,7 +48,7 @@ public class RandomOresMod implements ModInitializer {
 				)
 			);
 		}
-		String[] manualAdds = new String[] { "telhllium", };
+		String[] manualAdds = new String[] { "telhllium", "uuodiyium" };
 		for (String manualAdd : manualAdds) {
 			RandomOresMod.THINGS.add(
 				new ModResource(ResourceDetails.random(manualAdd))
