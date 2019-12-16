@@ -1,13 +1,11 @@
 package pw.pfg.randomoresmod.modbiome.plant;
 
 import java.util.Random;
-
-import pw.pfg.randomoresmod.ResourceObject;
+import pw.pfg.randomoresmod.TextureInfo;
 import pw.pfg.randomoresmod.Style;
 import pw.pfg.randomoresmod.modresource.StyleSet;
 
-public class ResourceObjectLeaves extends ResourceObject {
-
+public class ResourceObjectLeaves extends TextureInfo {
 	public static Style[] STYLE = StyleSet.Builder()
 		.resourceBase("minecraft:block/")
 		.languageKeyBase("name.randomoresmod.leaves.")

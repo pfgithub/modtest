@@ -3,38 +3,59 @@ package pw.pfg.randomoresmod.modresource;
 import java.util.List;
 import com.swordglowsblue.artifice.api.ArtificeResourcePack.ClientResourcePackBuilder;
 import com.swordglowsblue.artifice.api.ArtificeResourcePack.ServerResourcePackBuilder;
-import com.swordglowsblue.artifice.api.builder.assets.ModelBuilder;
 import com.swordglowsblue.artifice.api.builder.assets.TranslationBuilder;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.registry.FuelRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.block.Material;
 import net.minecraft.block.MaterialColor;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.biome.Biome;
-import pw.pfg.randomoresmod.ColoredBlock;
+import pw.pfg.randomoresmod.IRegisterable;
 import pw.pfg.randomoresmod.RandomOresMod;
+import pw.pfg.randomoresmod.RegistrationHelper;
+import pw.pfg.randomoresmod.TextureInfo;
 
-public class ModResourceStorageBlock extends ColoredBlock {
+public class ModResourceStorageBlock
+	extends Block
+	implements IRegisterable, IItemBlock<Block> {
 	ResourceDetails resource;
-	Item blockItem;
+	protected TextureInfo texture;
+	Item item;
 
 	public ModResourceStorageBlock(ResourceDetails resource) {
 		super(
-			resource,
-			resource.storageBlock,
 			Block.Settings.of(Material.METAL, MaterialColor.IRON)
 				.strength(
 					resource.materialHardness * 9,
 					resource.materialResistance * 9
-				),
-			new Item.Settings()
-				.group(RandomOresMod.RESOURCES)
-				.rarity(resource.rarityMC)
+				)
 		);
 		this.resource = resource;
+		this.texture = resource.storageBlock;
+		this.item =
+			new NamedBlockItem(
+				this,
+				new Item.Settings()
+					.group(RandomOresMod.RESOURCES)
+					.rarity(resource.rarityMC)
+			);
+	}
+
+	@Override
+	public final String getTranslationKey() {
+		return RegistrationHelper.getTranslationKey();
+	}
+
+	@Environment(EnvType.CLIENT)
+	@Override
+	public Text getName() {
+		return RegistrationHelper.getName(this.texture, this.resource);
 	}
 
 	@Override
@@ -44,17 +65,15 @@ public class ModResourceStorageBlock extends ColoredBlock {
 
 	@Override
 	public void registerItemGroup(List<ItemStack> stacks) {
-		super.registerItemGroup(stacks);
+		stacks.add(new ItemStack(this));
 	}
 
 	@Override
-	public void registerTranslations(TranslationBuilder trans) {
-		super.registerTranslations(trans);
-	}
+	public void registerTranslations(TranslationBuilder trans) {}
 
 	@Override
 	public void register() {
-		super.register();
+		RegistrationHelper.register(this.texture.id, this, this.item);
 		if (resource.isFuel) {
 			FuelRegistry.INSTANCE.add(
 				this,
@@ -63,51 +82,50 @@ public class ModResourceStorageBlock extends ColoredBlock {
 		}
 	}
 
-	@Override
-	public void registerMainBlockModel(ModelBuilder model) {
-		super.registerMainBlockModel(model);
-
-		if (this.resource.isShiny) {
-			String layerVarname = "enchantment_glint";
-			model.texture(
-				layerVarname,
-				new Identifier("randomoresmod", "block/enchantment_glint")
-			);
-			model.element(
-				elem -> {
-					elem.from(0, 0, 0).to(16, 16, 16);
-					for (Direction dir : Direction.values()) {
-						elem.face(
-							dir,
-							s -> {
-								s.uv(0, 0, 16, 16).texture(layerVarname).cullface(dir);
-							}
-						);
-					}
-				}
-			);
-		}
-	}
-
 	// view (find . -name "iron_ore.json")
 	@Override
 	public void registerAssets(ClientResourcePackBuilder pack) {
-		super.registerAssets(pack);
+		RegistrationHelper.registerModels(
+			pack,
+			this.texture,
+			model -> {
+				RegistrationHelper.registerDefaultBlockModel(model, this.texture);
+				if (this.resource.isShiny) {
+					String layerVarname = "enchantment_glint";
+					model.texture(
+						layerVarname,
+						new Identifier("randomoresmod", "block/enchantment_glint")
+					);
+					model.element(
+						elem -> {
+							elem.from(0, 0, 0).to(16, 16, 16);
+							for (Direction dir : Direction.values()) {
+								elem.face(
+									dir,
+									s -> {
+										s.uv(0, 0, 16, 16).texture(layerVarname).cullface(dir);
+									}
+								);
+							}
+						}
+					);
+				}
+			}
+		);
 	}
 
 	@Override
 	public void registerData(ServerResourcePackBuilder data) {
-		super.registerData(data);
 		data.addLootTable(
-			new Identifier("randomoresmod", "blocks/" + this.id),
+			new Identifier("randomoresmod", "blocks/" + this.texture.id),
 			ltp -> {
-				ltp.type(new Identifier("randomoresmod", "block/" + this.id))
+				ltp.type(new Identifier("randomoresmod", "block/" + this.texture.id))
 					.pool(
 						pool -> {
 							pool.rolls(1);
 							pool.entry(
 								e -> {
-									e.name(new Identifier("randomoresmod", this.id))
+									e.name(new Identifier("randomoresmod", this.texture.id))
 										.type(new Identifier("minecraft:item"));
 								}
 							);
@@ -125,13 +143,15 @@ public class ModResourceStorageBlock extends ColoredBlock {
 				shapeless.group(new Identifier("randomoresmod", resource.gem.id))
 					.pattern("###", "###", "###")
 					.ingredientItem('#', new Identifier("randomoresmod", resource.gem.id))
-					.result(new Identifier("randomoresmod", this.id), 1);
+					.result(new Identifier("randomoresmod", this.texture.id), 1);
 			}
 		);
 		data.addShapelessRecipe(
 			new Identifier("randomoresmod", resource.gem.id + "_from_storage_block"),
 			shapeless -> {
-				shapeless.ingredientItem(new Identifier("randomoresmod", this.id))
+				shapeless.ingredientItem(
+					new Identifier("randomoresmod", this.texture.id)
+				)
 					.result(new Identifier("randomoresmod", resource.gem.id), 9);
 			}
 		);
@@ -139,11 +159,14 @@ public class ModResourceStorageBlock extends ColoredBlock {
 
 	@Override
 	public void registerClient() {
-		super.registerClient();
+		RegistrationHelper.registerColorProvider(this, this.item, this.resource);
 	}
 
 	@Override
-	public void registerBiomeFeatures(Biome biome) {
-		super.registerBiomeFeatures(biome);
+	public void registerBiomeFeatures(Biome biome) {}
+
+	@Override
+	public Block self() {
+		return this;
 	}
 }

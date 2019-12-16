@@ -1,10 +1,10 @@
 package pw.pfg.randomoresmod.modresource;
 
 import java.util.Random;
-import pw.pfg.randomoresmod.ResourceObject;
+import pw.pfg.randomoresmod.TextureInfo;
 import pw.pfg.randomoresmod.Style;
 
-public class ResourceObjectStorageBlock extends ResourceObject {
+public class ResourceObjectStorageBlock extends TextureInfo {
 	public static Style[] STYLE = StyleSet.Builder()
 		.resourceBase("randomoresmod:block/storage_block/")
 		.languageKeyBase("name.randomoresmod.storage_block.")

@@ -1,6 +1,9 @@
 package pw.pfg.randomoresmod.modresource;
 
 import java.util.List;
+import com.swordglowsblue.artifice.api.ArtificeResourcePack.ClientResourcePackBuilder;
+import com.swordglowsblue.artifice.api.ArtificeResourcePack.ServerResourcePackBuilder;
+import com.swordglowsblue.artifice.api.builder.assets.TranslationBuilder;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.item.TooltipContext;
@@ -11,20 +14,26 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
-import pw.pfg.randomoresmod.ColoredItem;
+import net.minecraft.world.biome.Biome;
+import pw.pfg.randomoresmod.IRegisterable;
 import pw.pfg.randomoresmod.RandomOresMod;
-import pw.pfg.randomoresmod.ResourceObject;
+import pw.pfg.randomoresmod.RegistrationHelper;
 import pw.pfg.randomoresmod.Style;
+import pw.pfg.randomoresmod.TextureInfo;
 
-public class ModResourceColorPreview extends ColoredItem {
+public class ModResourceColorPreview extends Item implements IRegisterable {
 	ResourceDetails resource;
-	String id;
-	Item blockItem;
+	TextureInfo texture;
 
 	public ModResourceColorPreview(ResourceDetails resource) {
 		super(
-			resource,
-			new ResourceObject(
+			new Item.Settings()
+				.group(RandomOresMod.RESOURCES)
+				.rarity(resource.rarityMC)
+		);
+		this.resource = resource;
+		this.texture =
+			new TextureInfo(
 				resource.baseID + "_color_preview",
 				new Style(
 					new TextureLayer.SetBuilder()
@@ -32,12 +41,7 @@ public class ModResourceColorPreview extends ColoredItem {
 						.build(),
 					"name.randomoresmod.debug.colorpreview"
 				)
-			),
-			new Item.Settings()
-				.group(RandomOresMod.RESOURCES)
-				.rarity(resource.rarityMC)
-		);
-		this.resource = resource;
+			);
 	}
 
 	@Environment(EnvType.CLIENT)
@@ -54,5 +58,51 @@ public class ModResourceColorPreview extends ColoredItem {
 				tooltip.add(new LiteralText(v).formatted(Formatting.DARK_GRAY));
 			}
 		}
+	}
+
+	@Override
+	public final String getTranslationKey() {
+		return RegistrationHelper.getTranslationKey();
+	}
+
+	@Environment(EnvType.CLIENT)
+	@Override
+	public Text getName() {
+		return RegistrationHelper.getName(texture, resource);
+	}
+
+	@Environment(EnvType.CLIENT)
+	@Override
+	public Text getName(ItemStack itemStack) {
+		return this.getName();
+	}
+
+	@Override
+	public void registerTranslations(TranslationBuilder trans) {}
+
+	@Override
+	public void registerData(ServerResourcePackBuilder data) {}
+
+	@Override
+	public void registerAssets(ClientResourcePackBuilder pack) {
+		RegistrationHelper.registerItemModels(pack, texture);
+	}
+
+	@Override
+	public void register() {
+		RegistrationHelper.register(this.texture.id, this);
+	}
+
+	@Override
+	public void registerClient() {
+		RegistrationHelper.registerColorProvider(this, resource);
+	}
+
+	@Override
+	public void registerBiomeFeatures(Biome biome) {}
+
+	@Override
+	public void registerItemGroup(List<ItemStack> stacks) {
+		stacks.add(new ItemStack(this));
 	}
 }

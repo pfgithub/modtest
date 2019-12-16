@@ -1,13 +1,18 @@
 package pw.pfg.randomoresmod.modresource;
 
+import java.util.List;
+import com.swordglowsblue.artifice.api.ArtificeResourcePack.ClientResourcePackBuilder;
 import com.swordglowsblue.artifice.api.ArtificeResourcePack.ServerResourcePackBuilder;
 import com.swordglowsblue.artifice.api.builder.assets.TranslationBuilder;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRenderLayer;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Material;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.GenerationStep;
@@ -15,63 +20,101 @@ import net.minecraft.world.gen.decorator.Decorator;
 import net.minecraft.world.gen.decorator.RangeDecoratorConfig;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.OreFeatureConfig;
-import pw.pfg.randomoresmod.ColoredBlock;
+import pw.pfg.randomoresmod.IRegisterable;
 import pw.pfg.randomoresmod.RandomOresMod;
+import pw.pfg.randomoresmod.RegistrationHelper;
+import pw.pfg.randomoresmod.TextureInfo;
 
-public class ModResourceOre extends ColoredBlock {
-	ResourceDetails resource;
+public class ModResourceOre
+	extends Block
+	implements IRegisterable, IItemBlock<Block> {
 	Item blockItem;
+	ResourceDetails resource;
+	protected TextureInfo texture;
 
 	public ModResourceOre(ResourceDetails resource) {
 		// new OreBlock(Block.Settings.of(Material.STONE).strength(3.0F, 3.0F)))
 		super(
-			resource,
-			resource.ore,
 			Block.Settings.of(Material.STONE)
-				.strength(resource.materialHardness, resource.materialResistance),
-			new Item.Settings()
-				.group(RandomOresMod.RESOURCES)
-				.rarity(resource.rarityMC)
+				.strength(resource.materialHardness, resource.materialResistance)
 		);
 		this.resource = resource;
+		this.texture = resource.ore;
+		this.blockItem =
+			new NamedBlockItem(
+				this,
+				new Item.Settings()
+					.group(RandomOresMod.RESOURCES)
+					.rarity(resource.rarityMC)
+			);
 	}
 
 	@Override
-	public boolean hasEnchantmentGlint(ItemStack itemStack_1) {
+	public final Block self() {
+		return this;
+	}
+
+	@Override
+	public boolean hasEnchantmentGlint(ItemStack itemStack) {
 		return resource.isShiny;
 	}
 
 	@Override
-	public void registerTranslations(TranslationBuilder trans) {}
+	public final String getTranslationKey() {
+		return RegistrationHelper.getTranslationKey();
+	}
 
-	// public void registerAssets(ClientResourcePackBuilder pack) {
-	// 	// pack.addItemModel(id, f);
-	// // pack.addTranslations(new Identifier("randomoresmod", "en_US"), trans -> {});
-	// // todo: do a thing that adds a slab for every block as an easy example test
-	// }
-	// view (find . -name "iron_ore.json")
+	@Environment(EnvType.CLIENT)
+	@Override
+	public Text getName() {
+		return RegistrationHelper.getName(this.texture, this.resource);
+	}
+
+	@Override
+	public void register() {
+		RegistrationHelper.register(this.texture.id, this, this.blockItem);
+	}
+
+	@Override
+	public void registerAssets(ClientResourcePackBuilder pack) {
+		RegistrationHelper.registerModels(
+			pack,
+			this.texture,
+			model -> {
+				RegistrationHelper.registerDefaultBlockModel(model, this.texture);
+			}
+		);
+	}
+
 	public boolean isOpaque(BlockState blockState_1) {
 		return true;
 	}
 
 	public BlockRenderLayer getRenderLayer() {
-		return BlockRenderLayer.TRANSLUCENT;
-	// return BlockRenderLayer.CUTOUT_MIPPED;
+		return RegistrationHelper.getRenderLayer();
+	}
+
+	@Override
+	public void registerClient() {
+		RegistrationHelper.registerColorProvider(
+			this,
+			this.blockItem,
+			this.resource
+		);
 	}
 
 	@Override
 	public void registerData(ServerResourcePackBuilder data) {
-		super.registerData(data);
 		data.addLootTable(
-			new Identifier("randomoresmod", "blocks/" + this.id),
+			new Identifier("randomoresmod", "blocks/" + this.texture.id),
 			ltp -> {
-				ltp.type(new Identifier("randomoresmod", "block/" + this.id))
+				ltp.type(new Identifier("randomoresmod", "block/" + this.texture.id))
 					.pool(
 						pool -> {
 							pool.rolls(1);
 							if (resource.requiresSmelting || true) {
 								pool.entry(
-									e -> e.name(new Identifier("randomoresmod", this.id))
+									e -> e.name(new Identifier("randomoresmod", this.texture.id))
 										.type(new Identifier("minecraft:item"))
 								);
 								pool.condition(
@@ -101,7 +144,7 @@ public class ModResourceOre extends ColoredBlock {
 			new Identifier("randomoresmod", resource.gem.id + "_from_smelting"),
 			smelting -> {
 				smelting.type(new Identifier("minecraft", "smelting"))
-					.ingredientItem(new Identifier("randomoresmod", this.id))
+					.ingredientItem(new Identifier("randomoresmod", this.texture.id))
 					.result(new Identifier("randomoresmod", resource.gem.id))
 					.experience(0.7)
 					.cookingTime(resource.smeltingTime);
@@ -111,7 +154,7 @@ public class ModResourceOre extends ColoredBlock {
 			new Identifier("randomoresmod", resource.gem.id + "_from_blasting"),
 			smelting -> {
 				smelting.type(new Identifier("minecraft", "blasting"))
-					.ingredientItem(new Identifier("randomoresmod", this.id))
+					.ingredientItem(new Identifier("randomoresmod", this.texture.id))
 					.result(new Identifier("randomoresmod", resource.gem.id))
 					.experience(0.7)
 					.cookingTime(resource.smeltingTime / 2);
@@ -121,8 +164,6 @@ public class ModResourceOre extends ColoredBlock {
 
 	@Override
 	public void registerBiomeFeatures(Biome biome) {
-		super.registerBiomeFeatures(biome);
-
 		if (
 			biome.getCategory() != Biome.Category.NETHER &&
 			biome.getCategory() != Biome.Category.THEEND
@@ -146,5 +187,13 @@ public class ModResourceOre extends ColoredBlock {
 				)
 			);
 		}
+	}
+
+	@Override
+	public void registerTranslations(TranslationBuilder trans) {}
+
+	@Override
+	public void registerItemGroup(List<ItemStack> stacks) {
+		stacks.add(new ItemStack(this));
 	}
 }

@@ -3,16 +3,16 @@ package pw.pfg.randomoresmod.modresource;
 import java.util.Random;
 import net.minecraft.util.Rarity;
 import pw.pfg.randomoresmod.ObjectDetails;
-import pw.pfg.randomoresmod.ResourceObject;
+import pw.pfg.randomoresmod.TextureInfo;
 
 public class ResourceDetails extends ObjectDetails {
 	public float materialHardness;
 	public float materialResistance;
 
-	public ResourceObject ore;
-	public ResourceObject gem;
-	public ResourceObject storageBlock;
-	public ResourceObject nugget; // NULLABLE!!!!!
+	public TextureInfo ore;
+	public TextureInfo gem;
+	public TextureInfo storageBlock;
+	public TextureInfo nugget; // NULLABLE!!!!!
 
 	public boolean requiresSmelting;
 	public boolean dropsMany;
@@ -125,14 +125,13 @@ public class ResourceDetails extends ObjectDetails {
 		String englishName = resourceNameId.substring(0, 1).toUpperCase() +
 			resourceNameId.substring(1);
 
-		ResourceObject oreStyle = ResourceObjectOre.random(resourceNameId);
-		ResourceObject gemStyle = isIngot
-			? ResourceObjectIngot.random(resourceNameId)
+		TextureInfo oreStyle = ResourceObjectOre.random(resourceNameId);
+		TextureInfo gemStyle = isIngot ? ResourceObjectIngot.random(resourceNameId)
 			: ResourceObjectGem.random(resourceNameId);
-		ResourceObject storageBlockStyle = ResourceObjectStorageBlock.random(
+		TextureInfo storageBlockStyle = ResourceObjectStorageBlock.random(
 			resourceNameId
 		);
-		ResourceObject nuggetStyle = hasNugget
+		TextureInfo nuggetStyle = hasNugget
 			? ResourceObjectNugget.random(resourceNameId)
 			: null;
 
@@ -199,10 +198,10 @@ public class ResourceDetails extends ObjectDetails {
 		String englishName,
 		float materialHardness,
 		float materialResistance,
-		ResourceObject ore,
-		ResourceObject gem,
-		ResourceObject storageBlock,
-		ResourceObject nugget,
+		TextureInfo ore,
+		TextureInfo gem,
+		TextureInfo storageBlock,
+		TextureInfo nugget,
 		boolean requiresSmelting,
 		boolean dropsMany,
 		boolean isFuel,

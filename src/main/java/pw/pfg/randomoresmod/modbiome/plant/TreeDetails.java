@@ -2,12 +2,12 @@ package pw.pfg.randomoresmod.modbiome.plant;
 
 import java.util.Random;
 import pw.pfg.randomoresmod.ObjectDetails;
-import pw.pfg.randomoresmod.ResourceObject;
+import pw.pfg.randomoresmod.TextureInfo;
 
 public class TreeDetails extends ObjectDetails {
-	public ResourceObject log;
-	public ResourceObject leaves;
-	public ResourceObject planks;
+	public TextureInfo log;
+	public TextureInfo leaves;
+	public TextureInfo planks;
 
 	static double halfLife(
 		double current,
@@ -26,9 +26,9 @@ public class TreeDetails extends ObjectDetails {
 		int color = cosmeticRandom.nextInt(0xFFFFFF);
 
 		// computed
-		ResourceObject logStyle = ResourceObjectLog.random(resourceNameId);
-		ResourceObject leavesStyle = ResourceObjectLeaves.random(resourceNameId);
-		ResourceObject plankStyle = ResourceObjectPlanks.random(resourceNameId);
+		TextureInfo logStyle = ResourceObjectLog.random(resourceNameId);
+		TextureInfo leavesStyle = ResourceObjectLeaves.random(resourceNameId);
+		TextureInfo plankStyle = ResourceObjectPlanks.random(resourceNameId);
 
 		String baseId = resourceNameId;
 		String translationKey = "name.randomoresmod.tree." + baseId;
@@ -49,9 +49,9 @@ public class TreeDetails extends ObjectDetails {
 		String baseId,
 		String translationKey,
 		String englishName,
-		ResourceObject logStyle,
-		ResourceObject leavesStyle,
-		ResourceObject plankStyle
+		TextureInfo logStyle,
+		TextureInfo leavesStyle,
+		TextureInfo plankStyle
 	) {
 		super(color, baseId, translationKey, englishName);
 		this.log = logStyle;

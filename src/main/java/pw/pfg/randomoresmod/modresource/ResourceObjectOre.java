@@ -1,11 +1,10 @@
 package pw.pfg.randomoresmod.modresource;
 
 import java.util.Random;
-
-import pw.pfg.randomoresmod.ResourceObject;
+import pw.pfg.randomoresmod.TextureInfo;
 import pw.pfg.randomoresmod.Style;
 
-public class ResourceObjectOre extends ResourceObject {
+public class ResourceObjectOre extends TextureInfo {
 	public static Style[] STYLE = StyleSet.Builder()
 		.resourceBase("randomoresmod:block/ore/")
 		.languageKeyBase("name.randomoresmod.ore.")
