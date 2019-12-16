@@ -8,6 +8,8 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.registry.FuelRegistry;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockRenderLayer;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.Material;
 import net.minecraft.block.MaterialColor;
 import net.minecraft.item.Item;
@@ -168,5 +170,13 @@ public class ModResourceStorageBlock
 	@Override
 	public Block self() {
 		return this;
+	}
+
+	public boolean isOpaque(BlockState blockState_1) {
+		return true;
+	}
+
+	public BlockRenderLayer getRenderLayer() {
+		return RegistrationHelper.getRenderLayer();
 	}
 }

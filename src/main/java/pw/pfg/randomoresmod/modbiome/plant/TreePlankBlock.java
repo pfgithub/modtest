@@ -8,6 +8,8 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.block.FabricBlockSettings;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockRenderLayer;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.Material;
 import net.minecraft.block.MaterialColor;
 import net.minecraft.item.Item;
@@ -88,7 +90,9 @@ public class TreePlankBlock
 	}
 
 	@Override
-	public void registerItemGroup(List<ItemStack> stacks) {}
+	public void registerItemGroup(List<ItemStack> stacks) {
+		stacks.add(new ItemStack(this.item, 1));
+	}
 
 	@Override
 	public void registerTranslations(TranslationBuilder trans) {}
@@ -120,5 +124,13 @@ public class TreePlankBlock
 	@Override
 	public Block self() {
 		return this;
+	}
+
+	public boolean isOpaque(BlockState blockState_1) {
+		return true;
+	}
+
+	public BlockRenderLayer getRenderLayer() {
+		return RegistrationHelper.getRenderLayer();
 	}
 }

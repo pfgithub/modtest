@@ -1,5 +1,5 @@
 {
-	"parent": "item/handheld",
+	"parent": "item/generated",
 	"textures": {
 		"layer0": "randomoresmod:item/question_mark_ingot"
 	}

@@ -1,6 +1,9 @@
 {
 	"item.randomoresmod.question_mark_ingot": "Unknown Ingot",
+	"item.randomoresmod.question_mark_sapling": "Unknown Sapling",
+
 	"itemGroup.randomoresmod.resources": "Randomoresmod Resources",
+	"itemGroup.randomoresmod.trees": "Randomoresmod Trees",
 
 	"block.randomoresmod.oreblock": "%s %s",
 	"block.randomoresmod.storageblock": "Block of %s",
@@ -60,5 +63,26 @@
 	"name.randomoresmod.storage_block.shiny": "Block of %s",
 	"name.randomoresmod.storage_block.streaky": "Block of %s",
 
-	"name.randomoresmod.debug.colorpreview": "%s Color Preview"
+	"name.randomoresmod.debug.colorpreview": "%s Color Preview",
+
+	"name.randomoresmod.log.oak_log": "%s Log",
+	"name.randomoresmod.log.spruce_log": "%s Log",
+	"name.randomoresmod.log.birch_log": "%s Log",
+	"name.randomoresmod.log.jungle_log": "%s Log",
+	"name.randomoresmod.log.acacia_log": "%s Log",
+	"name.randomoresmod.log.dark_oak_log": "%s Log",
+
+	"name.randomoresmod.leaves.oak_leaves": "%s Leaves",
+	"name.randomoresmod.leaves.spruce_leaves": "%s Leaves",
+	"name.randomoresmod.leaves.birch_leaves": "%s Leaves",
+	"name.randomoresmod.leaves.jungle_leaves": "%s Leaves",
+	"name.randomoresmod.leaves.acacia_leaves": "%s Leaves",
+	"name.randomoresmod.leaves.dark_oak_leaves": "%s Leaves",
+
+	"name.randomoresmod.planks.oak_planks": "%s Planks",
+	"name.randomoresmod.planks.spruce_planks": "%s Planks",
+	"name.randomoresmod.planks.birch_planks": "%s Planks",
+	"name.randomoresmod.planks.jungle_planks": "%s Planks",
+	"name.randomoresmod.planks.acacia_planks": "%s Planks",
+	"name.randomoresmod.planks.dark_oak_planks": "%s Planks"
 }

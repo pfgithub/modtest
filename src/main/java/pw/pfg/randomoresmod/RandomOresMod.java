@@ -24,11 +24,14 @@ import pw.pfg.randomoresmod.modresource.ResourceDetails;
 
 public class RandomOresMod implements ModInitializer {
 	public static final List<IRegisterable> THINGS = new ArrayList<>();
-	public static final Item QUESTION_MARK_INGOT = new Item(
-		new Item.Settings().group(ItemGroup.MATERIALS)
+	public static final List<IRegisterable> LIST_RESOURCES = new ArrayList<>();
+	public static final List<IRegisterable> LIST_TREES = new ArrayList<>();
+	public static final Item QUESTION_MARK_INGOT = new Item(new Item.Settings());
+	public static final Item QUESTION_MARK_SAPLING = new Item(
+		new Item.Settings()
 	);
 	public static final Item ENCHANTMENT_GLINT_TEST_TEXTURE = new EnchantedItem(
-		new Item.Settings().group(ItemGroup.MATERIALS)
+		new Item.Settings()
 	);
 
 	public static final ItemGroup RESOURCES = FabricItemGroupBuilder.create(
@@ -37,7 +40,18 @@ public class RandomOresMod implements ModInitializer {
 		.icon(() -> new ItemStack(QUESTION_MARK_INGOT))
 		.appendItems(
 			stacks -> {
-				THINGS.forEach(t -> t.registerItemGroup(stacks));
+				LIST_RESOURCES.forEach(t -> t.registerItemGroup(stacks));
+			}
+		)
+		.build();
+
+	public static final ItemGroup TREES = FabricItemGroupBuilder.create(
+		new Identifier("randomoresmod", "trees")
+	)
+		.icon(() -> new ItemStack(QUESTION_MARK_SAPLING))
+		.appendItems(
+			stacks -> {
+				LIST_TREES.forEach(t -> t.registerItemGroup(stacks));
 			}
 		)
 		.build();
@@ -47,27 +61,29 @@ public class RandomOresMod implements ModInitializer {
 			new ModBiome(BiomeDetails.random("acacia_log_forest"))
 		);
 		for (int i = 0; i < 255; i++) {
-			RandomOresMod.THINGS.add(
-				new ModResource(
-					ResourceDetails.random(
-						ResourceNameGenerator.INSTANCE.generateUnique(new Random(i))
-					)
+			IRegisterable thing = new ModResource(
+				ResourceDetails.random(
+					ResourceNameGenerator.INSTANCE.generateUnique(new Random(i))
 				)
 			);
+			RandomOresMod.THINGS.add(thing);
+			RandomOresMod.LIST_RESOURCES.add(thing);
 		}
 		String[] manualAdds = new String[] { "telhllium", "uuodiyium" };
 		for (String manualAdd : manualAdds) {
-			RandomOresMod.THINGS.add(
-				new ModResource(ResourceDetails.random(manualAdd))
-			);
+			IRegisterable thing = new ModResource(ResourceDetails.random(manualAdd));
+			RandomOresMod.THINGS.add(thing);
+			RandomOresMod.LIST_RESOURCES.add(thing);
 		}
 		for (int i = 0; i < 255; i++) {
 			String id = TreeNameGenerator.INSTANCE.generateUnique(new Random(i));
 			System.out.println("Registering plant with id " + id);
 			String englishName = WordUtils.capitalize(id.replace("_", " "));
-			RandomOresMod.THINGS.add(
-				new TreeRegisterer(TreeDetails.random(id, englishName))
+			IRegisterable thing = new TreeRegisterer(
+				TreeDetails.random(id, englishName)
 			);
+			RandomOresMod.THINGS.add(thing);
+			RandomOresMod.LIST_TREES.add(thing);
 		}
 	}
 
@@ -79,6 +95,11 @@ public class RandomOresMod implements ModInitializer {
 			Registry.ITEM,
 			new Identifier("randomoresmod", "question_mark_ingot"),
 			QUESTION_MARK_INGOT
+		);
+		Registry.register(
+			Registry.ITEM,
+			new Identifier("randomoresmod", "question_mark_sapling"),
+			QUESTION_MARK_SAPLING
 		);
 		Registry.register(
 			Registry.ITEM,
