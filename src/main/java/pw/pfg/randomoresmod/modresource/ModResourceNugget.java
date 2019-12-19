@@ -17,7 +17,9 @@ import pw.pfg.randomoresmod.RandomOresMod;
 import pw.pfg.randomoresmod.RegistrationHelper;
 import pw.pfg.randomoresmod.TextureInfo;
 
-public class ModResourceNugget extends Item implements IRegisterable {
+public class ModResourceNugget
+	extends Item
+	implements IRegisterable, RegisterableItemDefaults {
 	ResourceDetails resource;
 	TextureInfo texture;
 
@@ -35,26 +37,6 @@ public class ModResourceNugget extends Item implements IRegisterable {
 	public boolean hasEnchantmentGlint(ItemStack itemStack_1) {
 		return resource.isShiny || super.hasEnchantmentGlint(itemStack_1);
 	}
-
-	@Override
-	public final String getTranslationKey() {
-		return RegistrationHelper.getTranslationKey();
-	}
-
-	@Environment(EnvType.CLIENT)
-	@Override
-	public Text getName() {
-		return RegistrationHelper.getName(texture, resource);
-	}
-
-	@Environment(EnvType.CLIENT)
-	@Override
-	public Text getName(ItemStack itemStack) {
-		return this.getName();
-	}
-
-	@Override
-	public void registerTranslations(TranslationBuilder trans) {}
 
 	@Override
 	public void registerData(ServerResourcePackBuilder data) {
@@ -78,29 +60,36 @@ public class ModResourceNugget extends Item implements IRegisterable {
 		);
 	}
 
+	// --------- boilerplate code ---------
 	@Override
-	public void registerAssets(ClientResourcePackBuilder pack) {
-		RegistrationHelper.registerItemModels(pack, texture);
+	public final String getTranslationKey() {
+		return RegistrationHelper.getTranslationKey();
+	}
+
+	@Environment(EnvType.CLIENT)
+	@Override
+	public Text getName() {
+		return RegistrationHelper.getName(texture, resource);
+	}
+
+	@Environment(EnvType.CLIENT)
+	@Override
+	public Text getName(ItemStack itemStack) {
+		return this.getName();
 	}
 
 	@Override
-	public void register() {
-		RegistrationHelper.register(this.texture.id, this);
-		if (resource.isFuel) {
-			FuelRegistry.INSTANCE.add(this, resource.fuelSmeltingTime / 9);
-		}
+	public ResourceDetails getResource() {
+		return resource;
 	}
 
 	@Override
-	public void registerClient() {
-		RegistrationHelper.registerColorProvider(this, resource);
+	public TextureInfo getTexture() {
+		return texture;
 	}
 
 	@Override
-	public void registerBiomeFeatures(Biome biome) {}
-
-	@Override
-	public void registerItemGroup(List<ItemStack> stacks) {
-		stacks.add(new ItemStack(this));
+	public Item getItem() {
+		return this;
 	}
 }

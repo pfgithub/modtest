@@ -16,7 +16,9 @@ import pw.pfg.randomoresmod.RandomOresMod;
 import pw.pfg.randomoresmod.RegistrationHelper;
 import pw.pfg.randomoresmod.TextureInfo;
 
-public class ModResourceGem extends Item implements IRegisterable {
+public class ModResourceGem
+	extends Item
+	implements IRegisterable, RegisterableItemDefaults {
 	ResourceDetails resource;
 	TextureInfo texture;
 
@@ -35,6 +37,7 @@ public class ModResourceGem extends Item implements IRegisterable {
 		return resource.isShiny || super.hasEnchantmentGlint(itemStack_1);
 	}
 
+	// --------- boilerplate code ---------
 	@Override
 	public final String getTranslationKey() {
 		return RegistrationHelper.getTranslationKey();
@@ -53,34 +56,17 @@ public class ModResourceGem extends Item implements IRegisterable {
 	}
 
 	@Override
-	public void registerTranslations(TranslationBuilder trans) {}
-
-	@Override
-	public void registerData(ServerResourcePackBuilder data) {}
-
-	@Override
-	public void registerAssets(ClientResourcePackBuilder pack) {
-		RegistrationHelper.registerItemModels(pack, texture);
+	public ResourceDetails getResource() {
+		return resource;
 	}
 
 	@Override
-	public void register() {
-		RegistrationHelper.register(this.texture.id, this);
-		if (resource.isFuel) {
-			FuelRegistry.INSTANCE.add(this, resource.fuelSmeltingTime);
-		}
+	public TextureInfo getTexture() {
+		return texture;
 	}
 
 	@Override
-	public void registerClient() {
-		RegistrationHelper.registerColorProvider(this, resource);
-	}
-
-	@Override
-	public void registerBiomeFeatures(Biome biome) {}
-
-	@Override
-	public void registerItemGroup(List<ItemStack> stacks) {
-		stacks.add(new ItemStack(this));
+	public Item getItem() {
+		return this;
 	}
 }

@@ -19,15 +19,17 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.biome.Biome;
 import pw.pfg.randomoresmod.IRegisterable;
+import pw.pfg.randomoresmod.ObjectDetails;
 import pw.pfg.randomoresmod.RandomOresMod;
 import pw.pfg.randomoresmod.RegistrationHelper;
 import pw.pfg.randomoresmod.TextureInfo;
 import pw.pfg.randomoresmod.modresource.IItemBlock;
 import pw.pfg.randomoresmod.modresource.NamedBlockItem;
+import pw.pfg.randomoresmod.modresource.RegisterableBlockDefaults;
 
 public class TreePlankBlock
 	extends Block
-	implements IRegisterable, IItemBlock<Block> {
+	implements IRegisterable, IItemBlock, RegisterableBlockDefaults {
 	TreeDetails resource;
 	TextureInfo texture;
 	Item item;
@@ -74,6 +76,12 @@ public class TreePlankBlock
 	}
 
 	@Override
+	public boolean hasEnchantmentGlint(ItemStack itemStack_1) {
+		return false;
+	}
+
+	// --------- boilerplate code ---------
+	@Override
 	public final String getTranslationKey() {
 		return RegistrationHelper.getTranslationKey();
 	}
@@ -84,53 +92,31 @@ public class TreePlankBlock
 		return RegistrationHelper.getName(this.texture, this.resource);
 	}
 
-	@Override
-	public boolean hasEnchantmentGlint(ItemStack itemStack_1) {
-		return false;
-	}
-
-	@Override
-	public void registerItemGroup(List<ItemStack> stacks) {
-		stacks.add(new ItemStack(this.item, 1));
-	}
-
-	@Override
-	public void registerTranslations(TranslationBuilder trans) {}
-
-	@Override
-	public void register() {
-		RegistrationHelper.register(this.texture.id, this, this.item);
-	}
-
-	@Override
-	public void registerAssets(ClientResourcePackBuilder pack) {
-		RegistrationHelper.registerModels(
-			pack,
-			this.texture,
-			model -> {
-				RegistrationHelper.registerDefaultBlockModel(model, this.texture);
-			}
-		);
-	}
-
-	@Override
-	public void registerClient() {
-		RegistrationHelper.registerColorProvider(this, this.item, this.resource);
-	}
-
-	@Override
-	public void registerBiomeFeatures(Biome biome) {}
-
-	@Override
-	public Block self() {
-		return this;
-	}
-
 	public boolean isOpaque(BlockState blockState_1) {
 		return true;
 	}
 
 	public BlockRenderLayer getRenderLayer() {
 		return RegistrationHelper.getRenderLayer();
+	}
+
+	@Override
+	public ObjectDetails getResource() {
+		return resource;
+	}
+
+	@Override
+	public TextureInfo getTexture() {
+		return texture;
+	}
+
+	@Override
+	public Item getItem() {
+		return item;
+	}
+
+	@Override
+	public Block getBlock() {
+		return this;
 	}
 }

@@ -1,9 +1,6 @@
 package pw.pfg.randomoresmod.modresource;
 
-import java.util.List;
-import com.swordglowsblue.artifice.api.ArtificeResourcePack.ClientResourcePackBuilder;
 import com.swordglowsblue.artifice.api.ArtificeResourcePack.ServerResourcePackBuilder;
-import com.swordglowsblue.artifice.api.builder.assets.TranslationBuilder;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.block.Block;
@@ -21,14 +18,15 @@ import net.minecraft.world.gen.decorator.RangeDecoratorConfig;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.OreFeatureConfig;
 import pw.pfg.randomoresmod.IRegisterable;
+import pw.pfg.randomoresmod.ObjectDetails;
 import pw.pfg.randomoresmod.RandomOresMod;
 import pw.pfg.randomoresmod.RegistrationHelper;
 import pw.pfg.randomoresmod.TextureInfo;
 
 public class ModResourceOre
 	extends Block
-	implements IRegisterable, IItemBlock<Block> {
-	Item blockItem;
+	implements IRegisterable, IItemBlock, RegisterableBlockDefaults {
+	Item item;
 	ResourceDetails resource;
 	protected TextureInfo texture;
 
@@ -40,7 +38,7 @@ public class ModResourceOre
 		);
 		this.resource = resource;
 		this.texture = resource.ore;
-		this.blockItem =
+		this.item =
 			new NamedBlockItem(
 				this,
 				new Item.Settings()
@@ -50,57 +48,8 @@ public class ModResourceOre
 	}
 
 	@Override
-	public final Block self() {
-		return this;
-	}
-
-	@Override
 	public boolean hasEnchantmentGlint(ItemStack itemStack) {
 		return resource.isShiny;
-	}
-
-	@Override
-	public final String getTranslationKey() {
-		return RegistrationHelper.getTranslationKey();
-	}
-
-	@Environment(EnvType.CLIENT)
-	@Override
-	public Text getName() {
-		return RegistrationHelper.getName(this.texture, this.resource);
-	}
-
-	@Override
-	public void register() {
-		RegistrationHelper.register(this.texture.id, this, this.blockItem);
-	}
-
-	@Override
-	public void registerAssets(ClientResourcePackBuilder pack) {
-		RegistrationHelper.registerModels(
-			pack,
-			this.texture,
-			model -> {
-				RegistrationHelper.registerDefaultBlockModel(model, this.texture);
-			}
-		);
-	}
-
-	public boolean isOpaque(BlockState blockState_1) {
-		return true;
-	}
-
-	public BlockRenderLayer getRenderLayer() {
-		return RegistrationHelper.getRenderLayer();
-	}
-
-	@Override
-	public void registerClient() {
-		RegistrationHelper.registerColorProvider(
-			this,
-			this.blockItem,
-			this.resource
-		);
 	}
 
 	@Override
@@ -189,11 +138,43 @@ public class ModResourceOre
 		}
 	}
 
+	// --------- boilerplate code ---------
 	@Override
-	public void registerTranslations(TranslationBuilder trans) {}
+	public final String getTranslationKey() {
+		return RegistrationHelper.getTranslationKey();
+	}
+
+	@Environment(EnvType.CLIENT)
+	@Override
+	public Text getName() {
+		return RegistrationHelper.getName(this.texture, this.resource);
+	}
+
+	public boolean isOpaque(BlockState blockState_1) {
+		return true;
+	}
+
+	public BlockRenderLayer getRenderLayer() {
+		return RegistrationHelper.getRenderLayer();
+	}
 
 	@Override
-	public void registerItemGroup(List<ItemStack> stacks) {
-		stacks.add(new ItemStack(this));
+	public ObjectDetails getResource() {
+		return resource;
+	}
+
+	@Override
+	public TextureInfo getTexture() {
+		return texture;
+	}
+
+	@Override
+	public Item getItem() {
+		return item;
+	}
+
+	@Override
+	public Block getBlock() {
+		return this;
 	}
 }

@@ -25,7 +25,7 @@ import pw.pfg.randomoresmod.TextureInfo;
 
 public class ModResourceStorageBlock
 	extends Block
-	implements IRegisterable, IItemBlock<Block> {
+	implements IRegisterable, IItemBlock, RegisterableBlockDefaults {
 	ResourceDetails resource;
 	protected TextureInfo texture;
 	Item item;
@@ -50,32 +50,13 @@ public class ModResourceStorageBlock
 	}
 
 	@Override
-	public final String getTranslationKey() {
-		return RegistrationHelper.getTranslationKey();
-	}
-
-	@Environment(EnvType.CLIENT)
-	@Override
-	public Text getName() {
-		return RegistrationHelper.getName(this.texture, this.resource);
-	}
-
-	@Override
 	public boolean hasEnchantmentGlint(ItemStack itemStack_1) {
 		return false;
 	}
 
 	@Override
-	public void registerItemGroup(List<ItemStack> stacks) {
-		stacks.add(new ItemStack(this));
-	}
-
-	@Override
-	public void registerTranslations(TranslationBuilder trans) {}
-
-	@Override
 	public void register() {
-		RegistrationHelper.register(this.texture.id, this, this.item);
+		RegisterableBlockDefaults.super.register();
 		if (resource.isFuel) {
 			FuelRegistry.INSTANCE.add(
 				this,
@@ -159,17 +140,16 @@ public class ModResourceStorageBlock
 		);
 	}
 
+	// --------- boilerplate code ---------
 	@Override
-	public void registerClient() {
-		RegistrationHelper.registerColorProvider(this, this.item, this.resource);
+	public final String getTranslationKey() {
+		return RegistrationHelper.getTranslationKey();
 	}
 
+	@Environment(EnvType.CLIENT)
 	@Override
-	public void registerBiomeFeatures(Biome biome) {}
-
-	@Override
-	public Block self() {
-		return this;
+	public Text getName() {
+		return RegistrationHelper.getName(this.texture, this.resource);
 	}
 
 	public boolean isOpaque(BlockState blockState_1) {
@@ -178,5 +158,25 @@ public class ModResourceStorageBlock
 
 	public BlockRenderLayer getRenderLayer() {
 		return RegistrationHelper.getRenderLayer();
+	}
+
+	@Override
+	public ResourceDetails getResource() {
+		return resource;
+	}
+
+	@Override
+	public TextureInfo getTexture() {
+		return texture;
+	}
+
+	@Override
+	public Item getItem() {
+		return item;
+	}
+
+	@Override
+	public Block getBlock() {
+		return this;
 	}
 }

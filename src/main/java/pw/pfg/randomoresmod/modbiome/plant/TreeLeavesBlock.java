@@ -18,15 +18,17 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.biome.Biome;
 import pw.pfg.randomoresmod.IRegisterable;
+import pw.pfg.randomoresmod.ObjectDetails;
 import pw.pfg.randomoresmod.RandomOresMod;
 import pw.pfg.randomoresmod.RegistrationHelper;
 import pw.pfg.randomoresmod.TextureInfo;
 import pw.pfg.randomoresmod.modresource.IItemBlock;
 import pw.pfg.randomoresmod.modresource.NamedBlockItem;
+import pw.pfg.randomoresmod.modresource.RegisterableBlockDefaults;
 
 public class TreeLeavesBlock
 	extends Block
-	implements IRegisterable, IItemBlock<Block> { // maybe instead of extending ColoredBlock, have static ColoredBlock.register... methods called by this
+	implements IRegisterable, IItemBlock, RegisterableBlockDefaults { // maybe instead of extending ColoredBlock, have static ColoredBlock.register... methods called by this
 	TreeDetails resource;
 	TextureInfo texture;
 	Item item;
@@ -47,45 +49,13 @@ public class TreeLeavesBlock
 			);
 	}
 
-	@Override
-	public final String getTranslationKey() {
-		return RegistrationHelper.getTranslationKey();
-	}
-
-	@Environment(EnvType.CLIENT)
-	@Override
-	public Text getName() {
-		return RegistrationHelper.getName(this.texture, this.resource);
+	public boolean isOpaque(BlockState blockState_1) {
+		return false;
 	}
 
 	@Override
 	public boolean hasEnchantmentGlint(ItemStack itemStack_1) {
 		return false;
-	}
-
-	@Override
-	public void registerItemGroup(List<ItemStack> stacks) {
-		stacks.add(new ItemStack(this.item, 1));
-	}
-
-	@Override
-	public void registerTranslations(TranslationBuilder trans) {}
-
-	@Override
-	public void register() {
-		RegistrationHelper.register(this.texture.id, this, this.item);
-	}
-
-	// view (find . -name "iron_ore.json")
-	@Override
-	public void registerAssets(ClientResourcePackBuilder pack) {
-		RegistrationHelper.registerModels(
-			pack,
-			this.texture,
-			model -> {
-				RegistrationHelper.registerDefaultBlockModel(model, this.texture);
-			}
-		);
 	}
 
 	@Override
@@ -113,24 +83,42 @@ public class TreeLeavesBlock
 		);
 	}
 
+	// --------- boilerplate code ---------
 	@Override
-	public void registerClient() {
-		RegistrationHelper.registerColorProvider(this, this.item, this.resource);
+	public final String getTranslationKey() {
+		return RegistrationHelper.getTranslationKey();
 	}
 
+	@Environment(EnvType.CLIENT)
 	@Override
-	public void registerBiomeFeatures(Biome biome) {}
-
-	@Override
-	public Block self() {
-		return this;
+	public Text getName() {
+		return RegistrationHelper.getName(this.texture, this.resource);
 	}
 
-	public boolean isOpaque(BlockState blockState_1) {
-		return false;
-	}
-
+	// public boolean isOpaque(BlockState blockState_1) {
+	// 	return true;
+	// }
 	public BlockRenderLayer getRenderLayer() {
 		return RegistrationHelper.getRenderLayer();
+	}
+
+	@Override
+	public ObjectDetails getResource() {
+		return resource;
+	}
+
+	@Override
+	public TextureInfo getTexture() {
+		return texture;
+	}
+
+	@Override
+	public Item getItem() {
+		return item;
+	}
+
+	@Override
+	public Block getBlock() {
+		return this;
 	}
 }

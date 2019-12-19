@@ -5,10 +5,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
 
 public class NamedBlockItem extends BlockItem {
-	IItemBlock<?> block;
+	IItemBlock block;
 
-	public NamedBlockItem(IItemBlock<?> block_1, Settings item$Settings_1) {
-		super(block_1.self(), item$Settings_1);
+	public NamedBlockItem(IItemBlock block_1, Settings item$Settings_1) {
+		super(block_1.getBlock(), item$Settings_1);
 		this.block = block_1;
 	}
 
