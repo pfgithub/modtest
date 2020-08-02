@@ -6,15 +6,15 @@ import com.swordglowsblue.artifice.api.ArtificeResourcePack.ServerResourcePackBu
 import com.swordglowsblue.artifice.api.builder.assets.TranslationBuilder;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.fabricmc.fabric.api.block.FabricBlockSettings;
+import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockRenderLayer;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Material;
 import net.minecraft.block.MaterialColor;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.sound.BlockSoundGroup;
+import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.biome.Biome;
@@ -39,7 +39,6 @@ public class TreePlankBlock
 			FabricBlockSettings.of(Material.WOOD, MaterialColor.WOOD)
 				.strength(2.0F, 3.0F)
 				.sounds(BlockSoundGroup.WOOD)
-				.build()
 		);
 		this.resource = resource;
 		this.texture = resource.planks;
@@ -76,7 +75,7 @@ public class TreePlankBlock
 	}
 
 	@Override
-	public boolean hasEnchantmentGlint(ItemStack itemStack_1) {
+	public boolean hasGlint(ItemStack itemStack_1) {
 		return false;
 	}
 
@@ -88,16 +87,12 @@ public class TreePlankBlock
 
 	@Environment(EnvType.CLIENT)
 	@Override
-	public Text getName() {
+	public MutableText getName() {
 		return RegistrationHelper.getName(this.texture, this.resource);
 	}
 
 	public boolean isOpaque(BlockState blockState_1) {
 		return true;
-	}
-
-	public BlockRenderLayer getRenderLayer() {
-		return RegistrationHelper.getRenderLayer();
 	}
 
 	@Override

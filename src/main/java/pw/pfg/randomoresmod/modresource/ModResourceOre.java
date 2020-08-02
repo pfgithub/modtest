@@ -4,13 +4,18 @@ import com.swordglowsblue.artifice.api.ArtificeResourcePack.ServerResourcePackBu
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockRenderLayer;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.block.Material;
+import net.minecraft.entity.EntityType;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
+import net.minecraft.world.BlockView;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.GenerationStep;
 import net.minecraft.world.gen.decorator.Decorator;
@@ -35,6 +40,10 @@ public class ModResourceOre
 		super(
 			Block.Settings.of(Material.STONE)
 				.strength(resource.materialHardness, resource.materialResistance)
+				// .nonOpaque()
+				// .solidBlock(ModResourceOre::never)
+				// .suffocates(ModResourceOre::never)
+				// .blockVision(ModResourceOre::never)
 		);
 		this.resource = resource;
 		this.texture = resource.ore;
@@ -46,9 +55,21 @@ public class ModResourceOre
 					.rarity(resource.rarityMC)
 			);
 	}
+	// private static boolean never(BlockState state, BlockView world, BlockPos pos) {
+	//    return false;
+	// }
+
+	// public boolean isTranslucent(BlockState state, BlockView world, BlockPos pos) {
+	//    return true;
+	// }
+
+	// @Environment(EnvType.CLIENT)
+	// public boolean isSideInvisible(BlockState state, BlockState stateFrom, Direction direction) {
+	// 	return stateFrom.isOf(this) ? true : super.isSideInvisible(state, stateFrom, direction);
+	// }
 
 	@Override
-	public boolean hasEnchantmentGlint(ItemStack itemStack) {
+	public boolean hasGlint(ItemStack itemStack) {
 		return resource.isShiny;
 	}
 
@@ -58,35 +79,58 @@ public class ModResourceOre
 			new Identifier("randomoresmod", "blocks/" + this.texture.id),
 			ltp -> {
 				ltp.type(new Identifier("randomoresmod", "block/" + this.texture.id))
-					.pool(
-						pool -> {
-							pool.rolls(1);
-							if (resource.requiresSmelting || true) {
-								pool.entry(
-									e -> e.name(new Identifier("randomoresmod", this.texture.id))
-										.type(new Identifier("minecraft:item"))
-								);
-								pool.condition(
-									new Identifier("minecraft:survives_explosion"),
-									cond -> {}
-								);
-							}
-						// else {
-						// https://github.com/artificemc/artifice/issues/12
-						// pool.entry(
-						// 	entry -> {
-						// 		entry.type(new Identifier("minecraft", "alternative"));
-						// 		entry.child(
-						// 			child -> {
-						// 				child.type(new Identifier("minecraft", "item"));
-						// 				child.
-						// 			}
-						// 		);
-						// 	}
-						// );
-						//}
+					.pool(pool -> {
+						pool.rolls(1);
+						if (resource.requiresSmelting) {
+							pool.entry(e ->{
+								e.name(new Identifier("randomoresmod", resource.ore.id));
+								e.type(new Identifier("minecraft:item"));
+							});
+							pool.condition(new Identifier("minecraft:survives_explosion"), cond -> {});
+						} else {
+							pool.entry(entry -> {
+								entry.type(new Identifier("minecraft", "alternatives"));
+								entry.child(child -> {
+									child.type(new Identifier("minecraft", "item"));
+									child.condition(new Identifier("minecraft:match_tool"), condition -> {
+										condition.addObject("predicate", predicate -> {
+											predicate.addArray("enchantments", enchantments -> {
+												enchantments.addObject(enchantment -> {
+													enchantment.add("enchantment", "minecraft:silk_touch");
+													enchantment.addObject("levels", levels -> {
+														levels.add("min", 1);
+													});
+												});
+											});
+										});
+									});
+									child.name(new Identifier("randomoresmod", resource.ore.id));
+								});
+								entry.child(child -> {
+									child.type(new Identifier("minecraft:item"));
+									if(resource.dropsMany) {
+										child.function(new Identifier("minecraft:set_count"), settings -> {
+											settings.addObject("count", count -> {
+												count.add("min", 4.0);
+												count.add("max", 5.0);
+											});
+										});
+									}
+									child.function(new Identifier("minecraft:apply_bonus"), settings -> {
+										settings.add("enchantment", "minecraft:fortune");
+										if(resource.dropsMany) {
+											settings.add("formula", "minecraft:uniform_bonus_count");
+											settings.addObject("parameters", params -> params.add("bonusMultiplier", 1));
+										} else {
+											settings.add("formula", "minecraft:ore_drops");
+										}
+									});
+									child.function(new Identifier("minecraft:explosion_decay"), settings -> {});
+									child.name(new Identifier("randomoresmod", resource.gem.id));
+								});
+							});
 						}
-					);
+					});
 			}
 		);
 		data.addSmeltingRecipe(
@@ -119,20 +163,18 @@ public class ModResourceOre
 		) {
 			biome.addFeature(
 				GenerationStep.Feature.UNDERGROUND_ORES,
-				Biome.configureFeature(
-					Feature.ORE,
+				Feature.ORE.configure(
 					new OreFeatureConfig(
 						OreFeatureConfig.Target.NATURAL_STONE,
 						this.getDefaultState(),
 						resource.oreVeinSize //Ore vein size
-					),
-					Decorator.COUNT_RANGE,
-					new RangeDecoratorConfig(
-						resource.oresPerChunk,
-						0,
-						resource.oreMinSpawn, // TODO: THIS DOES NOT WORK. A y=32 to y=42 ore was geenerated at y=6 with this
-						resource.oreMaxSpawn
-					) //Number of veins per chunk //Bottom Offset //Min y level //Max y level
+					)).createDecoratedFeature(
+					Decorator.COUNT_RANGE.configure(new RangeDecoratorConfig(
+						resource.oresPerChunk,  // veins per chunk
+						0,                     // bottom offset
+						resource.oreMinSpawn, // supposedly min y level. doesn't seem to work.
+						resource.oreMaxSpawn // supposedly max y level
+					))
 				)
 			);
 		}
@@ -146,16 +188,12 @@ public class ModResourceOre
 
 	@Environment(EnvType.CLIENT)
 	@Override
-	public Text getName() {
+	public MutableText getName() {
 		return RegistrationHelper.getName(this.texture, this.resource);
 	}
 
 	public boolean isOpaque(BlockState blockState_1) {
 		return true;
-	}
-
-	public BlockRenderLayer getRenderLayer() {
-		return RegistrationHelper.getRenderLayer();
 	}
 
 	@Override

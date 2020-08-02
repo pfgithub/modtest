@@ -6,12 +6,12 @@ import com.swordglowsblue.artifice.api.builder.assets.ModelBuilder;
 import com.swordglowsblue.artifice.api.builder.assets.TranslationBuilder;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.fabricmc.fabric.api.client.render.ColorProviderRegistry;
+import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockRenderLayer;
 import net.minecraft.block.BlockState;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
@@ -40,7 +40,7 @@ public class RegistrationHelper {
 	}
 
 	@Environment(EnvType.CLIENT)
-	public static Text getName(TextureInfo texture, ObjectDetails resource) {
+	public static MutableText getName(TextureInfo texture, ObjectDetails resource) {
 		return new TranslatableText(
 			texture.style.languageKey,
 			new TranslatableText(resource.translationKey)
@@ -142,10 +142,6 @@ public class RegistrationHelper {
 
 	public static boolean isOpaque(BlockState blockState_1) {
 		return true;
-	}
-
-	public static BlockRenderLayer getRenderLayer() {
-		return BlockRenderLayer.TRANSLUCENT; // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	}
 
 	public static void registerColorProvider(

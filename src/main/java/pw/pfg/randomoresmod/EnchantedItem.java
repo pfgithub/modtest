@@ -11,7 +11,7 @@ public class EnchantedItem extends Item {
     }
 
     @Override
-    public boolean hasEnchantmentGlint(ItemStack itemStack_1) {
+    public boolean hasGlint(ItemStack itemStack_1) {
         return true;
     }
 

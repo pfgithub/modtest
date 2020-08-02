@@ -8,12 +8,12 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.registry.FuelRegistry;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockRenderLayer;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Material;
 import net.minecraft.block.MaterialColor;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Direction;
@@ -50,7 +50,7 @@ public class ModResourceStorageBlock
 	}
 
 	@Override
-	public boolean hasEnchantmentGlint(ItemStack itemStack_1) {
+	public boolean hasGlint(ItemStack itemStack_1) {
 		return false;
 	}
 
@@ -148,16 +148,12 @@ public class ModResourceStorageBlock
 
 	@Environment(EnvType.CLIENT)
 	@Override
-	public Text getName() {
+	public MutableText getName() {
 		return RegistrationHelper.getName(this.texture, this.resource);
 	}
 
 	public boolean isOpaque(BlockState blockState_1) {
 		return true;
-	}
-
-	public BlockRenderLayer getRenderLayer() {
-		return RegistrationHelper.getRenderLayer();
 	}
 
 	@Override

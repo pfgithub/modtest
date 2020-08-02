@@ -23,8 +23,8 @@ public class NamedBlockItem extends BlockItem {
 	}
 
 	@Override
-	public boolean hasEnchantmentGlint(ItemStack itemStack_1) {
-		return this.block.hasEnchantmentGlint(itemStack_1) ||
-		super.hasEnchantmentGlint(itemStack_1);
+	public boolean hasGlint(ItemStack itemStack_1) {
+		return this.block.hasGlint(itemStack_1) ||
+		super.hasGlint(itemStack_1);
 	}
 }

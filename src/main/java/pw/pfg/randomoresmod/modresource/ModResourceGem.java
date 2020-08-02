@@ -33,8 +33,8 @@ public class ModResourceGem
 	}
 
 	@Override
-	public boolean hasEnchantmentGlint(ItemStack itemStack_1) {
-		return resource.isShiny || super.hasEnchantmentGlint(itemStack_1);
+	public boolean hasGlint(ItemStack itemStack_1) {
+		return resource.isShiny || super.hasGlint(itemStack_1);
 	}
 
 	// --------- boilerplate code ---------

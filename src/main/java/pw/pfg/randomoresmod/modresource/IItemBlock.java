@@ -5,5 +5,5 @@ import net.minecraft.item.ItemStack;
 
 public interface IItemBlock {
 	public Block getBlock();
-	public boolean hasEnchantmentGlint(ItemStack itemStack_1);
+	public boolean hasGlint(ItemStack itemStack_1);
 }
